@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GN Personal Hygiene and Skin Care</title>
+<meta name="description" content="Free skin care companion: AM/PM routine tracker, UV and hydration reminders, face map, ritual timer, rupee budget shelf and an ingredient mixing checker.">
+<meta name="theme-color" content="#8E6B7E" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151115" media="(prefers-color-scheme: dark)">
+<meta name="application-name" content="GN Care">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GN Care">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GN Personal Hygiene and Skin Care">
+<meta property="og:description" content="Track your AM/PM skin routine, UV and water, and check which ingredients mix well.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gTile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9A7488"/><stop offset=".55" stop-color="#6B4B5D"/><stop offset="1" stop-color="#3A2631"/></linearGradient>
+    <linearGradient id="gGlint" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF6F9"/><stop offset="1" stop-color="#DCCBD5"/></linearGradient>
+    <linearGradient id="gRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8E6B7E"/><stop offset="1" stop-color="#CEB6C4"/></linearGradient>
+    <clipPath id="glassClip"><path d="M18 8H82L74 122Q73 128 67 128H33Q27 128 26 122Z"/></clipPath>
+  </defs>
+  <symbol id="logo" viewBox="0 0 64 64">
+    <rect x="2" y="2" width="60" height="60" rx="19" fill="url(#gTile)"/>
+    <rect x="2" y="2" width="60" height="60" rx="19" fill="url(#gGlint)"/>
+    <rect x="2.5" y="2.5" width="59" height="59" rx="18.5" fill="none" stroke="#fff" stroke-opacity=".22"/>
+    <path d="M45.9 23.2A17 17 0 1 0 49 33H41" fill="none" stroke="url(#gStroke)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M26.5 41V26L37.5 41V26" fill="none" stroke="#E3D5DE" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M47.5 13.5l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z" fill="#F4E8EF"/>
+  </symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 10h.01M15 10h.01M9.5 15c1.4 1.2 3.6 1.2 5 0"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8h12l1 12H5zM9 8a3 3 0 0 1 6 0"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3M7.5 15h9"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9-4.3-4.1 5.9-.8z"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14M5 19l8-8"/></symbol>
+</svg>
+
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="app">
+  <aside class="side">
+    <div>
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 64 64" role="img" aria-label="GN monogram"><use href="#logo"/></svg>
+        <div><h1>GN Personal Hygiene<em>&amp; Skin Care</em></h1><small>Daily ritual studio</small></div>
+      </div>
+      <nav class="nav" id="nav-side" aria-label="Sections"></nav>
+    </div>
+    <div class="side-foot">
+      <div class="mini-row"><div>Skin profile<small id="side-skin">Not scanned yet</small></div></div>
+      <div class="mini-row"><span id="theme-lab">Dark mode</span>
+        <button type="button" role="switch" aria-checked="false" aria-label="Dark mode" class="spring theme-toggle" data-act="theme"><span class="thumb"><svg class="ico"><use href="#i-sun"/></svg></span></button></div>
+      <div class="legal"><a href="/guides/">Guides</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/about.html">About</a></div>
+      <button class="link-btn" data-act="openSettings"><svg class="ico"><use href="#i-gear"/></svg>Settings</button>
+    </div>
+  </aside>
+
+  <div class="col">
+    <header class="top">
+      <div class="brand"><svg class="mark" viewBox="0 0 64 64" role="img" aria-label="GN monogram"><use href="#logo"/></svg><h1>GN <em>Care</em></h1></div>
+      <div class="top-actions">
+        <button type="button" role="switch" aria-checked="false" aria-label="Dark mode" class="spring sm theme-toggle" data-act="theme"><span class="thumb"><svg class="ico"><use href="#i-sun"/></svg></span></button>
+        <button class="icon-btn" data-act="openSettings" aria-label="Settings"><svg class="ico"><use href="#i-gear"/></svg></button>
+      </div>
+    </header>
+    <main>
+      <div id="view" tabindex="-1"></div>
+      <div class="ad" id="ad-app" data-ad="app" hidden></div>
+    </main>
+  </div>
+</div>
+
+<nav class="dock" id="nav-dock" aria-label="Sections"></nav>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-in" role="dialog" aria-labelledby="sheet-title">
+    <div class="row sp"><h2 class="page-h" id="sheet-title" style="font-size:32px">Settings</h2><button class="icon-btn" data-act="closeSettings" aria-label="Close"><svg class="ico"><use href="#i-x"/></svg></button></div>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/config.js"></script>
+<script src="/ads.js" defer></script>
+<script src="/label.js" defer></script>
+<script src="/ondevice.js" defer></script>
+<script src="/app.js" defer></script>
+</body>
+</html>

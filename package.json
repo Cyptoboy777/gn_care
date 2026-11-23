@@ -1,0 +1,9 @@
+{
+  "name": "gn-care",
+  "version": "2.0.0",
+  "private": true,
+  "description": "GN Personal Hygiene and Skin Care: PWA with ads, AI coach and feedback",
+  "scripts": {
+    "test": "node tests/run.js"
+  }
+}
