@@ -4,3 +4,7 @@
 node_modules/
 .vercel/
 .DS_Store
+
+# Cloudflare local dev
+.dev.vars
+.wrangler/

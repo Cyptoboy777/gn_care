@@ -1,10 +1,10 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
-const VERSION = 'gn-care-v3';
+const VERSION = 'gn-care-v4';
 const SHELL = [
-  '/', '/index.html', '/styles.css', '/app.js', '/config.js', '/ads.js', '/label.js', '/ondevice.js',
+  '/', '/index.html', '/styles.css', '/app.js', '/config.js', '/ads.js', '/label.js', '/products.js', '/picks.js', '/ondevice.js',
   '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'
 ];
-const NETWORK_FIRST = ['/config.js', '/ads.js'];
+const NETWORK_FIRST = ['/config.js', '/ads.js', '/products.js'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

@@ -31,7 +31,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 /* ---------- helpers ---------- */
 var TABS=[
-  {id:'home',n:'Home',i:'i-home'},{id:'routine',n:'Routine',i:'i-check'},{id:'scan',n:'Face Scan',i:'i-scan'},
+  {id:'home',n:'Home',i:'i-home'},{id:'routine',n:'Routine',i:'i-check'},{id:'scan',n:'Face Scan',i:'i-scan'},{id:'picks',n:'Shop',i:'i-tag'},
   {id:'timer',n:'Timer',i:'i-timer'},{id:'shelf',n:'Shelf & ₹',i:'i-bag'},{id:'checker',n:'Coach',i:'i-flask'}];
 var tab='home',period=new Date().getHours()<15?'am':'pm';
 var toastT;
@@ -95,7 +95,7 @@ function viewHome(){
   var anyCheck=lastDays(7).some(function(x){return S.checkins[x.k]});
   var alerts=S.shelf.map(function(it){return {it:it,s:shelfStatus(it)}}).filter(function(a){return a.s.c==='bad'||a.s.c==='warn'}).slice(0,3);
   var run=monthlyCost();
-  var prof=S.skin?('<div class="result-t">'+esc(S.skin.type)+'</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'<span class="chip">Sun exposure: '+['low','moderate','high'][S.skin.sun]+'</span></div><p class="hint">Scanned '+esc(S.skin.at)+'</p><button class="btn ghost sm" data-act="nav" data-v="scan" style="align-self:flex-start">Re-scan</button>')
+  var prof=S.skin?('<div class="result-t">'+esc(S.skin.type)+'</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'<span class="chip">Sun exposure: '+['low','moderate','high'][S.skin.sun]+'</span></div><p class="hint">Scanned '+esc(S.skin.at)+'</p><button class="btn ghost sm" data-act="nav" data-v="scan" style="align-self:flex-start">Re-scan</button> <button class="btn sm" data-act="nav" data-v="picks" style="align-self:flex-start">See picks for my skin</button>')
     :('<p style="font-size:14px">Answer five quick questions and get a face map with your skin type and a routine focus.</p><button class="btn sm" data-act="nav" data-v="scan" style="align-self:flex-start">'+ico('i-scan')+'Start face scan</button>');
   return '<div class="head"><p class="eyebrow">'+date+'</p><h2 class="page-h">'+greet+', <em>glow</em> on.</h2></div>'+
   '<div class="grid">'+
@@ -174,7 +174,7 @@ function viewScan(){
   var legend='<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div>';
   var quiz=Q.map(function(q,qi){return '<div class="q"><h4>'+(qi+1)+'. '+q.q+'</h4><div class="opts">'+q.o.map(function(o,oi){return '<button data-act="ans" data-q="'+qi+'" data-v="'+oi+'" aria-pressed="'+(ans[qi]===oi)+'">'+o[0]+'</button>'}).join('')+'</div></div>'}).join('');
   var res=S.skin&&!scanning?('<section class="tile tile-hero"><h3 class="t">Your result</h3><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'</div><ul class="checks">'+RECS[S.skin.type].map(function(r){return '<li>'+r+'</li>'}).join('')+
-    (S.skin.sensitive?'<li>Patch test new products on the jaw for 3 days and avoid heavy fragrance.</li>':'')+(S.skin.sun>=1?'<li>Your sun exposure is '+(S.skin.sun===2?'high':'moderate')+'. Reapply SPF every 2 hours outdoors.</li>':'')+'</ul></section>'):'';
+    (S.skin.sensitive?'<li>Patch test new products on the jaw for 3 days and avoid heavy fragrance.</li>':'')+(S.skin.sun>=1?'<li>Your sun exposure is '+(S.skin.sun===2?'high':'moderate')+'. Reapply SPF every 2 hours outdoors.</li>':'')+'</ul><button class="btn" data-act="nav" data-v="picks" style="align-self:flex-start">See products for my skin</button></section>'):'';
   return '<div class="head"><p class="eyebrow">Guided analysis</p><h2 class="page-h">Face <em>scan</em></h2><p class="sub">Answer five questions to map your skin. Add a photo if you like. It stays on this device and is only used as the backdrop for your map.</p></div>'+
   '<div class="scan-grid"><div style="display:flex;flex-direction:column;gap:12px">'+face+legend+
     '<input type="file" id="photo-in" accept="image/*" capture="user" hidden><button class="btn ghost sm" data-act="photo" style="align-self:center">'+ico('i-camera')+(photo?'Change photo':'Add a photo')+'</button></div>'+
@@ -254,6 +254,66 @@ var R={
  'niac|pep':['good','No known issues. A good pair.']};
 var picked=[];
 function key(a,b){return [a,b].sort().join('|')}
+/* ---------- shop: picks by skin type and budget ---------- */
+var PK={ai:'',err:'',busy:false,rated:false};
+var SKINS=['Oily','Dry','Combination','Normal'];
+var AUDS=[['any','Anyone'],['women','Women'],['men','Men']];
+var BUDGETS=[1000,1500,2500,4000];
+function kit(){if(!S.kit)S.kit={budget:1500,aud:'any',type:'',sens:null,swaps:{}};if(!S.kit.swaps)S.kit.swaps={};return S.kit}
+function kitType(){var k=kit();return k.type||(S.skin&&S.skin.type)||''}
+function kitSens(){var k=kit();return (k.sens===null||k.sens===undefined)?!!(S.skin&&S.skin.sensitive):!!k.sens}
+function shelfHave(){var h={};S.shelf.forEach(function(i){if(!i.sample&&window.GNPicks&&GNPicks.CORE.indexOf(i.c)>-1)h[i.c]=true});return h}
+function money(n){return '₹'+inr.format(Math.round(n))}
+function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
+function priceTxt(p){return p.price!=null?'about '+money(p.price):'price varies'}
+function buyBtn(p){return '<a class="btn sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener" style="align-self:flex-start">View on Amazon</a>'}
+function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave()})}
+function kitQuestion(r,type,sens,budget){
+  var lines=['Skin type: '+type+(sens?', sensitive':'')+'. Budget: '+money(budget)+'.'];
+  r.items.forEach(function(i){if(i.item)lines.push(i.cat+': '+i.item.brand+' '+i.item.name+'.')});
+  return lines.join(' ')}
+function pickCard(it,type){
+  if(it.have)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">You already have a '+it.cat.toLowerCase()+' on your shelf, so it is left out of this kit.</p></section>';
+  if(!it.item)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">No match for '+esc(type.toLowerCase())+' skin yet. Add products in products.js.</p></section>';
+  var p=it.item;
+  var alts=it.alts.filter(function(a){return a.id!==p.id}).slice(0,3);
+  return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3>'+
+    '<div><span class="eyebrow">'+esc(p.brand)+'</span><h4 style="font-size:17px;font-weight:700;line-height:1.25;margin-top:2px;overflow-wrap:anywhere">'+esc(p.name)+'</h4><p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p></div>'+
+    '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span><span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
+    (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
+    (it.noSens?'<p class="hint">No sensitive-skin option in our list for '+esc(type.toLowerCase())+' skin. Patch test first.</p>':'')+
+    buyBtn(p)+
+    (alts.length?'<div class="list" style="gap:6px"><span class="hint">Other options</span>'+alts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.brand+' '+a.name)+'</b><span>'+priceTxt(a)+'</span></div><button class="btn ghost sm" data-act="kSwap" data-v="'+a.id+'" data-c="'+it.cat+'" aria-label="Use '+esc(a.brand+' '+a.name)+'">Use</button></div>'}).join('')+'</div>':'')+
+    '</section>'}
+function viewPicks(){
+  var k=kit(),type=kitType(),sens=kitSens();
+  var head='<div class="head"><p class="eyebrow">Shop smart</p><h2 class="page-h">Your skin, your <em>budget</em></h2><p class="sub">Choose your skin type and what you want to spend. You get a starter kit, and you can swap any item.</p></div>';
+  var ctl='<section class="tile" style="gap:16px">'+
+    '<div><h3 class="t" style="margin-bottom:8px">Shopping for</h3><div class="chips">'+AUDS.map(function(a){return '<button data-act="kAud" data-v="'+a[0]+'" aria-pressed="'+(k.aud===a[0])+'">'+a[1]+'</button>'}).join('')+'</div></div>'+
+    '<div><h3 class="t" style="margin-bottom:8px">Skin type</h3><div class="chips">'+SKINS.map(function(s){return '<button data-act="kType" data-v="'+s+'" aria-pressed="'+(type===s)+'">'+s+'</button>'}).join('')+'</div>'+
+      (S.skin&&!k.type?'<p class="hint" style="margin-top:8px">Taken from your face scan. Tap another type to change it.</p>':(!type?'<p class="hint" style="margin-top:8px">Pick a type, or <a href="#scan" style="color:var(--acc)">take the face scan</a> to find yours.</p>':''))+'</div>'+
+    '<div class="row sp"><div><span style="font-size:14px;font-weight:600;display:block">Sensitive skin</span><span class="hint">Shows sensitive-tested products first.</span></div>'+tgl(sens,'kSens','x','Sensitive skin',true)+'</div>'+
+    '<div><label class="f" style="max-width:240px">Budget for the kit (₹)<input class="input num" id="kit-budget" type="number" min="0" step="100" inputmode="numeric" value="'+k.budget+'"></label>'+
+      '<div class="chips" style="margin-top:8px">'+BUDGETS.map(function(b){return '<button data-act="kPreset" data-v="'+b+'" aria-pressed="'+(k.budget===b)+'">'+money(b)+'</button>'}).join('')+'</div></div>'+
+    '</section>';
+  var body='';
+  if(type){
+    var r=kitBuild();
+    var have=r.items.filter(function(i){return i.have}).map(function(i){return i.cat.toLowerCase()});
+    var pct=k.budget>0?Math.min(100,r.total/k.budget*100):0;
+    var msg=r.fits?('That leaves about '+money(Math.max(0,k.budget-r.total))+' of your budget.'):('The lowest kit for '+type.toLowerCase()+' skin is about '+money(r.min)+', above your '+money(k.budget)+' budget. Raise the budget or skip an item.');
+    var aiBox=PK.busy?busyHTML('Thinking…'):(PK.err?'<div class="res bad"><span class="tag">Notice</span><div><p>'+esc(PK.err)+'</p></div></div>':(PK.ai?'<div class="answer">'+fmtAns(PK.ai)+'</div>'+thumbs(PK.rated,'aiFbK'):''));
+    var add=GNPicks.addOns(k.aud);
+    body='<div class="grid">'+r.items.map(function(i){return pickCard(i,type)}).join('')+
+      '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain my kit with AI</button></div>'+
+        '<div class="meter '+(r.fits?'':'over')+'"><i style="width:'+pct+'%"></i></div><p class="hint">'+msg+(have.length?' Left out because you already have a '+have.join(' and ')+' on your shelf.':'')+'</p>'+aiBox+'</section>'+
+      (add.length?'<section class="tile"><h3 class="t">Add-ons for '+(k.aud==='women'?'women':'men')+'</h3><div class="list">'+add.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p),p.note].filter(Boolean).map(esc).join(' · ')+'</span></div>'+buyBtn(p)+'</div>'}).join('')+'</div>'+(k.aud==='women'?'<p class="hint">Intimate washes are for external use only. See a doctor for itching, odour or discharge that does not go away.</p>':'')+'</section>':'')+
+    '</div>';
+  }
+  var src=Object.keys(window.GN_SOURCES||{}).map(function(s){return GN_SOURCES[s]}).join('; ');
+  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3><p class="hint">'+(affTag()?'Links go to Amazon.in. If you buy through them, GN Care may earn a small commission at no extra cost to you. As an Amazon Associate we earn from qualifying purchases. ':'Links go to Amazon.in search. ')+'Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
+  return head+ctl+(body?'<div style="height:14px"></div>'+body:'')+disc}
+
 /* ---------- coach, label decoder, ratings ---------- */
 var LAB={bad:'Avoid',warn:'Separate',good:'Pairs well'};
 var CO={q:'',busy:false,ans:'',err:'',rated:false};
@@ -334,7 +394,7 @@ function serverAI(mode,q,done){
 function sendAI(mode,q,done){
   if(!(S.onDevice&&window.GNOnDevice&&GNOnDevice.supported())){serverAI(mode,q,done);return}
   OD.loading=!GNOnDevice.ready();OD.pct=0;OD.msg='Starting…';
-  if(OD.loading&&tab==='checker')render();
+  if(OD.loading&&(tab==='checker'||tab==='picks'))render();
   GNOnDevice.load(function(p){
     OD.pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));OD.msg=p.text||'';
     var a=$('#od-pct');if(a)a.textContent=OD.pct+'%';var b=$('#od-bar');if(b)b.style.width=OD.pct+'%';var m=$('#od-msg');if(m)m.textContent=OD.msg}
@@ -365,7 +425,7 @@ function buildNav(){
 function mark(){
   document.querySelectorAll('[data-tab]').forEach(function(b){if(b.dataset.tab===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   $('#side-skin').textContent=S.skin?S.skin.type+(S.skin.sensitive?' · sensitive':''):'Not scanned yet'}
-var views={home:viewHome,routine:viewRoutine,scan:viewScan,timer:viewTimer,shelf:viewShelf,checker:viewChecker};
+var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,timer:viewTimer,shelf:viewShelf,checker:viewChecker};
 function render(anim){
   var v=$('#view');v.innerHTML=views[tab]();
   if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}
@@ -428,6 +488,16 @@ var A={
    if(CO.q.trim().length<3){toast('Type a question first');return}
    CO.busy=true;CO.err='';CO.ans='';CO.rated=false;render();
    sendAI('coach',CO.q,function(r){CO.busy=false;if(r.err)CO.err=r.err;else CO.ans=r.text;if(tab==='checker')render()})},
+ kAud:function(v){kit().aud=v;save();render()},
+ kType:function(v){var k=kit();k.type=v;k.swaps={};PK={ai:'',err:'',busy:false,rated:false};save();render()},
+ kSens:function(){var k=kit();k.sens=!kitSens();k.swaps={};PK={ai:'',err:'',busy:false,rated:false};save();render()},
+ kPreset:function(v){kit().budget=+v;save();render()},
+ kSwap:function(v,t){kit().swaps[t.dataset.c]=v;PK={ai:'',err:'',busy:false,rated:false};save();render()},
+ kitAI:function(){
+   var k=kit(),r=kitBuild();if(!r.items.some(function(i){return i.item})){toast('Pick a skin type first');return}
+   PK={ai:'',err:'',busy:true,rated:false};render();
+   sendAI('picks',kitQuestion(r,kitType(),kitSens(),k.budget),function(x){PK.busy=false;if(x.err)PK.err=x.err;else PK.ai=x.text;if(tab==='picks')render()})},
+ aiFbK:function(v){PK.rated=true;render();postJSON('/api/feedback',{stars:+v,kind:'ai',v:'3'})},
  onDevice:function(){S.onDevice=!S.onDevice;save();render()},
  aiProfile:function(){S.aiProfile=S.aiProfile===false;save();render()},
  aiFb:function(v){CO.rated=true;render();postJSON('/api/feedback',{stars:+v,kind:'ai',v:'2'})},
@@ -496,6 +566,7 @@ document.addEventListener('input',function(e){
   if(e.target.id==='fb-msg')FB.msg=e.target.value;
   if(e.target.id==='uv-range'){S.uv.index=+e.target.value;save();updateUV()}});
 document.addEventListener('change',function(e){
+  if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='photo-in'){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){photo=r.result;render()};r.readAsDataURL(f)}});
 window.addEventListener('hashchange',onHash);

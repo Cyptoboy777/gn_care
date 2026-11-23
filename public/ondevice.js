@@ -22,6 +22,11 @@
     'any ingredients that commonly irritate (fragrance, drying alcohol, essential oils), who should patch test, and whether it suits morning or night. ' +
     'Ingredient order roughly shows concentration. Make no medical claims.';
 
+  var PICKS = RULES.replace('Never recommend specific brands or give medicine doses. ', 'Never give medicine doses. ') +
+    ' The user gives a skin profile and a short list of products already chosen by the app. Explain in simple words why each listed product suits that skin type and budget, ' +
+    'and give one tip for how to use them (cleanser, moisturizer, then sunscreen in the morning). Talk only about the listed products. Never add other brands or products. ' +
+    'Make no medical claims, do not promise results, and remind the person to patch test.';
+
   var engine = null;
   var modelId = '';
   var loading = null;
@@ -63,13 +68,13 @@
 
   function ask(mode, q, ctx) {
     if (!engine) return Promise.reject(new Error('notloaded'));
-    q = String(q || '').replace(/<\/?user_input>/gi, '').replace(/\s+/g, ' ').trim().slice(0, mode === 'decode' ? 1500 : 500);
+    q = String(q || '').replace(/<\/?user_input>/gi, '').replace(/\s+/g, ' ').trim().slice(0, mode === 'decode' ? 1500 : mode === 'picks' ? 900 : 500);
     var lines = [];
     if (ctx) lines.push('Skin profile: ' + ctx.type + ' skin' + (ctx.sensitive ? ', sensitive' : '') + ', sun exposure ' + ['low', 'moderate', 'high'][ctx.sun] + '.');
-    lines.push(mode === 'decode' ? 'Ingredient list:' : 'Question:');
+    lines.push(mode === 'decode' ? 'Ingredient list:' : mode === 'picks' ? 'Skin profile and products:' : 'Question:');
     lines.push('<user_input>' + q + '</user_input>');
     return engine.chat.completions.create({
-      messages: [{ role: 'system', content: mode === 'decode' ? RULES + DECODE : RULES }, { role: 'user', content: lines.join('\n') }],
+      messages: [{ role: 'system', content: mode === 'decode' ? RULES + DECODE : mode === 'picks' ? PICKS : RULES }, { role: 'user', content: lines.join('\n') }],
       max_tokens: 350,
       temperature: 0.4
     }).then(function (r) {

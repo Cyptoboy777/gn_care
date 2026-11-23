@@ -10,7 +10,7 @@ const ENV_KEYS = ['GEMINI_API_KEY', 'GEMINI_MODEL', 'GEMINI_TIER', 'AI_DAILY_CAP
 function fresh(file, env) {
   ENV_KEYS.forEach((k) => delete process.env[k]);
   Object.assign(process.env, env || {});
-  ['../api/_lib', '../api/ai', '../api/feedback'].forEach((m) => delete require.cache[require.resolve(path.join(__dirname, m))]);
+  ['../api/_lib', '../api/ai', '../api/feedback', '../api/health'].forEach((m) => delete require.cache[require.resolve(path.join(__dirname, m))]);
   return require(path.join(__dirname, '..', 'api', file));
 }
 
@@ -200,7 +200,7 @@ async function t(name, fn) {
   await t('no webhook and no Redis means off', async () => { const r = await call(fb, { ip: '23.0.0.1', body: { stars: 5 } }); assert.strictEqual(r.status, 503); });
 
   console.log('label.js');
-  const label = require('../label.js');
+  const label = require('../public/label.js');
   await t('finds actives and flags', async () => {
     const r = label.scan('Aqua, Glycerin, Retinol, Niacinamide, Sodium Hyaluronate, Parfum, Alcohol Denat.');
     assert.deepStrictEqual(r.actives.sort(), ['retinol', 'niac', 'ha'].sort());
@@ -211,6 +211,98 @@ async function t(name, fn) {
     assert.deepStrictEqual(r.actives.sort(), ['aha', 'bha', 'bp', 'spf', 'vitc'].sort());
   });
   await t('empty and plain lists find nothing', async () => { assert.deepStrictEqual(label.scan('').actives, []); assert.deepStrictEqual(label.scan('Aqua, Glycerin, Shea Butter').actives, []); });
+
+
+  console.log('api/ai picks mode');
+  let pk = fresh('ai.js', { GEMINI_API_KEY: 'k', GEMINI_TIER: 'paid' });
+  mockFetch(geminiOk('- Good pick.'));
+  await t('picks mode is accepted and labelled', async () => {
+    const r = await call(pk, { ip: '30.0.0.1', body: { mode: 'picks', q: 'Skin type: Oily. Budget: Rs 1500. Cleanser: CeraVe Hydrating Cleanser.' } });
+    assert.strictEqual(r.status, 200);
+    const sent = JSON.parse(fetchCalls[0].init.body);
+    assert.ok(/Skin profile and products:/.test(sent.contents[0].parts[0].text));
+    assert.ok(/Never add other brands/.test(sent.systemInstruction.parts[0].text));
+    assert.ok(!/Never recommend specific brands/.test(sent.systemInstruction.parts[0].text));
+  });
+  await t('picks allows 900 characters, coach does not', async () => {
+    const q = 'a'.repeat(800);
+    await call(pk, { ip: '30.0.0.2', body: { mode: 'picks', q } });
+    assert.ok(/a{800}/.test(fetchCalls[fetchCalls.length - 1].init.body));
+    await call(pk, { ip: '30.0.0.3', body: { mode: 'coach', q } });
+    assert.ok(!/a{600}/.test(fetchCalls[fetchCalls.length - 1].init.body));
+  });
+
+  console.log('api/health');
+  await t('health reports booleans, no secrets', async () => {
+    const h = fresh('health.js', { GEMINI_API_KEY: 'sekret-key', FEEDBACK_WEBHOOK_URL: 'https://hooks.example/x' });
+    const r = await call(h, { method: 'GET' });
+    assert.strictEqual(r.status, 200);
+    assert.strictEqual(r.json.ai.ready, true); assert.deepStrictEqual(r.json.ai.providers, ['gemini']);
+    assert.strictEqual(r.json.feedback, true); assert.strictEqual(r.json.redis, false);
+    assert.ok(!JSON.stringify(r.json).includes('sekret-key') && !JSON.stringify(r.json).includes('hooks.example'));
+  });
+  await t('health with nothing set', async () => { const h = fresh('health.js', {}); const r = await call(h, { method: 'GET' }); assert.strictEqual(r.json.ai.ready, false); assert.strictEqual(r.json.feedback, false); });
+
+  console.log('picks.js');
+  global.window = { GN_PRODUCTS: null };
+  require('../public/products.js');
+  global.GN_PRODUCTS = global.window.GN_PRODUCTS;
+  const P = require('../public/picks.js');
+  const kit = (o) => P.buildKit(Object.assign({ type: 'Oily', sens: false, budget: 5000, swaps: {}, have: {} }, o));
+  const ids = (r) => r.items.map((i) => i.item && i.item.id);
+  await t('catalog is well formed', async () => {
+    const all = global.GN_PRODUCTS; assert.ok(all.length >= 30);
+    const seen = new Set();
+    all.forEach((p) => { assert.ok(!seen.has(p.id), 'dup ' + p.id); seen.add(p.id); assert.ok(p.brand && p.name && ['any', 'women', 'men'].includes(p.aud)); assert.ok(p.price === null || p.price > 0); });
+    ['Cleanser', 'Moisturizer', 'Sunscreen'].forEach((cat) => ['Oily', 'Dry', 'Combination', 'Normal'].forEach((ty) => assert.ok(P.candidates(cat, ty, false).list.length > 0, cat + ' ' + ty)));
+  });
+  await t('every skin type and sensitivity gets a full kit', async () => {
+    ['Oily', 'Dry', 'Combination', 'Normal'].forEach((ty) => [false, true].forEach((se) => { const r = kit({ type: ty, sens: se }); assert.ok(r.items.every((i) => i.item), ty + se); r.items.forEach((i) => assert.ok(i.item.skin.includes(ty))); }));
+  });
+  await t('sensitive skin prefers sensitive-tested products', async () => {
+    const r = kit({ type: 'Dry', sens: true });
+    assert.strictEqual(r.items[0].item.id, 'c2');
+    assert.ok(r.items[0].item.sens);
+    assert.ok(!r.items[0].noSens);
+  });
+  await t('sensitive with no match falls back and is flagged', async () => {
+    const c = P.candidates('Cleanser', 'Oily', true); assert.strictEqual(c.noSens, true); assert.ok(c.list.length > 0);
+  });
+  await t('over budget downgrades and fits when possible', async () => {
+    const rich = kit({ type: 'Oily', budget: 5000 }), tight = kit({ type: 'Oily', budget: 1300 });
+    assert.ok(tight.total <= rich.total); assert.ok(tight.total <= 1300); assert.strictEqual(tight.fits, true);
+  });
+  await t('impossible budget reports not fitting and the minimum', async () => {
+    const r = kit({ type: 'Oily', budget: 100 }); assert.strictEqual(r.fits, false); assert.ok(r.min > 100); assert.ok(r.total >= r.min);
+  });
+  await t('manual swap sticks and is not downgraded', async () => {
+    const alt = P.candidates('Cleanser', 'Oily', false).list.slice(-1)[0];
+    const r = kit({ type: 'Oily', budget: 300, swaps: { Cleanser: alt.id } });
+    assert.strictEqual(r.items[0].item.id, alt.id); assert.strictEqual(r.items[0].manual, true);
+  });
+  await t('an invalid swap id is ignored', async () => { const r = kit({ type: 'Oily', swaps: { Cleanser: 'zzz' } }); assert.strictEqual(r.items[0].manual, false); });
+  await t('items on the shelf are left out of the total', async () => {
+    const full = kit({}), part = kit({ have: { Sunscreen: true } });
+    assert.strictEqual(part.items[2].have, true); assert.strictEqual(part.items[2].item, null);
+    assert.strictEqual(part.total, full.total - P.effPrice(full.items[2].item));
+  });
+  await t('unknown price uses the category median', async () => {
+    const s9 = global.GN_PRODUCTS.find((p) => p.id === 's9'); assert.strictEqual(s9.price, null); assert.ok(P.effPrice(s9) > 0);
+  });
+  await t('add-ons are split by audience', async () => {
+    assert.deepStrictEqual(P.addOns('any'), []);
+    assert.ok(P.addOns('women').length >= 3 && P.addOns('women').every((p) => p.aud === 'women'));
+    assert.ok(P.addOns('men').length >= 1 && P.addOns('men').every((p) => p.aud === 'men'));
+    assert.deepStrictEqual(P.addOns('zzz'), []);
+  });
+  await t('kit never contains gender-specific products', async () => { ['Oily', 'Dry'].forEach((ty) => kit({ type: ty }).items.forEach((i) => assert.strictEqual(i.item.aud, 'any'))); });
+  await t('buy links are Amazon.in searches with a safe tag', async () => {
+    const p = global.GN_PRODUCTS[0];
+    assert.ok(P.buyURL(p, '').startsWith('https://www.amazon.in/s?k=')); assert.ok(!/tag=/.test(P.buyURL(p, '')));
+    assert.ok(/&tag=gncare-21$/.test(P.buyURL(p, 'gncare-21')));
+    assert.ok(!/tag=/.test(P.buyURL(p, 'bad tag&x=1')));
+    assert.ok(P.buyURL({ brand: "L'Oreal", name: 'A & B' }, '').indexOf('%26') > -1);
+  });
 
   console.log('\n' + passed + ' checks passed' + (process.exitCode ? ', some FAILED' : ''));
 })();

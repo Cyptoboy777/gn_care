@@ -1,6 +1,6 @@
 'use strict';
 /*
-  POST /api/ai  { mode: 'coach' | 'decode', q: string, ctx?: { type, sensitive, sun } }
+  POST /api/ai  { mode: 'coach' | 'decode' | 'picks', q: string, ctx?: { type, sensitive, sun } }
 
   Pluggable AI provider. Pick with AI_PROVIDERS (comma list, tried in order):
     cloudflare  Cloudflare Workers AI (open models such as Llama). CF_ACCOUNT_ID, CF_API_TOKEN, CF_MODEL
@@ -34,9 +34,15 @@ const PROMPTS = {
     RULES +
     ' The user gives a product ingredient list. Briefly say what the product likely is, the key actives and what they do, ' +
     'any ingredients that commonly irritate (fragrance, drying alcohol, essential oils), who should patch test, and whether it suits morning or night. ' +
-    'Ingredient order roughly shows concentration. Make no medical claims.'
+    'Ingredient order roughly shows concentration. Make no medical claims.',
+  /* Products come from the app's own catalog, so this mode may name them, but only them. */
+  picks:
+    RULES.replace('Never recommend specific brands or give medicine doses. ', 'Never give medicine doses. ') +
+    ' The user gives a skin profile and a short list of products already chosen by the app. Explain in simple words why each listed product suits that skin type and budget, ' +
+    'and give one tip for how to use them (cleanser, moisturizer, then sunscreen in the morning). Talk only about the listed products. Never add other brands or products. ' +
+    'Make no medical claims, do not promise results, and remind the person to patch test.'
 };
-const LIMITS = { coach: 500, decode: 1500 };
+const LIMITS = { coach: 500, decode: 1500, picks: 900 };
 
 const MSG = {
   invalid: 'Please type a question between 3 and 500 characters.',
@@ -152,12 +158,12 @@ function userMessage(mode, q, ctx) {
   if (ctx) {
     lines.push('Skin profile: ' + ctx.type + ' skin' + (ctx.sensitive ? ', sensitive' : '') + ', sun exposure ' + ['low', 'moderate', 'high'][ctx.sun] + '.');
   }
-  lines.push(mode === 'decode' ? 'Ingredient list:' : 'Question:');
+  lines.push(mode === 'decode' ? 'Ingredient list:' : mode === 'picks' ? 'Skin profile and products:' : 'Question:');
   lines.push('<user_input>' + q.replace(/<\/?user_input>/gi, '') + '</user_input>');
   return lines.join('\n');
 }
 
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return L.send(res, 405, { ok: false, code: 'method', msg: 'Method not allowed.' }); }
   if (!L.sameOrigin(req)) return L.send(res, 403, { ok: false, code: 'origin', msg: 'Request not allowed.' });
 
@@ -213,4 +219,7 @@ module.exports = async function handler(req, res) {
   text = text.slice(0, 1500);
   await L.cacheSet(ck, { text }, 86400);
   return L.send(res, 200, { ok: true, text });
-};
+}
+
+module.exports = handler;
+module.exports.cfg = cfg;

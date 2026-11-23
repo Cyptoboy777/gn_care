@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>GN Care setup check</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;margin:0;padding:20px 16px 48px;background:#faf7f2;color:#1f2a24;max-width:640px;margin-inline:auto}
+@media (prefers-color-scheme:dark){body{background:#141a17;color:#e8efe9}.r{border-color:#2c3a33}}
+h1{font-size:24px;margin:0 0 4px}p{margin:4px 0 16px;opacity:.75}
+.r{display:flex;gap:12px;align-items:flex-start;border:1px solid #d9d2c5;border-radius:12px;padding:12px 14px;margin:10px 0}
+.d{flex:none;width:12px;height:12px;border-radius:50%;margin-top:7px;background:#999}
+.ok .d{background:#2e9e5b}.no .d{background:#d4513a}
+b{display:block}small{opacity:.75}
+a{color:inherit}
+</style>
+</head>
+<body>
+<h1>Setup check</h1>
+<p>Shows what is switched on for this site. Only you need this page. Search engines are told to skip it.</p>
+<div id="out"><p>Checking…</p></div>
+<script src="/config.js"></script>
+<script>
+(function(){
+  var C=window.GN_CONFIG||{},out=document.getElementById('out'),rows=[];
+  function add(ok,t,s){rows.push('<div class="r '+(ok?'ok':'no')+'"><span class="d"></span><div><b>'+t+'</b><small>'+s+'</small></div></div>')}
+  function get(u){return fetch(u,{cache:'no-store'}).then(function(r){return r.ok?r.text():Promise.reject()})}
+  var pub=(C.ADSENSE_CLIENT||'').replace(/^ca-/,'');
+  add(!!C.ADSENSE_CLIENT,'Ads: AdSense ID','Filled in config.js. Ads also need a custom domain and AdSense approval before they show.');
+  add(!!(C.SLOTS&&(C.SLOTS.app||C.AUTO_ADS)),'Ads: ad unit','Set SLOTS.app in config.js, or AUTO_ADS to true.');
+  add(/^[A-Za-z0-9-]{3,40}$/.test(C.AFFILIATE_TAG||''),'Affiliate tracking ID','Set AFFILIATE_TAG in config.js. Without it, Shop links earn nothing.');
+  add(!!C.SITE_URL&&C.SITE_URL.indexOf('YOUR-DOMAIN')<0,'Site address','SITE_URL in config.js should be your real domain.');
+  Promise.all([
+    get('/ads.txt').then(function(t){return pub&&t.indexOf(pub.replace('pub-',''))>-1},function(){return false}),
+    fetch('/api/health',{cache:'no-store'}).then(function(r){return r.json()}).catch(function(){return null})
+  ]).then(function(v){
+    add(v[0],'ads.txt','Must contain your publisher ID. Edit public/ads.txt.');
+    var h=v[1];
+    if(!h){add(false,'Server functions','/api/health did not answer. Check that the api folder deployed.');}
+    else{
+      add(h.ai.ready,'AI coach','Providers on: '+(h.ai.providers.join(', ')||'none')+'. Set the keys in your host settings.');
+      add(h.feedback,'Feedback storage','Set FEEDBACK_WEBHOOK_URL (Google Sheet) or Upstash Redis.');
+      add(h.redis,'Shared limits (Redis)','Optional but advised at scale. Without it limits reset per server instance.');
+    }
+    out.innerHTML=rows.join('');
+  });
+})();
+</script>
+</body>
+</html>

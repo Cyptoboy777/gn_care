@@ -2,9 +2,11 @@
 /* Shared helpers for the serverless functions. Files starting with "_" are not exposed as routes. */
 const crypto = require('crypto');
 
-const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL || '';
-const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || '';
-const SALT = process.env.RATE_SALT || 'gn-care';
+/* Environment is read on every call, because some hosts (Cloudflare) provide it per request. */
+const env = () => (typeof process !== 'undefined' && process.env) || {};
+const redisUrl = () => env().UPSTASH_REDIS_REST_URL || '';
+const redisToken = () => env().UPSTASH_REDIS_REST_TOKEN || '';
+const salt = () => env().RATE_SALT || 'gn-care';
 const mem = new Map();
 
 const hash = (s) => crypto.createHash('sha256').update(String(s)).digest('hex');
@@ -13,7 +15,7 @@ const hash = (s) => crypto.createHash('sha256').update(String(s)).digest('hex');
 function clientId(req) {
   const xff = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
   const ip = xff || (req.socket && req.socket.remoteAddress) || 'unknown';
-  return hash(SALT + '|' + ip).slice(0, 20);
+  return hash(salt() + '|' + ip).slice(0, 20);
 }
 
 function country(req) {
@@ -60,12 +62,12 @@ const clean = (s, max) =>
 const ptDate = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
 
 /* ---- storage: Upstash Redis when configured, otherwise best-effort memory of this instance ---- */
-const useRedis = () => !!(REDIS_URL && REDIS_TOKEN);
+const useRedis = () => !!(redisUrl() && redisToken());
 
 async function redis(cmds) {
-  const r = await fetch(REDIS_URL.replace(/\/$/, '') + '/pipeline', {
+  const r = await fetch(redisUrl().replace(/\/$/, '') + '/pipeline', {
     method: 'POST',
-    headers: { Authorization: 'Bearer ' + REDIS_TOKEN, 'Content-Type': 'application/json' },
+    headers: { Authorization: 'Bearer ' + redisToken(), 'Content-Type': 'application/json' },
     body: JSON.stringify(cmds)
   });
   if (!r.ok) throw new Error('redis ' + r.status);

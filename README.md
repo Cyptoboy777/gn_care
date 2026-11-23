@@ -117,6 +117,23 @@ Ratings go to a Google Sheet that you own, for free.
 
 Visitors can rate from Settings > Rate, and the Home screen asks once after two days of use (and again after a week if they tap Not now). Thumbs under AI answers are also recorded. If you want a star count on Google search results or an app store listing, you need real reviews on a platform that supports it. This in-app rating is for your own insight.
 
+## 9. Shop tab (affiliate products)
+
+The Shop tab builds a cleanser, moisturizer and sunscreen kit from the skin type and budget, with add-ons for women and men. The catalog is `public/products.js`. Edit it to add or re-price products. Prices there are estimates from 2026 reviews, not live prices.
+
+1. Join Amazon Associates India and get your tracking ID, for example `yourname-21`.
+2. Put it in `AFFILIATE_TAG` in `public/config.js` and redeploy. Until then, links work but earn nothing.
+3. Read the Associates Program rules before you go live. Check what they say about showing prices and about disclosure. I did not verify them, and the app shows prices as estimates only. Remove the price chips if the rules do not allow them.
+4. Amazon usually needs a few qualifying sales within 180 days of joining, so share your site first.
+
+## 10. Check that everything works
+
+Open `/status.html` on your live site. It shows whether the AdSense ID, ad unit, `ads.txt`, affiliate ID, AI provider and feedback storage are set. Ads need a custom domain and AdSense approval before they appear. The AI coach and the "Explain my kit" button work as soon as one provider is set in step 7.
+
+## Cloudflare Pages (alternative to Vercel)
+
+The `functions/` folder and `wrangler.toml` let the same code run on Cloudflare Pages: connect the repo, leave the build command empty and set the output directory to `public`. Add the same environment variables. This adapter is not tested on a real Cloudflare deploy yet, so try it on a preview first. Check Cloudflare's current terms for commercial use on the free plan.
+
 ## Check before you switch ads on
 
 - **Vercel plan:** Vercel's free Hobby plan has been described as for personal, non-commercial use. I could not confirm the current wording in the pages I read, and ads are commercial. Read Vercel's Terms of Service (Fair Use section) and pricing page. The Pro plan lists at $20 per user per month. If you do not want that cost, a static host with a free commercial tier, such as Cloudflare Pages, can serve the static files, though the `api/` functions would need porting.
