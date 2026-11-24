@@ -2,10 +2,12 @@
   GN Care site settings. No ads are shown until ADSENSE_CLIENT is filled in.
 
   1. Get your site approved in Google AdSense (see README.md).
-  2. Paste your publisher ID below, e.g. 'ca-pub-1234567890123456'.
-  3. In AdSense go to Ads > By ad unit > Display ads, create two units and paste their numeric IDs:
-       app   = the ad under the app screens (shows on Home, Shelf and Checker)
-       guide = the ad inside the guide articles
+  2. Paste your publisher ID in ADSENSE_CLIENT, e.g. 'ca-pub-1234567890123456'.
+     This is the one value that turns ads on. Leave it empty until AdSense approves your custom domain.
+  3. Optional: in AdSense create display units and paste their numeric IDs in SLOTS
+       app   = the reserved slot on Home, Shop and Coach
+       guide = the reserved slot inside guide articles
+     If SLOTS stay empty, the reserved boxes are not filled with a unit.
   4. Redeploy.
 
   Affiliate links: Amazon Associates India tracking ID in AFFILIATE_TAG, Flipkart affid in FLIPKART_AFFID.

@@ -20,8 +20,11 @@
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://storage.googleapis.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
+<script src="/consent.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -77,7 +80,7 @@
       <div class="mini-row"><div>Skin profile<small id="side-skin">Not scanned yet</small></div></div>
       <div class="mini-row"><span id="theme-lab">Dark mode</span>
         <button type="button" role="switch" aria-checked="false" aria-label="Dark mode" class="spring theme-toggle" data-act="theme"><span class="thumb"><svg class="ico"><use href="#i-sun"/></svg></span></button></div>
-      <div class="legal"><a href="/guides/">Guides</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/about.html">About</a></div>
+      <div class="legal"><a href="/guides/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a></div>
       <p class="hint" style="margin-top:8px">As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.</p>
       <button class="link-btn" data-act="openSettings"><svg class="ico"><use href="#i-gear"/></svg>Settings</button>
     </div>
@@ -93,7 +96,7 @@
     </header>
     <main>
       <div id="view" tabindex="-1"></div>
-      <div class="ad" id="ad-app" data-ad="app" hidden></div>
+      <div class="ad ad-slot" id="ad-app" data-ad="app" hidden></div>
     </main>
   </div>
 </div>
@@ -115,6 +118,7 @@
 <script src="/picks.js" defer></script>
 <script src="/ondevice.js" defer></script>
 <script src="/facescan.js" defer></script>
+<script src="/remind.js" defer></script>
 <script src="/app.js" defer></script>
 </body>
 </html>
