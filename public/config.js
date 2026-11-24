@@ -22,3 +22,8 @@ window.GN_CONFIG = {
   OWN_CONSENT_BANNER: true,   /* set false if you use Google's own Privacy & messaging banner */
   TELEGRAM_URL: 'https://t.me/Gncarestore'  /* public channel; Shop shows Join our Telegram deals */
 };
+
+var vercelAnalyticsScript = document.createElement('script');
+vercelAnalyticsScript.defer = true;
+vercelAnalyticsScript.src = '/_vercel/insights/script.js';
+document.head.appendChild(vercelAnalyticsScript);
