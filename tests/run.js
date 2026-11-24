@@ -296,12 +296,21 @@ async function t(name, fn) {
     assert.deepStrictEqual(P.addOns('zzz'), []);
   });
   await t('kit never contains gender-specific products', async () => { ['Oily', 'Dry'].forEach((ty) => kit({ type: ty }).items.forEach((i) => assert.strictEqual(i.item.aud, 'any'))); });
-  await t('buy links are Amazon.in searches with a safe tag', async () => {
-    const p = global.GN_PRODUCTS[0];
-    assert.ok(P.buyURL(p, '').startsWith('https://www.amazon.in/s?k=')); assert.ok(!/tag=/.test(P.buyURL(p, '')));
-    assert.ok(/&tag=gncare-21$/.test(P.buyURL(p, 'gncare-21')));
-    assert.ok(!/tag=/.test(P.buyURL(p, 'bad tag&x=1')));
-    assert.ok(P.buyURL({ brand: "L'Oreal", name: 'A & B' }, '').indexOf('%26') > -1);
+  await t('buy links prefer a verified Amazon DP link, else search, with a safe tag', async () => {
+    const withAsin = global.GN_PRODUCTS.find((x) => x.asin);
+    assert.ok(withAsin && /^[A-Z0-9]{10}$/i.test(withAsin.asin));
+    assert.strictEqual(P.buyURL(withAsin, 'gncare-21'), 'https://www.amazon.in/dp/' + withAsin.asin.toUpperCase() + '?tag=gncare-21');
+    assert.ok(!/tag=/.test(P.buyURL(withAsin, '')));
+    assert.ok(!/tag=/.test(P.buyURL(withAsin, 'bad tag&x=1')));
+    const bare = { brand: "L'Oreal", name: 'A & B' };
+    assert.ok(P.buyURL(bare, '').startsWith('https://www.amazon.in/s?k='));
+    assert.ok(/&tag=gncare-21$/.test(P.buyURL(bare, 'gncare-21')));
+    assert.ok(P.buyURL(bare, '').indexOf('%26') > -1);
+    global.GN_PRODUCTS.filter((x) => x.asin || x.amazonUrl).forEach((x) => {
+      assert.ok(/^[A-Z0-9]{10}$/i.test(x.asin));
+      assert.strictEqual(x.amazonUrl, 'https://www.amazon.in/dp/' + x.asin + '?tag=gncare-21');
+      assert.ok(x.amzPrice == null, 'do not invent Amazon prices');
+    });
   });
   await t('Flipkart links are search URLs with a safe affid', async () => {
     const p = global.GN_PRODUCTS[0];

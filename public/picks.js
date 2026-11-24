@@ -109,9 +109,16 @@
 
   /* Search links stay valid when products are renamed. Affiliate ids are added only when they look safe. */
   function query(p) { return [p.brand, p.name, p.size].filter(Boolean).join(' '); }
+  function amazonAsin(p) {
+    var a = String((p && p.asin) || '').trim().toUpperCase();
+    if (/^[A-Z0-9]{10}$/.test(a)) return a;
+    var m = String((p && p.amazonUrl) || '').match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})(?:[/?]|$)/i);
+    return m ? m[1].toUpperCase() : '';
+  }
   function buyURL(p, tag) {
-    var u = 'https://www.amazon.in/s?k=' + encodeURIComponent(query(p));
-    if (/^[A-Za-z0-9-]{3,40}$/.test(tag || '')) u += '&tag=' + encodeURIComponent(tag);
+    var asin = amazonAsin(p);
+    var u = asin ? ('https://www.amazon.in/dp/' + asin) : ('https://www.amazon.in/s?k=' + encodeURIComponent(query(p)));
+    if (/^[A-Za-z0-9-]{3,40}$/.test(tag || '')) u += (asin ? '?tag=' : '&tag=') + encodeURIComponent(tag);
     return u;
   }
   function flipkartURL(p, affid) {

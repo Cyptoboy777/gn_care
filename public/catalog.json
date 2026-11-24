@@ -29,6 +29,8 @@
       "brand": "CeraVe",
       "name": "Hydrating Cleanser",
       "size": "88 ml",
+      "asin": "B0D37HZG5C",
+      "amazonUrl": "https://www.amazon.in/dp/B0D37HZG5C?tag=gncare-21",
       "price": 359,
       "skin": [
         "Dry",
@@ -82,6 +84,8 @@
       "brand": "Cetaphil",
       "name": "Gentle Skin Cleanser",
       "size": "118 ml",
+      "asin": "B0HHJ4BP82",
+      "amazonUrl": "https://www.amazon.in/dp/B0HHJ4BP82?tag=gncare-21",
       "price": 459,
       "skin": [
         "Dry",
@@ -142,6 +146,8 @@
       "brand": "Minimalist",
       "name": "B12 + Oat Extract 6.5% Gentle Cleanser",
       "size": "120 ml",
+      "asin": "B09VPN4NTM",
+      "amazonUrl": "https://www.amazon.in/dp/B09VPN4NTM?tag=gncare-21",
       "price": 299,
       "skin": [
         "Combination",
@@ -245,6 +251,8 @@
       "brand": "Bioderma",
       "name": "Sebium Gel Moussant Acne Defence Cleanser",
       "size": "100 ml",
+      "asin": "B06XJ15M82",
+      "amazonUrl": "https://www.amazon.in/dp/B06XJ15M82?tag=gncare-21",
       "price": 899,
       "skin": [
         "Oily",
@@ -431,6 +439,8 @@
       "brand": "Minimalist",
       "name": "10% Vitamin B5 Moisturizer",
       "size": "50 g",
+      "asin": "B09Q3MWP2S",
+      "amazonUrl": "https://www.amazon.in/dp/B09Q3MWP2S?tag=gncare-21",
       "price": 349,
       "skin": [
         "Oily",
@@ -715,6 +725,8 @@
       "brand": "Bioderma",
       "name": "Atoderm Creme Ultra-Nourishing Moisturising Cream",
       "size": "200 ml",
+      "asin": "B0F6D6QB1K",
+      "amazonUrl": "https://www.amazon.in/dp/B0F6D6QB1K?tag=gncare-21",
       "price": 799,
       "skin": [
         "Dry"
@@ -1021,6 +1033,8 @@
       "brand": "Foxtale",
       "name": "SPF 50 Glow Sunscreen with Vitamin C & Niacinamide",
       "size": "50 ml",
+      "asin": "B0C3CP6B5Y",
+      "amazonUrl": "https://www.amazon.in/dp/B0C3CP6B5Y?tag=gncare-21",
       "spf": "SPF 50",
       "price": 375,
       "skin": [
@@ -1070,6 +1084,8 @@
       "brand": "Lakme",
       "name": "Sun Expert Dry Matte Fluid",
       "size": "50 ml",
+      "asin": "B0DSHTZFTP",
+      "amazonUrl": "https://www.amazon.in/dp/B0DSHTZFTP?tag=gncare-21",
       "spf": "",
       "price": 499,
       "skin": [
@@ -1173,6 +1189,8 @@
       "brand": "La Roche-Posay",
       "name": "Anthelios Invisible Fluid UVMune 400",
       "size": "50 ml",
+      "asin": "B09SLF5ZH8",
+      "amazonUrl": "https://www.amazon.in/dp/B09SLF5ZH8?tag=gncare-21",
       "spf": "SPF 50",
       "price": 1400,
       "skin": [
@@ -1231,6 +1249,8 @@
       "brand": "Asaya",
       "name": "Spot Light Sunscreen",
       "size": "50 g",
+      "asin": "B0D6GNK61W",
+      "amazonUrl": "https://www.amazon.in/dp/B0D6GNK61W?tag=gncare-21",
       "spf": "SPF 50 PA++++",
       "price": 499,
       "skin": [
@@ -1276,6 +1296,8 @@
       "brand": "Pond's",
       "name": "Biome Miracle UV Invisigel Moisturiser",
       "size": "50 g",
+      "asin": "B0H5R32G8Y",
+      "amazonUrl": "https://www.amazon.in/dp/B0H5R32G8Y?tag=gncare-21",
       "spf": "",
       "price": 399,
       "skin": [
@@ -1503,6 +1525,8 @@
       "brand": "VWash",
       "name": "Plus Expert Intimate Hygiene",
       "size": "100 ml",
+      "asin": "B0B34B2C95",
+      "amazonUrl": "https://www.amazon.in/dp/B0B34B2C95?tag=gncare-21",
       "price": 180,
       "skin": [],
       "sens": false,
@@ -1543,6 +1567,8 @@
       "brand": "Sanfe",
       "name": "Natural Intimate Wash, Lavender and Chamomile",
       "size": "100 ml",
+      "asin": "B088XV7HZL",
+      "amazonUrl": "https://www.amazon.in/dp/B088XV7HZL?tag=gncare-21",
       "price": 199,
       "skin": [],
       "sens": false,
@@ -1660,6 +1686,8 @@
       "brand": "Minimalist",
       "name": "10% Niacinamide Face Serum",
       "size": "30 ml",
+      "asin": "B08F9MF314",
+      "amazonUrl": "https://www.amazon.in/dp/B08F9MF314?tag=gncare-21",
       "price": 399,
       "mrp": 599,
       "skin": [
@@ -1710,6 +1738,8 @@
       "brand": "The Derma Co",
       "name": "2% Salicylic Acid Serum",
       "size": "30 ml",
+      "asin": "B08TT6DPXN",
+      "amazonUrl": "https://www.amazon.in/dp/B08TT6DPXN?tag=gncare-21",
       "price": 449,
       "mrp": 699,
       "skin": [
