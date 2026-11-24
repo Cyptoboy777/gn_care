@@ -887,6 +887,71 @@ async function t(name, fn) {
     assert.strictEqual(DL.pickTelegramDeals(deals, marked, '2026-11-24', 5).length, 0);
   });
 
+  await t('price history seeds on first sight and only alerts genuine lows or 5% drops', async () => {
+    const at = '2026-11-24T10:00:00+05:30';
+    const item = (id, price) => ({ id, title: 'Item ' + id, brand: 'Acme', price, mrp: 1000, discount: DL.discountOf(price, 1000), url: 'https://www.flipkart.com/' + id, fetchedAt: at });
+    const deals = (priceA, priceB, priceC) => ({ fetchedAt: at, categories: [{ id: 'beauty', items: [item('A', priceA), item('B', priceB), item('C', priceC)] }] });
+    const first = DL.applyPriceHistory({ items: {} }, deals(500, 400, 300), at);
+    assert.strictEqual(first.alerts.length, 0, 'first sight is not a drop');
+    assert.strictEqual(first.history.items.A.last, 500);
+    assert.strictEqual(first.history.items.A.lowest, 500);
+    const second = DL.applyPriceHistory(first.history, deals(500, 380, 280), '2026-11-24T12:00:00+05:30');
+    const kinds = Object.fromEntries(second.alerts.map((a) => [a.id, a]));
+    assert.ok(!kinds.A, 'flat price is not a drop');
+    assert.ok(kinds.B, '400 to 380 is a 5% drop');
+    assert.strictEqual(kinds.B.alertKind, 'all-time-low');
+    assert.strictEqual(kinds.B.previous, 400);
+    assert.strictEqual(kinds.B.price, 380);
+    assert.ok(kinds.C && kinds.C.alertKind === 'all-time-low' && kinds.C.previous === 300);
+    const rebound = DL.applyPriceHistory(second.history, deals(500, 450, 285), '2026-11-24T14:00:00+05:30');
+    const k2 = Object.fromEntries(rebound.alerts.map((a) => [a.id, a]));
+    assert.ok(!k2.B, 'price went up, not a drop');
+    assert.ok(!k2.C, '285 vs last 280 is a rise, 285 vs lowest 280 is not a new low; 450-> wait C last is 280 now');
+    // C: last 280 -> 285 is a rise, no alert
+    const later = DL.applyPriceHistory(rebound.history, deals(500, 420, 260), '2026-11-24T16:00:00+05:30');
+    const k3 = Object.fromEntries(later.alerts.map((a) => [a.id, a]));
+    // B last 450 -> 420 is 6.67% drop but 420 is not all-time low (lowest 380)
+    assert.ok(k3.B && k3.B.alertKind === 'drop' && k3.B.previous === 450);
+    assert.ok(k3.C && k3.C.alertKind === 'all-time-low' && k3.C.previous === 285);
+    const tiny = DL.applyPriceHistory({ items: { Z: { last: 1000, lastOn: at, lowest: 1000, lowestOn: '2026-11-24' } } }, { fetchedAt: at, categories: [{ id: 'x', items: [item('Z', 990)] }] }, at);
+    assert.ok(tiny.alerts.length === 1 && tiny.alerts[0].alertKind === 'all-time-low', '₹10 / 1% all-time low is a real low');
+    const penny = DL.applyPriceHistory({ items: { Z: { last: 1000, lastOn: at, lowest: 1000, lowestOn: '2026-11-24' } } }, { fetchedAt: at, categories: [{ id: 'x', items: [item('Z', 999)] }] }, at);
+    assert.strictEqual(penny.alerts.length, 0, '₹1 all-time low under 1% is noise');
+  });
+
+  await t('price-drop picker caps at 5, skips already-alerted prices, captions stay honest', async () => {
+    const at = '2026-11-24T17:00:00+05:30';
+    const alerts = [6,5,4,3,2,1].map((n) => ({
+      id: 'P' + n, title: 'Deal ' + n, brand: 'Acme', price: 100 * n, previous: 200 * n,
+      dropPct: 50, alertKind: 'all-time-low', url: 'https://www.flipkart.com/p' + n, mrp: 300 * n,
+      discount: 67, fetchedAt: at, image: 'https://rukminim2.flixcart.com/image/400/400/x.jpeg'
+    }));
+    const posted = { drops: { P6: { at, price: 600 } } };
+    const picks = DL.pickPriceDrops(alerts, posted, 5);
+    assert.deepStrictEqual(picks.map((p) => p.id), ['P5', 'P4', 'P3', 'P2', 'P1']);
+    const marked = DL.markDrops(posted, picks, at);
+    assert.strictEqual(DL.pickPriceDrops(alerts, marked, 5).length, 0);
+    const cap = DL.dealCaption(picks[0], 'drop');
+    assert.ok(cap.startsWith('Price drop'));
+    assert.ok(cap.includes('₹500') && cap.includes('was ₹1,000') && cap.includes('MRP') && cap.includes('% off'));
+    assert.ok(/Price as of .*IST/.test(cap));
+    assert.ok(cap.includes('https://www.flipkart.com/p5'));
+    assert.ok(cap.includes('Lowest price since we started tracking'));
+    assert.ok(cap.length <= 1024);
+    assert.ok(DL.isHttpsImage(picks[0].image));
+    assert.ok(!DL.isHttpsImage('http://rukminim2.flixcart.com/x.jpg'));
+    assert.ok(!DL.isHttpsImage('https://evil.example/x.jpg'));
+    const daily = DL.dealCaption({ title: 'Serum', brand: 'Acme', price: 299, mrp: 499, discount: 40, url: 'https://www.flipkart.com/s', fetchedAt: at }, 'daily');
+    assert.ok(daily.includes('GN Care — Flipkart deal') && daily.includes('₹299') && daily.includes('40% off') && /Price as of .*IST/.test(daily));
+    const backfill = DL.pickTelegramDeals({ fetchedAt: at, categories: [{ id: 'x', items: [
+      { id: 'A', title: 'Old', price: 100, mrp: 200, discount: 50, url: 'https://www.flipkart.com/a' }
+    ] }] }, { ids: { A: '2026-11-24' }, photos: {} }, '2026-11-24', 5, { photoBackfill: true });
+    assert.deepStrictEqual(backfill.map((p) => p.id), ['A']);
+    const done = DL.markPosted({ ids: { A: '2026-11-24' } }, backfill, '2026-11-24', { photos: true });
+    assert.strictEqual(done.photos.A, '2026-11-24');
+    assert.strictEqual(DL.pickTelegramDeals({ fetchedAt: at, categories: [{ id: 'x', items: backfill }] }, done, '2026-11-24', 5, { photoBackfill: true }).length, 0);
+  });
+
   await t('deals view is honest: escaped text, dated prices, Myntra EarnKaro links, no fake ratings', async () => {
     GD.applyData({
       fetchedAt: '2026-11-24T08:00:00+05:30',
