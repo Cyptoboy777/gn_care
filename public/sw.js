@@ -1,5 +1,6 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
-const VERSION = 'gn-care-v19';
+const VERSION = 'gn-care-v20';
+try { importScripts('/remind.js'); } catch (e) { /* reminders are optional */ }
 const SHELL = [
   '/', '/index.html', '/offline.html', '/styles.css', '/app.js', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/picks.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
   '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'
@@ -13,7 +14,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== VERSION).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== VERSION && k !== 'gn-remind').map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -49,17 +50,27 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
+function tellClients() {
+  return clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => list.forEach((c) => c.postMessage({ type: 'gn-remind' })));
+}
+
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || '/#routine';
+  const data = e.notification.data || {};
+  const tag = data.tag || e.notification.tag || '';
+  /* Done / Snooze act in place, without opening the app. */
+  if ((e.action === 'done' || e.action === 'snooze') && self.GNRemind) {
+    e.waitUntil(self.GNRemind.onAction(e.action, tag).then(tellClients).catch(() => {}));
+    return;
+  }
+  const url = data.url || '/#routine';
   e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
     for (const c of list) { if (c.url.includes(self.location.origin) && 'focus' in c) { c.navigate && c.navigate(url); return c.focus(); } }
     return clients.openWindow(url);
   }));
 });
 
+/* Chrome may wake an installed PWA a few times a day; we then show whatever reminder is due. */
 self.addEventListener('periodicsync', (e) => {
-  if (e.tag !== 'gn-reminders') return;
-  /* The page stores the schedule; the next app open also checks due reminders. */
-  e.waitUntil(Promise.resolve());
+  if (e.tag === 'gn-reminders' && self.GNRemind) e.waitUntil(self.GNRemind.periodic(self.registration));
 });

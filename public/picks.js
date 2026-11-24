@@ -78,6 +78,30 @@
     return { items: items, total: total, min: min, fits: budget <= 0 || total <= budget, checkedOn: checked, approx: approx };
   }
 
+  /*
+    Store offers with a real, dated price. Flipkart: fk* fields from the affiliate API sync.
+    Amazon: only when amzPrice + amzCheckedOn + amzSourceUrl exist (e.g. after PA-API access). Never estimated.
+    A "lowest" store is named only when at least two such offers exist and both were checked within maxAgeDays.
+  */
+  function daysOld(iso, now) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(iso || ''))) return Infinity;
+    var t = Date.parse(iso + 'T00:00:00Z'), n = now ? new Date(now).getTime() : Date.now();
+    return isNaN(t) ? Infinity : Math.floor((n - t) / 86400000);
+  }
+  function storeOffers(p, opts) {
+    opts = opts || {};
+    var maxAge = opts.maxAgeDays == null ? 7 : opts.maxAgeDays, out = [];
+    if (isLive(p) && daysOld(p.fkCheckedOn, opts.now) <= maxAge) out.push({ store: 'Flipkart', price: p.fkPrice, checkedOn: p.fkCheckedOn, url: p.fkUrl || p.fkSourceUrl || '' });
+    if (p && p.amzPrice != null && Number(p.amzPrice) > 0 && p.amzCheckedOn && /^https:\/\/(www\.)?amazon\.in\//i.test(p.amzSourceUrl || '') && daysOld(p.amzCheckedOn, opts.now) <= maxAge)
+      out.push({ store: 'Amazon', price: Number(p.amzPrice), checkedOn: p.amzCheckedOn, url: p.amzSourceUrl });
+    return out.sort(function (a, b) { return a.price - b.price; });
+  }
+  function lowestOffer(p, opts) {
+    var o = storeOffers(p, opts);
+    if (o.length < 2) return null;
+    return { store: o[0].store, price: o[0].price, checkedOn: o[0].checkedOn, saves: o[1].price - o[0].price, tie: o[0].price === o[1].price, offers: o };
+  }
+
   function addOns(aud) {
     if (aud !== 'women' && aud !== 'men') return [];
     return products().filter(function (p) { return p.aud === aud; });
@@ -281,7 +305,7 @@
     return raw;
   }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, livePrice: livePrice, isLive: isLive, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, storeOffers: storeOffers, lowestOffer: lowestOffer, livePrice: livePrice, isLive: isLive, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);

@@ -142,6 +142,7 @@ function applySkin(photoMetrics,flags){
   else{r={ok:!!(photoMetrics&&photoMetrics.ok)||!!f.length,needInput:!(photoMetrics&&photoMetrics.ok)&&!f.length,type:'Normal',sensitive:f.indexOf('sensitive')>-1,sensitiveLeaning:false,sun:f.indexOf('tan')>-1?2:0,source:photoMetrics&&photoMetrics.ok?'scan':'note',zones:null,metrics:photoMetrics&&photoMetrics.ok?photoMetrics:null,concerns:f}}
   if(!r||!r.ok)return false;
   S.skin={type:r.type,sensitive:!!r.sensitive,sensitiveLeaning:!!r.sensitiveLeaning,sun:r.sun,flags:r.concerns||f,note:scanNote,at:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'}),source:r.source||'note',metrics:r.metrics||null,zones:r.zones||null};
+  S.lastScanAt=Date.now();
   var k=kit();k.type=r.type;k.sens=!!(r.sensitive||r.sensitiveLeaning);k.budget=scanBudget;k.swaps={};PK={ai:'',err:'',busy:false,rated:false};
   save();return true}
 function zones(type){
@@ -186,6 +187,16 @@ function faceMap(){
   return '<div class="face">'+(photo?'<img src="'+esc(photo)+'" alt="Your photo"'+(scanMirror?' class="mirror"':'')+'>':'')+
     '<svg class="map" viewBox="0 0 200 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+inner+'</svg>'+
     msg+(scanning?'<span class="laser"></span>':'')+'</div>'}
+/* Progress photo timeline: small JPEGs kept only in this browser (max 12). Never uploaded. */
+function progressHTML(){
+  var P=S.progress||[];
+  var add=photo?'<button class="btn sm" data-act="progSave">'+ico('i-plus')+'Add this photo to my timeline</button>':'';
+  if(!P.length)return add?'<section class="tile" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Progress timeline</h3><p class="hint">Save a photo each week in the same light to see real change over time. Stored only on this phone.</p>'+add+'</section>':'';
+  var first=P[0],last=P[P.length-1];
+  var cmp=P.length>1?'<div class="prog-cmp"><figure><img src="'+esc(first.img)+'" alt="First progress photo, '+esc(first.d)+'"><figcaption>First · '+esc(first.d)+'</figcaption></figure><figure><img src="'+esc(last.img)+'" alt="Latest progress photo, '+esc(last.d)+'"><figcaption>Latest · '+esc(last.d)+'</figcaption></figure></div>':'';
+  return '<section class="tile" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Progress timeline</h3>'+cmp+
+    '<div class="prog-row">'+P.map(function(x,i){return '<div class="prog-item"><img src="'+esc(x.img)+'" alt="Progress photo '+esc(x.d)+'" loading="lazy"><span class="hint">'+esc(x.d)+(x.t?' · '+esc(x.t):'')+'</span><div class="row" style="gap:4px"><a class="btn ghost sm" href="'+esc(x.img)+'" download="gn-care-'+esc(x.k)+'.jpg" aria-label="Download photo '+esc(x.d)+'">Save</a><button class="btn ghost sm" data-act="progDel" data-v="'+i+'" aria-label="Delete photo '+esc(x.d)+'">Delete</button></div></div>'}).join('')+'</div>'+
+    add+'<p class="hint">Photos stay in this browser only. Use Save to keep a copy in your gallery.</p></section>'}
 function viewScan(){
   var head='<div class="head"><p class="eyebrow">Quick scan</p><h2 class="page-h">Face <em>scan</em></h2>'+scanDots(scanStep)+'</div>';
   if(scanStep===1){
@@ -201,7 +212,7 @@ function viewScan(){
       '</div>'+
       (scanErr?'<div class="res bad"><span class="tag">Retake</span><div><p>'+esc(scanErr)+'</p></div></div>':'')+
       (scanning?'<p class="hint" style="text-align:center">'+esc(scanMsg||'Reading your photo on this device…')+'</p>':'')+
-      '<p class="hint consent-note">A selfie is optional. If you add one, it is processed only in this browser to estimate shine, redness, evenness and under-eye darkness. It is never uploaded. It stays in this session unless you tap Save photo on this device.</p>'+
+      progressHTML()+'<p class="hint consent-note">A selfie is optional. If you add one, it is processed only in this browser to estimate shine, redness, evenness and under-eye darkness. It is never uploaded. It stays in this session unless you tap Save photo on this device.</p>'+
       scanNav({skip:!photo,next:photo?'Next':'',off:scanning})+'</div>'}
   if(scanStep===2){
     return head+'<p class="sub">Anything else we should know? This is optional if you already added a selfie.</p>'+
@@ -235,7 +246,7 @@ function viewScan(){
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
   return head+(S.skin?('<section class="tile tile-hero" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Your result</h3>'+faceMap()+'<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+chips+'</div>'+meters+
-    '<p class="hint">This is a cosmetic estimate, not a medical diagnosis. Lighting affects results.</p></section>'+
+    '<p class="hint">This is a cosmetic estimate, not a medical diagnosis. Lighting affects results.</p></section>'+progressHTML()+
     '<div class="scan-kit">'+kitHtml+'</div>'+
     (window.GNSkin?'<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%"><h3 class="t">Why this plan</h3><div class="answer">'+fmtAns(GNSkin.explain({type:S.skin.type,sensitive:S.skin.sensitive||S.skin.sensitiveLeaning,concerns:S.skin.flags||[]},copyLang))+'</div></section>':'')+
     '<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%;gap:16px"><h3 class="t">A simple AM and PM routine</h3><div class="routine-preview">'+col('Morning',routine.am)+col('Night',routine.pm)+'</div>'+
@@ -272,13 +283,22 @@ function finishTimer(){
 
 /* shelf */
 var CATS=['Cleanser','Toner','Serum','Moisturizer','Sunscreen','Mask','Body','Hair','Other'];
+/* Clash check across shelf products, from active-ingredient words in the product names you typed. */
+var SHELF_ACT=[['retinol',/retin(ol|al|oid)|adapalene|tretinoin|bakuchiol/],['vitc',/vitamin ?c|vit ?c\b|ascorb|\bvc\b/],['aha',/\baha\b|glycolic|lactic|mandelic|peel/],['bha',/\bbha\b|salicylic/],['bp',/benzoyl|\bbpo?\b/],['niac',/niacinamide/],['ha',/hyaluronic|\bha\b/],['pep',/peptide/],['spf',/\bspf\b|sunscreen|sun ?block/]];
+function shelfActives(it){var n=(it.n+' '+(it.c==='Sunscreen'?'spf':'')).toLowerCase();return SHELF_ACT.filter(function(a){return a[1].test(n)}).map(function(a){return a[0]})}
+function shelfClashHTML(){
+  var who={};S.shelf.forEach(function(it){shelfActives(it).forEach(function(a){(who[a]=who[a]||[]).push(it.n)})});
+  var ids=Object.keys(who);if(ids.length<2)return '';
+  var c=labelConflicts(ids).filter(function(x){return x.lv!=='good'||ids.length<4}).slice(0,5);if(!c.length)return '';
+  return '<section class="tile s12"><h3 class="t">Clash check for your shelf</h3><p class="hint">Based on the active ingredients in your product names. Check the full label to be sure.</p><div class="list">'+c.map(function(x){
+    return '<div class="res '+x.lv+'"><span class="tag">'+LAB[x.lv]+'</span><div><p><b>'+esc(who[x.a].join(', '))+'</b> + <b>'+esc(who[x.b].join(', '))+'</b></p><p class="hint">'+esc(x.tx)+'</p></div></div>'}).join('')+'</div></section>'}
 function viewShelf(){
   var run=monthlyCost(),total=S.shelf.reduce(function(a,b){return a+b.p},0);
   var by={};S.shelf.forEach(function(it){by[it.c]=(by[it.c]||0)+it.p});
   var cats=Object.keys(by).sort(function(a,b){return by[b]-by[a]});
   var items=S.shelf.slice().sort(function(a,b){var x=daysLeft(a),y=daysLeft(b);return (x===null?9999:x)-(y===null?9999:y)});
   return '<div class="head"><p class="eyebrow">Budget in rupees</p><h2 class="page-h">Shelf &amp; <em>₹</em> budget</h2></div>'+
-  '<div class="grid"><section class="tile s5"><h3 class="t">Monthly running cost</h3><div class="row" style="align-items:baseline;gap:8px"><span class="big num" style="font-size:48px">₹'+inr.format(Math.round(run))+'</span><span class="hint">of ₹'+inr.format(S.budget)+'</span></div>'+
+  '<div class="grid">'+shelfClashHTML()+'<section class="tile s5"><h3 class="t">Monthly running cost</h3><div class="row" style="align-items:baseline;gap:8px"><span class="big num" style="font-size:48px">₹'+inr.format(Math.round(run))+'</span><span class="hint">of ₹'+inr.format(S.budget)+'</span></div>'+
     '<div class="meter '+(run>S.budget?'over':'')+'"><i style="width:'+Math.min(100,S.budget?run/S.budget*100:0)+'%"></i></div>'+
     '<p class="hint">'+(run>S.budget?'Over budget by ₹'+inr.format(Math.round(run-S.budget))+' a month.':'₹'+inr.format(Math.max(0,Math.round(S.budget-run)))+' left each month.')+' Running cost is each price divided by its months of use.</p>'+
     '<label class="f">Monthly budget (₹)<input class="input num" id="budget-input" type="number" min="0" step="50" value="'+S.budget+'" inputmode="numeric"></label>'+
@@ -416,11 +436,15 @@ function installHome(){
   if(standalone)return '';
   if(deferredInstall)return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">Add the app to your home screen for a faster, full-screen experience and reminders.</p><button class="btn sm" data-act="install">Install app</button></section>';
   return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">'+(isIOS?'On iPhone, tap Share, then Add to Home Screen.':'Use your browser menu and choose Install app or Add to Home screen.')+'</p></section>'}
+function amzOffer(p){var o=GNPicks.storeOffers?GNPicks.storeOffers(p):[];for(var i=0;i<o.length;i++)if(o[i].store==='Amazon')return o[i];return null}
+function amzLbl(p){var a=amzOffer(p);return a?'Buy on Amazon '+money(a.price):'Check price on Amazon'}
+function lowestChip(p){var l=GNPicks.lowestOffer&&GNPicks.lowestOffer(p);if(!l)return '';
+  return '<span class="chip good">'+(l.tie?'Same price on Flipkart and Amazon':'Lowest on '+esc(l.store)+' · saves '+money(l.saves))+' · checked '+esc(l.checkedOn)+'</span>'}
 function fkLbl(p){return GNPicks.isLive&&GNPicks.isLive(p)?'Buy on Flipkart '+money(p.fkPrice):'Find on Flipkart'}
 function buyBtn(p){
   return '<div class="btn-grid" style="justify-content:flex-start">'+
     '<a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener">'+fkLbl(p)+'</a>'+
-    '<a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Check price on Amazon</a>'+
+    '<a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">'+amzLbl(p)+'</a>'+
     '</div>'}
 function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave(),treat:true,concerns:kitConcerns()})}
 function kitPriceLbl(p){return GNPicks.isLive(p)?money(p.fkPrice)+' on Flipkart':(p.price!=null?'approx. '+money(p.price):'price varies, est. '+money(GNPicks.effPrice(p)))}
@@ -432,7 +456,7 @@ function kitAIBox(r,type,sens){
 function kitSummary(r,type,sens,budget){
   var rows=r.items.filter(function(i){return i.item}).map(function(i,n){var p=i.item;
     return '<li class="kit-row" style="--i:'+n+'"><span class="kit-step num">'+(n+1)+'</span><div class="grow"><span class="eyebrow">'+esc(i.cat)+(i.optional?' · optional':'')+'</span><b>'+esc(p.brand+' '+p.name)+'</b><span class="hint">'+esc([p.size,kitPriceLbl(p)].filter(Boolean).join(' · '))+'</span></div>'+
-      '<div class="kit-buy"><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" >'+fkLbl(p)+'</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Check price on Amazon</a></div></li>'}).join('');
+      '<div class="kit-buy"><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" >'+fkLbl(p)+'</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">'+amzLbl(p)+'</a></div>'+lowestChip(p)+'</li>'}).join('');
   var note=[];
   if(r.checkedOn)note.push('Flipkart prices checked on '+r.checkedOn+'.');
   if(r.approx)note.push('“approx.” prices are typical catalog prices, not live.');
@@ -469,7 +493,7 @@ function pickCard(it,type){
   var alts=it.alts.filter(function(a){return a.id!==p.id}).slice(0,3);
   return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3>'+
     '<div class="p-card">'+productImg(p)+'<div class="grow"><span class="eyebrow">'+esc(p.brand)+'</span><h4 style="font-size:17px;font-weight:700;line-height:1.25;margin-top:2px;overflow-wrap:anywhere">'+esc(p.name)+'</h4><p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p></div></div>'+
-    '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span><span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
+    '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span>'+lowestChip(p)+'<span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
     (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
     couponHtml(p)+
     productCopyHtml(p,type)+
@@ -654,7 +678,7 @@ var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,timer
 function render(anim){
   var v=$('#view');v.innerHTML=views[tab]();
   if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}else v.classList.remove('rise');
-  mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','checker'].indexOf(tab)>-1);if(window.GNRemind&&S.remind)GNRemind.dueOnOpen(S.remind,S.uv&&S.uv.appliedAt)}
+  mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','checker'].indexOf(tab)>-1);remCheck()}
 var booted=false;
 function go(t,quiet){
   if(!views[t])t='home';
@@ -690,29 +714,59 @@ function installRow(){
   if(standalone)return '';
   if(deferredInstall)return '<div class="set"><div><b>Install app</b><span>Add GN Care to your home screen.</span></div><button class="btn sm" data-act="install">Install</button></div>';
   return '<div class="set"><div><b>Install app</b><span>'+(isIOS?'Tap Share, then Add to Home Screen.':'Use your browser menu and choose Install app or Add to Home screen.')+'</span></div></div>'}
+function rem(){S.remind=window.GNRemind?GNRemind.cfgOf(S.remind):(S.remind||{});return S.remind}
+function remSnap(){
+  var soon=S.shelf.map(function(it){var d=daysLeft(it);return d===null?null:{id:it.id,n:it.n,days:d}}).filter(function(x){return x&&x.days<=14});
+  return {amDone:periodDone(today(),'am'),pmDone:periodDone(today(),'pm'),uvAppliedAt:S.uv&&S.uv.appliedAt,waterToday:waterTotal(),lastWaterAt:S.lastWaterAt||0,goal:S.goal,lastScanAt:S.lastScanAt||0,firstSeen:S.firstSeen,shelfSoon:soon}}
+var remLast=0;
+function remCheck(force){if(!window.GNRemind||!S.remind||!S.remind.on)return;var n=Date.now();if(!force&&n-remLast<20000)return;remLast=n;GNRemind.check(rem(),remSnap())}
+/* Apply what notification buttons did while the app was closed (+250 ml, sunscreen reapplied). */
+function remPull(){if(!window.GNRemind)return;GNRemind.read().then(function(o){var p=o&&o.st&&o.st.pending;if(!p||(!p.water&&!p.uvAppliedAt))return;
+  if(p.water){var l=waterLog().slice();for(var w=p.water;w>0;w-=250)l.push(250);S.water[today()]=l;S.lastWaterAt=Date.now()}
+  if(p.uvAppliedAt&&(!S.uv.appliedAt||p.uvAppliedAt>S.uv.appliedAt))S.uv.appliedAt=p.uvAppliedAt;
+  save();GNRemind.clearPending();render()})}
+var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 function remindRow(){
-  var r=S.remind||(S.remind={asked:false,on:false,am:'08:00',pm:'21:00',spf:true});
-  var support=window.GNRemind&&GNRemind.supported();
-  return '<div class="set" style="flex-wrap:wrap"><div><b>Routine reminders</b><span>'+(support?'Local notifications for AM, PM and sunscreen reapply. We ask only after you set a routine. This does not use a paid push service.':'This browser does not support notifications.')+'</span></div>'+(support?tgl(!!r.on,'remindOn','x','Routine reminders',true):'')+'</div>'+
-    (r.on&&support?'<div class="set"><label class="f">Morning<input class="input" id="rem-am" type="time" value="'+esc(r.am)+'"></label><label class="f">Night<input class="input" id="rem-pm" type="time" value="'+esc(r.pm)+'"></label></div><div class="set"><div><b>Sunscreen reapply</b><span>Remind me about two hours after I log sunscreen.</span></div>'+tgl(!!r.spf,'remindSpf','x','Sunscreen reapply',true)+'</div>':'');
-}
+  var r=rem(),support=window.GNRemind&&GNRemind.supported(),pm=support?GNRemind.perm():'unsupported';
+  var head='<div class="set" style="flex-wrap:wrap"><div><b>Reminders</b><span>'+(!support?'This browser does not support notifications.':pm==='denied'?'Notifications are blocked for this site. '+blockedHelp():'Gentle local reminders for your routine, sunscreen, water, a weekly progress check and products about to run out. Free, no account, nothing sent to a server.')+'</span></div>'+(support&&pm!=='denied'?tgl(!!r.on,'remindOn','x','Reminders',true):'')+'</div>';
+  if(!(r.on&&support&&pm==='granted'))return head;
+  var t=function(k,label,desc){return '<div class="set"><div><b>'+label+'</b><span>'+desc+'</span></div>'+tgl(!!r[k],'remToggle',k,label,true)+'</div>'};
+  return head+
+    '<div class="set rem-times"><label class="f">Morning<input class="input" id="rem-am" type="time" value="'+esc(r.am)+'"></label><label class="f">Night<input class="input" id="rem-pm" type="time" value="'+esc(r.pm)+'"></label></div>'+
+    t('spf','Sunscreen reapply','About two hours after you log sunscreen, in daytime only.')+
+    t('water','Water breaks','Every '+r.waterEvery+' hours between 9 am and 9 pm, only until you reach your goal.')+
+    t('scan','Weekly progress check','A nudge to rescan or take a progress photo in the same light.')+
+    (r.scan?'<div class="set"><label class="f">Check-in day<select class="input" id="rem-day">'+DAYS.map(function(d,i){return '<option value="'+i+'"'+(+r.scanDay===i?' selected':'')+'>'+d+'</option>'}).join('')+'</select></label></div>':'')+
+    t('repurchase','Repurchase alerts','When a shelf product is within 14 days of its use-by period after opening.')+
+    '<div class="set rem-times"><label class="f">Quiet from<input class="input" id="rem-qf" type="time" value="'+esc(r.quietFrom)+'"></label><label class="f">Quiet until<input class="input" id="rem-qt" type="time" value="'+esc(r.quietTo)+'"></label></div>'+
+    '<div class="set"><div><b>Try it</b><span>Send a sample reminder with Done and Snooze buttons.</span></div><button class="btn ghost sm" data-act="remTest">Send test</button></div>'+
+    '<p class="hint" style="padding:4px 0 8px">Reminders are most reliable when GN Care is installed and opened now and then. Phones may delay or skip them while the app is closed.</p>'}
+function blockedHelp(){return isIOS?'On iPhone, install GN Care to the Home Screen first (iOS 16.4+), then allow notifications in Settings › Notifications › GN Care.':'Tap the lock icon next to the address, open Permissions or Site settings, and set Notifications to Allow. Then come back here.'}
 function adRow(){
   var r='<div class="set"><div><b>Cookies and ads</b><span>Change Accept, Reject or Customise anytime. See the <a href="/privacy">Privacy Policy</a>.</span></div><button class="btn ghost sm" data-act="adPrefs">Change</button></div>';
   return remindRow()+r+'<div class="legal" style="padding:14px 0 6px"><a href="/guides/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a></div>'}
+function refreshSettings(){if(!$('#sheet').hidden&&$('#sheet-title').textContent==='Settings')$('#sheet-body').innerHTML=settingsHTML()}
 function settingsHTML(){
   var row=function(k,t,d){return '<div class="set"><div><b>'+t+'</b><span>'+d+'</span></div>'+tgl(!!S[k],'pref',k,t,false)+'</div>'};
   return row('ambient','Ambient background','Soft drifting color behind the app.')+row('motion','Animations','Springs, waves and page transitions.')+row('sound','Timer sound','A short chime when a ritual timer ends.')+
     feedbackRow()+installRow()+adRow()+'<div class="set" style="border:0"><div><b>Reset all data</b><span>Clears routines, shelf and history on this device.</span></div><button class="btn ghost sm" data-act="resetAll" id="reset-btn">Reset</button></div>'}
 
+function remExplainHTML(){
+  return '<p class="sub" style="margin:4px 0 10px">Want a gentle nudge so your new routine sticks?</p><ul class="checks">'+
+    '<li>Morning and night routine at times you choose ('+esc(rem().am)+' and '+esc(rem().pm)+')</li><li>Sunscreen reapply two hours after you log it</li><li>A weekly progress check and repurchase alerts from your shelf</li><li>Quiet hours from '+esc(rem().quietFrom)+' to '+esc(rem().quietTo)+'. Change anything in Settings.</li></ul>'+
+    '<p class="hint">Reminders are created on this phone. No account, no server, no spam.</p>'+
+    '<div class="btn-grid" style="margin-top:12px"><button class="btn" data-act="remAllow">Turn on reminders</button><button class="btn ghost" data-act="remLater">Not now</button></div>'}
 function maybeAskReminders(){
-  S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};
-  if(S.remind.asked||!(window.GNRemind&&GNRemind.supported()))return;
-  S.remind.asked=true;save();
-  GNRemind.requestAfterRoutine(S.remind,function(p){
-    if(p==='granted'){S.remind.on=true;save();GNRemind.scheduleTriggers(S.remind);GNRemind.registerSync();toast('Reminders are on. You can change times in Settings.')}
-    else toast('You can turn reminders on later in Settings');
-  });
-}
+  var r=rem();
+  if(r.asked||r.on||!(window.GNRemind&&GNRemind.supported())||GNRemind.perm()==='denied')return;
+  r.asked=true;save();
+  setTimeout(function(){openSheet('Reminders',remExplainHTML())},700)}
+function remEnable(after){
+  GNRemind.request(function(p){
+    var r=rem();
+    if(p==='granted'){r.on=true;save();GNRemind.registerSync();remCheck(true);GNRemind.test();toast('Reminders are on')}
+    else{r.on=false;save();toast(p==='unsupported'?'This browser does not support notifications':'Notifications are off. You can allow them later in Settings')}
+    if(after)after(p)})}
 /* ---------- actions ---------- */
 function updateUV(){
   var i=S.uv.index,c=uvCat(i);
@@ -769,10 +823,11 @@ var A={
  fkind:function(v){FB.kind=v;refreshFB()},
  share:function(){var u=location.origin;if(navigator.share){navigator.share({title:'GN Care',text:'Free skin care routine tracker',url:u}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){toast('Link copied')},function(){toast(u)})}else{toast(u)}},
 
- remindOn:function(){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};var r=S.remind;r.on=!r.on;r.asked=true;save();
-   if(r.on&&window.GNRemind){GNRemind.requestAfterRoutine(r,function(p){if(p==='granted'){GNRemind.scheduleTriggers(r);GNRemind.registerSync();toast('Reminders on')}else{r.on=false;save();toast('Notifications were not allowed');}if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()});}
-   else if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
- remindSpf:function(){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};S.remind.spf=!S.remind.spf;save();if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
+ remindOn:function(){var r=rem();r.asked=true;if(r.on){r.on=false;save();refreshSettings();return}remEnable(refreshSettings)},
+ remToggle:function(v){var r=rem();if(v in GNRemind.DEF){r[v]=!r[v];save();remCheck(true);refreshSettings()}},
+ remTest:function(){GNRemind.test().then(function(ok){toast(ok?'Test reminder sent':'Allow notifications first')})},
+ remAllow:function(){closeSheet();remEnable()},
+ remLater:function(){closeSheet();toast('No problem. Turn reminders on anytime in Settings')},
  closeSettings:function(){closeSheet()},
  openMore:function(){openSheet('More',moreHTML())},
  moreGo:function(v){closeSheet();A.nav(v)},
@@ -795,11 +850,16 @@ var A={
    if(!wasComplete&&periodDone(k,period))toast((period==='am'?'Morning':'Night')+' ritual complete')},
  delStep:function(v){S.steps[period]=S.steps[period].filter(function(s){return s.id!==v});save();render()},
  resetDay:function(){delete S.done[today()];save();render();toast('Today reset')},
- water:function(v){buzz(10);var l=waterLog().slice();l.push(+v);S.water[today()]=l;save();render();if(waterTotal()>=S.goal&&waterTotal()-(+v)<S.goal)toast('Daily water goal reached')},
+ water:function(v){buzz(10);S.lastWaterAt=Date.now();var l=waterLog().slice();l.push(+v);S.water[today()]=l;save();render();if(waterTotal()>=S.goal&&waterTotal()-(+v)<S.goal)toast('Daily water goal reached')},
  undoWater:function(){var l=waterLog().slice();l.pop();S.water[today()]=l;save();render()},
- uvApply:function(){S.uv.appliedAt=Date.now();save();updateUV();toast('Logged. Reapply in 2 hours');if(window.GNRemind&&S.remind&&S.remind.on)GNRemind.scheduleTriggers(S.remind)},
+ uvApply:function(){S.uv.appliedAt=Date.now();save();updateUV();toast('Logged. Reapply in 2 hours');remCheck(true)},
  checkin:function(v){S.checkins[today()]=+v;save();render()},
  photo:function(){var i=$('#photo-in');if(i)i.click()},
+ progSave:function(){
+   if(!photo)return;var P=S.progress=S.progress||[];
+   var put=function(url){var d=new Date();P.push({img:url,k:dk(d),d:d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),t:S.skin?S.skin.type:''});while(P.length>12)P.shift();save();render();buzz(10);toast(P.length>1?'Added. Compare first and latest below':'Saved to your timeline')};
+   if(window.GNFaceScan&&GNFaceScan.resizeDataUrl)GNFaceScan.resizeDataUrl(photo,320,0.7).then(put,function(){toast('Could not save this photo')});else toast('Could not save this photo')},
+ progDel:function(v){var P=S.progress||[];P.splice(+v,1);save();render();toast('Photo deleted')},
  savePhoto:function(){
    if(!photo)return;
    var done=function(url){S.savedPhoto=url;photo=url;save();render();toast('Photo saved on this device only')};
@@ -881,7 +941,8 @@ document.addEventListener('input',function(e){
   if(e.target.id==='fb-msg')FB.msg=e.target.value;
   if(e.target.id==='scan-note')scanNote=e.target.value;
   if(e.target.id==='uv-range'){S.uv.index=+e.target.value;save();updateUV()}
-  if(e.target.id==='rem-am'||e.target.id==='rem-pm'){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};if(e.target.id==='rem-am')S.remind.am=e.target.value||'08:00';else S.remind.pm=e.target.value||'21:00';save();if(window.GNRemind)GNRemind.scheduleTriggers(S.remind)}});
+  var remIds={'rem-am':'am','rem-pm':'pm','rem-qf':'quietFrom','rem-qt':'quietTo','rem-day':'scanDay'};
+  if(remIds[e.target.id]&&e.target.value!==''){var r=rem();r[remIds[e.target.id]]=e.target.id==='rem-day'?+e.target.value:e.target.value;save()}});
 document.addEventListener('change',function(e){
   if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
@@ -897,6 +958,9 @@ window.addEventListener('hashchange',onHash);
 buildNav();applyPrefs();syncInstall();
 (function(){var lo=(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4)||(navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.connection&&navigator.connection.saveData);if(lo)document.documentElement.classList.add('lite')})();
 function netPill(){var p=$('#offline-pill');if(!p){p=document.createElement('div');p.id='offline-pill';p.className='offline-pill';p.setAttribute('role','status');p.textContent='Offline · saved data only';document.body.appendChild(p)}p.hidden=navigator.onLine!==false}
+setInterval(function(){remCheck()},60000);remPull();
+document.addEventListener('visibilitychange',function(){if(!document.hidden){remPull();remCheck(true)}});
+if(navigator.serviceWorker)navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.type==='gn-remind')remPull()});
 window.addEventListener('online',netPill);window.addEventListener('offline',netPill);netPill();
 document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.parentNode&&t.parentNode.classList&&t.parentNode.classList.contains('p-img')){var w=t.parentNode;w.classList.add('ph');w.setAttribute('role','img');w.setAttribute('aria-label',t.alt||'Product');w.innerHTML='<span>'+esc((t.alt||'?').charAt(0))+'</span>'}},true);
 var h0=location.hash.replace('#','');tab=views[h0]?h0:'home';render(true);booted=true;

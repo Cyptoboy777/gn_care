@@ -709,6 +709,42 @@ async function t(name, fn) {
   });
 
 
+  console.log('prices: lowest store');
+  await t('lowest-price badge needs two real, dated, fresh store prices', async () => {
+    const now = '2026-11-24';
+    const fk = { fkProductId: 'x', fkPrice: 330, fkCheckedOn: '2026-11-24' };
+    assert.strictEqual(P.lowestOffer(fk, { now }), null);
+    assert.strictEqual(P.storeOffers(fk, { now }).length, 1);
+    const both = Object.assign({ amzPrice: 349, amzCheckedOn: '2026-11-23', amzSourceUrl: 'https://www.amazon.in/dp/B000' }, fk);
+    const l = P.lowestOffer(both, { now });
+    assert.strictEqual(l.store, 'Flipkart'); assert.strictEqual(l.saves, 19);
+    assert.strictEqual(P.lowestOffer(Object.assign({}, both, { amzCheckedOn: '' }), { now }), null);
+    assert.strictEqual(P.lowestOffer(Object.assign({}, both, { amzSourceUrl: 'https://evil.example/' }), { now }), null);
+    assert.strictEqual(P.lowestOffer(both, { now: '2026-12-10' }), null, 'stale prices must not claim lowest');
+    global.GN_PRODUCTS.forEach((p) => { assert.ok(P.lowestOffer(p) === null || (p.amzPrice && p.amzCheckedOn)); });
+  });
+
+  console.log('remind.js');
+  const RM = require('../public/remind.js');
+  await t('reminders: routine, quiet hours, done, snooze, stale day, sunscreen, shelf', async () => {
+    const at = (h, m, d) => new Date(2026, 10, d || 24, h, m).getTime();
+    const c = RM.cfgOf({ on: true, water: true });
+    const st = { date: '2026-11-24', goal: 2500, waterToday: 0, firstSeen: at(8, 0) - 20 * 864e5, shelfSoon: [{ id: 'i1', n: 'Serum', days: 5 }] };
+    const tags = (x, now) => RM.dueList(c, Object.assign({}, st, x), now).map((j) => j.tag);
+    assert.deepStrictEqual(tags({}, at(8, 30)), ['gn-am']);
+    assert.deepStrictEqual(tags({}, at(23, 0)), [], 'quiet hours');
+    assert.deepStrictEqual(tags({ amDone: true }, at(8, 30)), []);
+    assert.deepStrictEqual(tags({ amDone: true, date: '2026-11-23' }, at(8, 30)), ['gn-am'], 'yesterday done must not hide today');
+    assert.deepStrictEqual(tags({ doneTags: { 'gn-am': '2026-11-24' } }, at(8, 30)), []);
+    assert.deepStrictEqual(tags({ snooze: { 'gn-am': at(9, 0) } }, at(8, 40)), []);
+    assert.ok(tags({ uvAppliedAt: at(10, 0) }, at(12, 5)).indexOf('gn-spf') > -1);
+    assert.ok(tags({ uvAppliedAt: at(10, 0) }, at(11, 0)).indexOf('gn-spf') < 0);
+    assert.ok(tags({}, at(12, 0)).indexOf('gn-shelf-i1') > -1);
+    assert.deepStrictEqual(RM.dueList(RM.cfgOf({ on: false }), st, at(8, 30)), []);
+    const r = RM.dueList(c, st, at(8, 30))[0];
+    assert.deepStrictEqual(r.actions.map((a) => a.action), ['done', 'snooze']);
+  });
+
   console.log('skin-knowledge.js');
   const K = require('../public/skin-knowledge.js');
   const TYPES = ['Oily', 'Dry', 'Combination', 'Normal'];

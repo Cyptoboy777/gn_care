@@ -1,4 +1,5 @@
 {
+  "installCommand": "echo \"No npm dependencies to install\"",
   "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,

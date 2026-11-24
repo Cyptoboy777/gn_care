@@ -1,0 +1,36 @@
+# Disabled by default. Refreshes live Flipkart prices (fk* fields) in public/catalog.json.
+# To enable: add the repository secret FLIPKART_AFFILIATE_TOKEN and set the repository
+# variable ENABLE_FLIPKART_SYNC=true. Then run it from the Actions tab (or uncomment the schedule).
+# It commits catalog.json only when prices changed; Vercel redeploys from main automatically.
+name: Flipkart price sync (manual)
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '30 1 * * *'  # daily 07:00 IST — uncomment when ready
+
+jobs:
+  sync:
+    if: ${{ vars.ENABLE_FLIPKART_SYNC == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Sync Flipkart prices
+        env:
+          FLIPKART_AFFILIATE_TOKEN: ${{ secrets.FLIPKART_AFFILIATE_TOKEN }}
+        run: node scripts/sync-flipkart.mjs
+      - name: Test
+        run: node tests/run.js
+      - name: Commit if changed
+        run: |
+          if git diff --quiet public/catalog.json; then echo "No price changes"; exit 0; fi
+          git config user.name "gn-care-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/catalog.json
+          git commit -m "Flipkart price sync $(date -u +%F)"
+          git push
