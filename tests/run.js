@@ -463,6 +463,31 @@ async function t(name, fn) {
     oily.forEach((p) => assert.ok(p.amzPrice == null || p.amzCheckedOn));
   });
 
+  await t('scan results CSS stacks full-width and kit HTML is not double-numbered', async () => {
+    const fs = require('fs');
+    const path = require('path');
+    const root = path.join(__dirname, '..');
+    const css = fs.readFileSync(path.join(root, 'public/styles.css'), 'utf8');
+    const app = fs.readFileSync(path.join(root, 'public/app.js'), 'utf8');
+    const index = fs.readFileSync(path.join(root, 'public/index.html'), 'utf8');
+    const sw = fs.readFileSync(path.join(root, 'public/sw.js'), 'utf8');
+    assert.ok(!/@media\s*\(min-width:\s*720px\)\s*\{\s*\.scan-kit\s*\{[^}]*grid-template-columns:\s*1fr\s+1fr/.test(css), 'legacy 2-col scan-kit rule must be gone');
+    const scanRules = [...css.matchAll(/\.scan-kit\s*\{([^}]+)\}/g)].map((m) => m[1]);
+    assert.ok(scanRules.length >= 1);
+    assert.ok(/display:\s*flex/.test(scanRules[scanRules.length - 1]), 'winning .scan-kit display must be flex');
+    assert.ok(!/grid-template-columns:\s*1fr\s+1fr/.test(scanRules[scanRules.length - 1]));
+    assert.ok(/flex-direction:\s*column/.test(scanRules[scanRules.length - 1]));
+    assert.ok(app.indexOf("'<ul class=\"kit-list\">'") > -1, 'kit list must be a ul so the step badge is the only number');
+    assert.ok(app.indexOf("'<ol class=\"kit-list\">'") < 0);
+    assert.ok(app.indexOf("</span> <b>'+esc(p.brand)") > -1, 'category and brand must be separate with a space');
+    assert.ok(app.indexOf("kitHtml=kitSummary") > -1 && app.indexOf('kitOtherOptions(r.items') > -1);
+    assert.ok(app.indexOf('kitProductGrid(r.items,S.skin.type)') < 0, 'do not render the same kit items again as a card grid on scan results');
+    assert.ok(/text-overflow:\s*ellipsis/.test(css) && /\.p-img\.ph\{[^}]*overflow:\s*hidden/.test(css));
+    assert.ok(index.indexOf('styles.css?v=24') > -1 && index.indexOf('app.js?v=24') > -1);
+    assert.ok(sw.indexOf("gn-care-v24") > -1 && sw.indexOf('styles.css?v=24') > -1);
+  });
+
+
 
 
   console.log('facescan.js');
@@ -878,7 +903,7 @@ async function t(name, fn) {
 
   await t('sw caches deals assets and prefers a fresh deals.json', async () => {
     const sw = require('fs').readFileSync(require('path').join(__dirname, '../public/sw.js'), 'utf8');
-    assert.ok(sw.includes("const VERSION = 'gn-care-v23'"));
+    assert.ok(sw.includes("const VERSION = 'gn-care-v24'"));
     assert.ok(sw.includes('/deals.js') && sw.includes('/deals.css') && sw.includes('/deals.json'));
     assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
   });

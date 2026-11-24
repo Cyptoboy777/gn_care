@@ -242,7 +242,7 @@ function viewScan(){
     var inKit=r.items.map(function(i){return i.item&&i.item.id});
     var trScan=(window.GNPicks&&GNPicks.treatments)?GNPicks.treatments(S.skin.type,S.skin.flags||[]).filter(function(p){return inKit.indexOf(p.id)<0}).slice(0,3):[];
     var treatScanGrid=trScan.length?'<section class="tile kit-span"><h3 class="t">Other serums that may suit you</h3><div class="prod-grid">'+trScan.map(function(p){return shopCard(p,S.skin.type)}).join('')+'</div></section>':'';
-    kitHtml=kitSummary(r,S.skin.type,S.skin.sensitive||S.skin.sensitiveLeaning,scanBudget)+'<h3 class="t kit-detail-h">Product details</h3>'+kitProductGrid(r.items,S.skin.type)+avoidScan+treatScanGrid;
+    kitHtml=kitSummary(r,S.skin.type,S.skin.sensitive||S.skin.sensitiveLeaning,scanBudget)+kitOtherOptions(r.items,S.skin.type)+avoidScan+treatScanGrid;
   }
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
@@ -541,7 +541,7 @@ function kitAIBox(r,type,sens){
 /* One clear recommendation: the exact kit, real prices, total and the AI explanation of that kit. */
 function kitSummary(r,type,sens,budget){
   var rows=r.items.filter(function(i){return i.item}).map(function(i,n){var p=i.item;
-    return '<li class="kit-row" style="--i:'+n+'"><span class="kit-step num">'+(n+1)+'</span><div class="grow"><span class="eyebrow">'+esc(i.cat)+(i.optional?' · optional':'')+'</span><b>'+esc(p.brand+' '+p.name)+'</b><span class="hint">'+esc([p.size,kitPriceLbl(p)].filter(Boolean).join(' · '))+'</span></div>'+
+    return '<li class="kit-row" style="--i:'+n+'"><span class="kit-step num">'+(n+1)+'</span><div class="grow"><span class="eyebrow">'+esc(i.cat)+(i.optional?' · optional':'')+'</span> <b>'+esc(p.brand)+'</b><span class="hint">'+esc([p.name,p.size,kitPriceLbl(p)].filter(Boolean).join(' · '))+'</span></div>'+
       '<div class="kit-buy"><button type="button" class="btn ghost sm" data-act="openProduct" data-v="'+esc(p.id)+'">Details</button><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" >'+fkLbl(p)+'</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">'+amzLbl(p)+'</a></div>'+lowestChip(p)+'</li>'}).join('');
   var note=[];
   if(r.checkedOn)note.push('Flipkart prices checked on '+r.checkedOn+'.');
@@ -549,7 +549,7 @@ function kitSummary(r,type,sens,budget){
   note.push('Verify the price at checkout.');
   var bmsg=budget>0?(r.fits?'Fits your '+money(budget)+' budget.':'Above your '+money(budget)+' budget. The lowest kit is about '+money(r.min)+'.'):'No budget cap.';
   return '<section class="tile kit-best"><p class="eyebrow">Our pick for '+esc(String(type).toLowerCase())+' skin'+(sens?' · sensitive':'')+'</p><h3 class="t">Your best kit</h3>'+
-    '<ol class="kit-list">'+rows+'</ol>'+
+    '<ul class="kit-list">'+rows+'</ul>'+
     '<div class="row sp wrap kit-total"><div><span class="hint">Total'+(r.approx?' (approx.)':'')+'</span><span class="big num">'+money(r.total)+'</span></div><span class="chip '+(r.fits?'good':'warn')+'">'+esc(bmsg)+'</span></div>'+
     '<p class="hint">'+esc(note.join(' '))+' '+affDisc()+'</p>'+
     '<div class="row sp wrap"><h3 class="t">Why this kit</h3><button class="btn sm" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+(PK.ai?'AI explained':'Explain with AI')+'</button></div>'+
@@ -587,6 +587,18 @@ function kitProductGrid(items,type){
 function pickCard(it,type){
   if(it.have||!it.item)return pickNotes([it],type);
   return shopCard(it.item,type,{cat:it.cat});
+}
+function kitOtherOptions(items,type){
+  var inIds={},alts=[],seen={};
+  (items||[]).forEach(function(it){if(it.item)inIds[it.item.id]=1});
+  (items||[]).forEach(function(it){
+    (it.alts||[]).forEach(function(p){
+      if(!p||!p.id||inIds[p.id]||seen[p.id])return;
+      seen[p.id]=1;alts.push(p);
+    });
+  });
+  if(!alts.length)return pickNotes(items,type);
+  return '<section class="tile kit-span"><h3 class="t">Other options</h3><p class="hint">Alternatives you can swap in. Tap a card for details and buy links.</p><div class="prod-grid">'+alts.slice(0,8).map(function(p){return shopCard(p,type)}).join('')+'</div>'+pickNotes(items,type)+'</section>';
 }
 function viewPicks(){
   var k=kit(),type=kitType(),sens=kitSens();
