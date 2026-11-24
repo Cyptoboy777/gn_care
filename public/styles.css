@@ -9,7 +9,7 @@ img{max-width:100%}
   --edge:rgba(255,255,255,.85); --rule:rgba(94,63,79,.14);
   --acc:#725163; --acc-2:#8E6B7E; --acc-3:#B896A8; --acc-soft:rgba(142,107,126,.14);
   --btn:linear-gradient(135deg,#5C3F4F 0%,#8E6B7E 100%);
-  --good:#2F7D5B; --warn:#8F6310; --bad:#B3432F;
+  --good:#1F6446; --warn:#6E4A08; --bad:#9A3524;
   --good-bg:rgba(47,125,91,.13); --warn-bg:rgba(176,122,24,.16); --bad-bg:rgba(179,67,47,.13);
   --shadow:0 14px 38px -14px rgba(92,63,79,.22),0 2px 8px -2px rgba(30,24,30,.05);
   --z-oil:rgba(201,162,74,.6); --z-dry:rgba(96,130,186,.55); --z-bal:rgba(142,107,126,.5);

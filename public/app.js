@@ -53,7 +53,7 @@ function waterTotal(){return waterLog().reduce(function(a,b){return a+b},0)}
 var UVC=[
   {max:2,n:'Low',c:'#3E9B6B',t:'#fff',adv:'SPF 30 on your face is still a good daily habit. Skip reapplying while indoors.'},
   {max:5,n:'Moderate',c:'#C9B22A',t:'#2A2400',adv:'Use SPF 30 or higher. Look for shade around midday.'},
-  {max:7,n:'High',c:'#D9822B',t:'#fff',adv:'Use SPF 50. Reapply every 2 hours when outdoors.'},
+  {max:7,n:'High',c:'#D9822B',t:'#1E1418',adv:'Use SPF 50. Reapply every 2 hours when outdoors.'},
   {max:10,n:'Very high',c:'#C9473A',t:'#fff',adv:'SPF 50+, a hat and sunglasses. Avoid direct sun from 11 am to 4 pm.'},
   {max:99,n:'Extreme',c:'#8454B8',t:'#fff',adv:'Stay in shade where you can. SPF 50+ and cover up, reapply often.'}];
 function uvCat(i){for(var k=0;k<UVC.length;k++){if(i<=UVC[k].max)return UVC[k]}return UVC[4]}
@@ -859,6 +859,7 @@ document.addEventListener('gn-catalog',function(){if(tab==='picks'||tab==='scan'
 window.addEventListener('hashchange',onHash);
 
 /* ---------- boot ---------- */
+(function(){var f=document.getElementById('gf');if(f)f.media='all'})();
 buildNav();applyPrefs();syncInstall();
 var h0=location.hash.replace('#','');tab=views[h0]?h0:'home';render(true);
 setInterval(function(){tickTimer();if(tab==='home'&&$('#uv-next'))$('#uv-next').textContent=uvNextText()},500);
