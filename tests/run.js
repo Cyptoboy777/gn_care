@@ -690,6 +690,23 @@ async function t(name, fn) {
     assert.ok(r.items.every((i) => i.item));
     if (!r.fits) assert.ok(r.min >= 500 || r.total > 500);
   });
+  await t('best kit: optional treatment only when it fits, live Flipkart price used, approx flagged', async () => {
+    ['Oily', 'Dry', 'Combination', 'Normal'].forEach((ty) => {
+      [1000, 2000, 0].forEach((b) => {
+        const r = P.buildKit({ type: ty, sens: false, budget: b, swaps: {}, have: {}, treat: true, concerns: ['acne'] });
+        const base = P.buildKit({ type: ty, sens: false, budget: b, swaps: {}, have: {} });
+        const tr = r.items.filter((i) => i.cat === 'Treatment');
+        assert.ok(tr.length <= 1);
+        if (tr.length && b > 0) assert.ok(r.total <= b, ty + ' ' + b + ' treatment pushed kit over budget');
+        if (!base.fits) assert.strictEqual(tr.length, 0);
+        const sum = r.items.reduce((a, i) => a + (i.item ? P.livePrice(i.item) : 0), 0);
+        assert.strictEqual(r.total, sum);
+        assert.strictEqual(r.approx, r.items.some((i) => i.item && !P.isLive(i.item)));
+      });
+    });
+    const live = global.GN_PRODUCTS.find((p) => p.fkProductId && p.fkPrice != null);
+    if (live) assert.strictEqual(P.livePrice(live), live.fkPrice);
+  });
 
 
   console.log('skin-knowledge.js');

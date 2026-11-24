@@ -331,7 +331,7 @@ function money(n){return '₹'+inr.format(Math.round(n))}
 function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
 function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
 function priceTxt(p){
-  if(p.fkPrice!=null)return 'Flipkart '+money(p.fkPrice)+(p.fkCheckedOn?' · checked '+p.fkCheckedOn:'');
+  if(p.fkPrice!=null)return 'Flipkart '+money(p.fkPrice)+(p.fkCheckedOn?' · checked '+esc(p.fkCheckedOn):'');
   return p.price!=null?'approx. '+money(p.price):'price varies';
 }
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
@@ -475,7 +475,7 @@ function pickCard(it,type){
     productCopyHtml(p,type)+
     (it.noSens?'<p class="hint">No sensitive-skin option in our list for '+esc(type.toLowerCase())+' skin. Patch test first.</p>':'')+
     buyBtn(p)+
-    (alts.length?'<div class="list" style="gap:6px"><span class="hint">Other options</span>'+alts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.brand+' '+a.name)+'</b><span>'+priceTxt(a)+'</span></div><button class="btn ghost sm" data-act="kSwap" data-v="'+a.id+'" data-c="'+it.cat+'" aria-label="Use '+esc(a.brand+' '+a.name)+'">Use</button></div>'}).join('')+'</div>':'')+
+    (alts.length?'<div class="list" style="gap:6px"><span class="hint">Other options</span>'+alts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.brand+' '+a.name)+'</b><span>'+priceTxt(a)+'</span></div><button class="btn ghost sm" data-act="kSwap" data-v="'+esc(a.id)+'" data-c="'+esc(it.cat)+'" aria-label="Use '+esc(a.brand+' '+a.name)+'">Use</button></div>'}).join('')+'</div>':'')+
     '</section>'}
 function viewPicks(){
   var k=kit(),type=kitType(),sens=kitSens();
@@ -507,7 +507,7 @@ function viewPicks(){
   var treatHtml='';
   if(type&&window.GNPicks&&GNPicks.treatments){
     var tr=GNPicks.treatments(type,kitConcerns()).slice(0,4);
-    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p)].filter(Boolean).join(' · ')+'</span>'+productCopyHtml(p,type)+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
+    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[esc(p.size||''),priceTxt(p)].filter(Boolean).join(' · ')+'</span>'+productCopyHtml(p,type)+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
   }
   var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3>'+obfCredit()+'<p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
   return head+dealsHtml()+fashionHtml()+telegramRow()+copyLangBar()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
