@@ -229,7 +229,7 @@ function viewScan(){
     var msg=scanBudget>0?(r.fits?('About '+money(r.total)+' of your '+money(scanBudget)+' budget.'):('The lowest kit is about '+money(r.min)+', above your '+money(scanBudget)+' budget. Go back and raise the budget, or still use these picks.')):'About '+money(r.total)+', no budget cap.';
     var avoidScan=(window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(S.skin.type,S.skin.flags||[],S.skin.sensitive||S.skin.sensitiveLeaning).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
     var trScan=(window.GNPicks&&GNPicks.treatments)?GNPicks.treatments(S.skin.type,S.skin.flags||[]).slice(0,3):[];
-    var treatScan=trScan.length?'<section class="tile"><h3 class="t">Serums that may suit you</h3><div class="list">'+trScan.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+priceTxt(p)+'</span><p class="hint why-this">'+esc(GNPicks.whyThis(p,S.skin.type,S.skin.flags||[]))+'</p></div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>':'';
+    var treatScan=trScan.length?'<section class="tile"><h3 class="t">Serums that may suit you</h3><div class="list">'+trScan.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+priceTxt(p)+'</span>'+productCopyHtml(p,S.skin.type)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>':'';
     kitHtml='<section class="tile"><h3 class="t">Your kit</h3><p class="hint">'+esc(msg)+' '+affDisc()+'</p></section>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('')+avoidScan+treatScan;
   }
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
@@ -331,6 +331,7 @@ function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
 function priceTxt(p){return p.price!=null?'about '+money(p.price):'price varies'}
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
 var fashTab='women';
+var copyLang='en';
 function productImg(p){
   var alt=esc(p.imageAlt||((p.brand||'')+' '+(p.name||'')).trim()||'Product');
   if(p.image){
@@ -363,6 +364,23 @@ function fashionHtml(){
       '<button data-act="fashTab" data-v="women" aria-pressed="'+(tab==='women')+'">Women</button>'+
       '<button data-act="fashTab" data-v="men" aria-pressed="'+(tab==='men')+'">Men</button></div>'+
     '<div class="btn-grid">'+list.map(function(x){return '<a class="btn sm '+(x.store==='Flipkart'?'ghost':'')+'" href="'+esc(x.url)+'" target="_blank" rel="sponsored nofollow noopener">'+esc(x.store+': '+x.label)+'</a>'}).join('')+'</div></section>';
+}
+function copyLangBar(){
+  return '<div class="chips copy-lang" style="margin:8px 0 0">'+
+    [['en','English'],['hi','Hinglish'],['te','Tenglish']].map(function(x){
+      return '<button type="button" data-act="copyLang" data-v="'+x[0]+'" aria-pressed="'+(copyLang===x[0])+'">'+x[1]+'</button>';
+    }).join('')+'</div>';
+}
+function productCopyHtml(p,type){
+  if(!window.GNPicks)return '';
+  var why=GNPicks.whyThis(p,type,kitConcerns(),copyLang);
+  var how=GNPicks.howToUse?GNPicks.howToUse(p,copyLang):'';
+  var avoid=GNPicks.productAvoid?GNPicks.productAvoid(p,copyLang):[];
+  var html='';
+  if(why)html+='<p class="hint why-this"><b>Why this suits you.</b> '+esc(why)+'</p>';
+  if(how)html+='<p class="hint how-to"><b>How to use.</b> '+esc(how)+'</p>';
+  if(avoid.length)html+='<p class="hint avoid-this"><b>What to avoid.</b> '+esc(avoid.join(' '))+'</p>';
+  return html;
 }
 function telegramRow(){
   var raw=(window.GN_CONFIG&&GN_CONFIG.TELEGRAM_URL)||'';
@@ -403,7 +421,7 @@ function pickCard(it,type){
     '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span><span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
     (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
     couponHtml(p)+
-    (window.GNPicks&&GNPicks.whyThis?'<p class="hint why-this"><b>Why this suits you.</b> '+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p>':'')+
+    productCopyHtml(p,type)+
     (it.noSens?'<p class="hint">No sensitive-skin option in our list for '+esc(type.toLowerCase())+' skin. Patch test first.</p>':'')+
     buyBtn(p)+
     (alts.length?'<div class="list" style="gap:6px"><span class="hint">Other options</span>'+alts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.brand+' '+a.name)+'</b><span>'+priceTxt(a)+'</span></div><button class="btn ghost sm" data-act="kSwap" data-v="'+a.id+'" data-c="'+it.cat+'" aria-label="Use '+esc(a.brand+' '+a.name)+'">Use</button></div>'}).join('')+'</div>':'')+
@@ -438,10 +456,10 @@ function viewPicks(){
   var treatHtml='';
   if(type&&window.GNPicks&&GNPicks.treatments){
     var tr=GNPicks.treatments(type,kitConcerns()).slice(0,4);
-    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p)].filter(Boolean).join(' · ')+'</span><p class="hint why-this">'+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
+    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p)].filter(Boolean).join(' · ')+'</span>'+productCopyHtml(p,type)+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
   }
   var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3>'+obfCredit()+'<p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
-  return head+dealsHtml()+fashionHtml()+telegramRow()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
+  return head+dealsHtml()+fashionHtml()+telegramRow()+copyLangBar()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
 
 /* ---------- coach, label decoder, ratings ---------- */
 var LAB={bad:'Avoid',warn:'Separate',good:'Pairs well'};
@@ -634,6 +652,7 @@ var A={
    sendAI('coach',CO.q,function(r){CO.busy=false;if(r.err)CO.err=r.err;else CO.ans=r.text;if(tab==='checker')render()})},
  kAud:function(v){kit().aud=v;if(v==='men'||v==='women')fashTab=v;save();render()},
  fashTab:function(v){fashTab=(v==='men'?'men':'women');render()},
+ copyLang:function(v){copyLang=(v==='hi'||v==='te')?v:'en';render()},
  copyCoupon:function(v){
    var code=String(v||'');
    if(!code)return;

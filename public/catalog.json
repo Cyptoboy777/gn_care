@@ -46,7 +46,35 @@
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/3337875597180",
       "imageCheckedOn": "2026-11-24",
-      "imageNote": "Same product; OBF photo is a 236 ml pack, catalog lists 88 ml."
+      "imageNote": "Same product; OBF photo is a 236 ml pack, catalog lists 88 ml.",
+      "whyThis": {
+        "general": "CeraVe Hydrating Cleanser comes in an 88 ml pack.",
+        "Dry": "It suits dry skin and contains ceramide.",
+        "Normal": "It suits normal skin and helps clean without harshness."
+      },
+      "avoid": [
+        "Always do a patch test before first use.",
+        "Avoid direct contact with eyes."
+      ],
+      "howToUse": "Apply the cleanser to your face and rinse off with water.",
+      "whyThisHi": {
+        "general": "CeraVe Hydrating Cleanser 88 ml pack mein aata hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Aakhon mein jaane se bachayein."
+      ],
+      "howToUseHi": "Cleanser ko face par lagayein aur paani se dho lein.",
+      "whyThisTe": {
+        "general": "CeraVe Hydrating Cleanser 88 ml pack lo undhi."
+      },
+      "avoidTe": [
+        "Modati sari vade mundu patch test cheyandi.",
+        "Kallulo padakunda chusukondi."
+      ],
+      "howToUseTe": "Cleanser ni face ki apply chesi water tho kshnam ga kadagandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c2",
@@ -69,7 +97,33 @@
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/8906005274106",
       "imageCheckedOn": "2026-11-24",
-      "imageNote": "Same product; OBF photo is a 125 ml pack, catalog lists 118 ml."
+      "imageNote": "Same product; OBF photo is a 125 ml pack, catalog lists 118 ml.",
+      "whyThis": {
+        "general": "Cetaphil Gentle Skin Cleanser in a 118 ml bottle is designed to cleanse your face simply and gently.",
+        "Dry": "This cleanser helps clean dry skin without adding extra dryness.",
+        "Normal": "This cleanser keeps normal skin feeling clean and comfortable."
+      },
+      "avoid": [
+        "Always do a patch test before trying a new cleanser.",
+        "Ingredients are not listed, so check the product label if you have specific allergies."
+      ],
+      "howToUse": "Apply the cleanser to your skin, massage gently, and rinse off.",
+      "whyThisHi": {
+        "general": "Cetaphil Gentle Skin Cleanser (118 ml) skin ko gently saaf karne ke liye hai."
+      },
+      "avoidHi": [
+        "Naya product use karne se pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Cleanser ko skin par lagayein, halka massage karein aur dho lein.",
+      "whyThisTe": {
+        "general": "Cetaphil Gentle Skin Cleanser (118 ml) skin ni gentle ga clean cheyadaniki help chestundi."
+      },
+      "avoidTe": [
+        "Kotha product try chese mundu patch test cheyyandi."
+      ],
+      "howToUseTe": "Cleanser ni skin ki apply chesi, gentle ga massage chesi kadigeskovali.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c3",
@@ -88,7 +142,35 @@
       "mrp": 399,
       "actives": [
         "oat"
-      ]
+      ],
+      "whyThis": {
+        "general": "Minimalist B12 + Oat Extract 6.5% Gentle Cleanser comes in a 120 ml bottle.",
+        "Combination": "This gentle cleanser fits combination skin well.",
+        "Normal": "This gentle cleanser suits normal skin."
+      },
+      "avoid": [
+        "Always do a patch test before trying a new cleanser.",
+        "Avoid contact with eyes."
+      ],
+      "howToUse": "Apply to damp skin, gently massage, and rinse off with water.",
+      "whyThisHi": {
+        "general": "Minimalist B12 + Oat Extract 6.5% Gentle Cleanser 120 ml pack mein aata hai."
+      },
+      "avoidHi": [
+        "Naya product use karne se pehle patch test zaroor karein.",
+        "Aankhon mein jaane se bachayein."
+      ],
+      "howToUseHi": "Geeli skin par lagayein, halka massage karein aur paani se dho lein.",
+      "whyThisTe": {
+        "general": "Minimalist B12 + Oat Extract 6.5% Gentle Cleanser 120 ml pack lo undi."
+      },
+      "avoidTe": [
+        "Kotha product vaadedhi mundhu patch test cheyyandi.",
+        "Kalloki velkunda chusukondi."
+      ],
+      "howToUseTe": "Tadi skin pai raasi, mellaga massage chesi water tho kadigeskondi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c4",
@@ -106,7 +188,35 @@
       "src": "esquire",
       "actives": [
         "ha"
-      ]
+      ],
+      "whyThis": {
+        "general": "L'Oreal Paris Revitalift Hyaluronic Acid Oil Control Replumping Cleansing Gel comes in a 120 ml tube.",
+        "Oily": "Designed for oily skin to help control oil while cleansing.",
+        "Combination": "Suits combination skin for daily cleansing needs."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Not suited for sensitive skin."
+      ],
+      "howToUse": "Apply to wet face, gently massage, and rinse thoroughly with water.",
+      "whyThisHi": {
+        "general": "L'Oreal Paris Revitalift Hyaluronic Acid Oil Control Replumping Cleansing Gel (120 ml) oily aur combination skin ke liye hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Yeh sensitive skin ke liye nahi hai."
+      ],
+      "howToUseHi": "Geelay chehre par lagayein, halka massage karein aur paani se dho lein.",
+      "whyThisTe": {
+        "general": "L'Oreal Paris Revitalift Hyaluronic Acid Oil Control Replumping Cleansing Gel (120 ml) oily mariyu combination skin kosam."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi.",
+        "Idi sensitive skin ki set avvadu."
+      ],
+      "howToUseTe": "Tadi face ki apply chesi, massage chesi, water tho kshnamga kadagandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c5",
@@ -121,7 +231,35 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "Bioderma Sebium Gel Moussant Acne Defence Cleanser is a 100 ml cleanser with unknown ingredients.",
+        "Oily": "This cleanser is suited for oily skin types.",
+        "Combination": "This cleanser is suited for combination skin types."
+      },
+      "avoid": [
+        "Perform a patch test before regular use.",
+        "Avoid contact with eyes."
+      ],
+      "howToUse": "Apply the cleanser to damp skin, gently lather, and rinse thoroughly with water.",
+      "whyThisHi": {
+        "general": "Bioderma Sebium Gel Moussant Acne Defence Cleanser 100 ml ek cleanser hai jiske ingredients unknown hain."
+      },
+      "avoidHi": [
+        "Use karne se pehle patch test zaroor karein.",
+        "Eyes ke contact se bachayein."
+      ],
+      "howToUseHi": "Cleanser ko geeli skin par lagayein, halka lather banayein, aur paani se achhi tarah dho lein.",
+      "whyThisTe": {
+        "general": "Bioderma Sebium Gel Moussant Acne Defence Cleanser 100 ml oka cleanser, deenilo ingredients unknown."
+      },
+      "avoidTe": [
+        "Regular use chese mundu patch test cheyandi.",
+        "Kalluku tagalakunda chusukondi."
+      ],
+      "howToUseTe": "Cleanser ni tammari skin pai raasi, light ga lather chesi, water tho wash cheyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c6",
@@ -136,7 +274,33 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "A 200 ml purifying gel face wash from La Roche-Posay designed for cleansing.",
+        "Oily": "Suits oily skin to help manage excess oil.",
+        "Combination": "Works well for combination skin types."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Note that specific ingredient details are not listed for this product."
+      ],
+      "howToUse": "Apply to wet skin, massage gently, and rinse thoroughly with water.",
+      "whyThisHi": {
+        "general": "La Roche-Posay ka 200 ml purifying gel face wash hai jo cleansing ke liye hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Geeli skin par lagayein, halke haatho se mal kar paani se dho lein.",
+      "whyThisTe": {
+        "general": "La Roche-Posay nunchi 200 ml purifying gel face wash, cleansing kosam."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi."
+      ],
+      "howToUseTe": "Tadi skin ki raasi, neththi tho kadiginavale.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c7",
@@ -157,7 +321,35 @@
       "imageSource": "Open Beauty Facts",
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/3574661288345",
-      "imageCheckedOn": "2026-11-24"
+      "imageCheckedOn": "2026-11-24",
+      "whyThis": {
+        "general": "Neutrogena Hydro Boost Cleanser Water Gel is a 145 ml water gel cleanser with unknown specific ingredients.",
+        "Combination": "Suits combination skin well as a gel cleanser.",
+        "Normal": "Fits normal skin care routines nicely."
+      },
+      "avoid": [
+        "Always do a patch test before first use.",
+        "Not classified as sensitive-friendly, so use with care if you have sensitive skin."
+      ],
+      "howToUse": "Apply to wet face, gently massage, and rinse thoroughly with water.",
+      "whyThisHi": {
+        "general": "Neutrogena Hydro Boost Cleanser Water Gel 145 ml cleanser hai, iske specific ingredients unknown hain."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Yeh sensitive-friendly nahi hai, toh sensitive skin wale dhyaan se use karein."
+      ],
+      "howToUseHi": "Geele chehre par lagayein, halka massage karein aur paani se dho lein.",
+      "whyThisTe": {
+        "general": "Neutrogena Hydro Boost Cleanser Water Gel 145 ml cleanser, dehinlo ingredients teliyadu."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyyandi.",
+        "Sensitive skin unte jagratta ga vadandi."
+      ],
+      "howToUseTe": "Tadi mukku paina raasi, mellaga massage chesi, water tho kadukondi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "c8",
@@ -174,7 +366,32 @@
       "src": "esquire",
       "actives": [
         "ceramide"
-      ]
+      ],
+      "whyThis": {
+        "general": "Formularx Barrier Comfort Gentle Ceramide Cleanser comes in a 175 ml size.",
+        "Dry": "Formulated with ceramide, this cleanser helps clean dry skin comfortably."
+      },
+      "avoid": [
+        "Patch test before first use.",
+        "Not marked as sensitive friendly, so check if it suits your skin."
+      ],
+      "howToUse": "Apply to damp skin, gently massage, and rinse off with water.",
+      "whyThisHi": {
+        "general": "Formularx Barrier Comfort Gentle Ceramide Cleanser 175 ml quantity mein aata hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Geeli skin par lagayein, halka massage karein aur paani se dho lein.",
+      "whyThisTe": {
+        "general": "Formularx Barrier Comfort Gentle Ceramide Cleanser 175 ml size lo undhi."
+      },
+      "avoidTe": [
+        "Modatiga patch test cheyyandi."
+      ],
+      "howToUseTe": "Tadi skin pai raasi, mild ga massage chesi water tho kadigeskondi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m1",
@@ -193,7 +410,35 @@
       "mrp": 449,
       "actives": [
         "panthenol"
-      ]
+      ],
+      "whyThis": {
+        "general": "Minimalist 10% Vitamin B5 Moisturizer comes in a 50 g pack.",
+        "Oily": "Suits oily skin types.",
+        "Combination": "Suits combination skin types."
+      },
+      "avoid": [
+        "Patch test before use.",
+        "Not marked as sensitive-friendly; patch test first if your skin is easily irritated."
+      ],
+      "howToUse": "Apply evenly as a moisturizer.",
+      "whyThisHi": {
+        "general": "Minimalist 10% Vitamin B5 Moisturizer 50 g pack mein aata hai."
+      },
+      "avoidHi": [
+        "Use karne se pehle patch test karein.",
+        "Sensitive skin ke liye suitable nahi hai."
+      ],
+      "howToUseHi": "Moisturizer ki tarah evenly apply karein.",
+      "whyThisTe": {
+        "general": "Minimalist 10% Vitamin B5 Moisturizer 50 g pack lo undi."
+      },
+      "avoidTe": [
+        "Vaadedhi mundhu patch test cheyyandi.",
+        "Sensitive skin ki manchidi kadhu."
+      ],
+      "howToUseTe": "Moisturizer laga evenly apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m2",
@@ -208,7 +453,34 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "This is a 50 ml moisturizer from Hyphen designed to help with barrier repair.",
+        "Combination": "This moisturizer fits combination skin well.",
+        "Normal": "This moisturizer is suitable for normal skin types."
+      },
+      "avoid": [
+        "Do a patch test before regular use.",
+        "This product is not listed as sensitive-friendly, so proceed with caution if you have reactive skin."
+      ],
+      "howToUse": "Apply evenly to clean skin as needed for moisturization.",
+      "whyThisHi": {
+        "general": "Yeh Hyphen ka 50 ml moisturizer hai jo barrier repair ke liye hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Agar skin sensitive hai toh dhyan se use karein."
+      ],
+      "howToUseHi": "Saaf skin par zaroorat ke mutabiq lagayein.",
+      "whyThisTe": {
+        "general": "Idi Hyphen nundi 50 ml moisturizer, barrier repair kosam."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi."
+      ],
+      "howToUseTe": "Clean skin meeda raasukondi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m3",
@@ -226,7 +498,35 @@
       "src": "esquire",
       "actives": [
         "ceramide"
-      ]
+      ],
+      "whyThis": {
+        "general": "The Formularx Hydraveil Ceramide Water Cream is a 50 g moisturizer formulated with ceramide.",
+        "Combination": "This water cream suits combination skin by providing lightweight moisturization.",
+        "Normal": "This water cream suits normal skin to help maintain daily moisture."
+      },
+      "avoid": [
+        "Perform a patch test before first use.",
+        "Not classified as sensitive-friendly, so check for irritation if you have sensitive skin."
+      ],
+      "howToUse": "Apply an even layer of the moisturizer to clean skin.",
+      "whyThisHi": {
+        "general": "The Formularx Hydraveil Ceramide Water Cream 50 g ek moisturizer hai jisme ceramide hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Yeh sensitive-friendly nahi hai, isliye sensitive skin par dhyaan se use karein."
+      ],
+      "howToUseHi": "Saaf skin par moisturizer ki ek layer lagayein.",
+      "whyThisTe": {
+        "general": "The Formularx Hydraveil Ceramide Water Cream 50 g oka moisturizer, idhi ceramide tho untundi."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyandi.",
+        "Idi sensitive-friendly kadu, sensitive skin unte jagrattaga chudandi."
+      ],
+      "howToUseTe": "Shubhranga unna skin paina moisturizer rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m4",
@@ -246,7 +546,36 @@
       "mrp": 595,
       "actives": [
         "cica"
-      ]
+      ],
+      "whyThis": {
+        "general": "Dot & Key Cica Calming Oil Free Moisturizer comes in a 60 g pack with cica and is friendly for sensitive skin.",
+        "Oily": "Oil-free formulation suits oily skin.",
+        "Combination": "Balances hydration for combination skin.",
+        "Normal": "Provides lightweight moisture for normal skin."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "For external use only."
+      ],
+      "howToUse": "Apply evenly to clean skin as needed.",
+      "whyThisHi": {
+        "general": "Dot & Key Cica Calming Oil Free Moisturizer 60 g me cica milta hai aur ye sensitive skin ke liye theek hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Sirf external use ke liye hai."
+      ],
+      "howToUseHi": "Saaf skin par aaram se lagayein.",
+      "whyThisTe": {
+        "general": "Dot & Key Cica Calming Oil Free Moisturizer 60 g lo me cica untundi mariyu sensitive skin ki manchidi."
+      },
+      "avoidTe": [
+        "Modati sari vadune mundu patch test cheyandi.",
+        "Kevalam external use kosam matrame."
+      ],
+      "howToUseTe": "Shubhramaina skin paina raasukondi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m5",
@@ -264,7 +593,35 @@
       "src": "esquire",
       "actives": [
         "bha"
-      ]
+      ],
+      "whyThis": {
+        "general": "The Deconstruct Acne Control Moisturizer comes in a 50 g pack and is suitable for sensitive skin.",
+        "Oily": "This lightweight moisturizer helps manage oily skin without feeling heavy.",
+        "Combination": "It hydrates combination skin while keeping oil production balanced."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Do not stack too many acids in your routine."
+      ],
+      "howToUse": "Apply a suitable amount evenly to clean skin.",
+      "whyThisHi": {
+        "general": "The Deconstruct Acne Control Moisturizer 50 g sensitive skin ke liye theek hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Bahut saare acids ek sath use na karein."
+      ],
+      "howToUseHi": "Saaf skin par thodi si quantity lagayein.",
+      "whyThisTe": {
+        "general": "The Deconstruct Acne Control Moisturizer 50 g sensitive skin ki kosam manchidi."
+      },
+      "avoidTe": [
+        "Modati sari vadunetappudu patch test cheyyandi.",
+        "Okate sari chala acids vadakandi."
+      ],
+      "howToUseTe": "Shubhramga unna skin paina konchem quantity rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m6",
@@ -279,7 +636,35 @@
       ],
       "sens": true,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "This is a 50 ml moisturizer from Sebamed.",
+        "Oily": "Suitable for oily skin to help keep skin moisturized.",
+        "Combination": "Suitable for combination skin to help keep skin moisturized."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Avoid contact with eyes."
+      ],
+      "howToUse": "Apply a small amount to clean skin and gently massage until absorbed.",
+      "whyThisHi": {
+        "general": "Yeh Sebamed ka 50 ml moisturizer hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Aankhon mein jaane se bachayein."
+      ],
+      "howToUseHi": "Saaf skin par thoda sa lagayein aur halka massage karein.",
+      "whyThisTe": {
+        "general": "Idi Sebamed nundi 50 ml moisturizer."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi.",
+        "Kallalo padakunda chusukondi."
+      ],
+      "howToUseTe": "Nirmalamaina skin paina konchem rasi, absorb ayyevaraku rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m7",
@@ -303,7 +688,32 @@
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/3701129805329",
       "imageCheckedOn": "2026-11-24",
-      "imageNote": "Same product line (Atoderm Crème Ultra). Pack size on the photo may differ from 200 ml."
+      "imageNote": "Same product line (Atoderm Crème Ultra). Pack size on the photo may differ from 200 ml.",
+      "whyThis": {
+        "general": "Bioderma Atoderm Creme Ultra-Nourishing Moisturising Cream is a 200 ml moisturizer containing lipids.",
+        "Dry": "It is made to moisturize dry skin with its lipid formula."
+      },
+      "avoid": [
+        "Always do a patch test before using a new moisturizer.",
+        "Avoid contact with eyes."
+      ],
+      "howToUse": "Apply the cream gently to clean skin as needed.",
+      "whyThisHi": {
+        "general": "Yeh Bioderma Atoderm Creme Ultra-Nourishing Moisturising Cream 200 ml moisturizer hai jo lipids ke sath aati hai."
+      },
+      "avoidHi": [
+        "Naya product use karne se pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Cream ko saaf skin par zaroorat ke mutabiq lagayein.",
+      "whyThisTe": {
+        "general": "Idi Bioderma Atoderm Creme Ultra-Nourishing Moisturising Cream 200 ml moisturizer, idi lipidsni kaligi untundi."
+      },
+      "avoidTe": [
+        "Kotha product vadede mundu patch test cheyyandi."
+      ],
+      "howToUseTe": "Cream ni shubhramaina skin ki avasaramunnantha varaku rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m8",
@@ -320,7 +730,32 @@
       "src": "esquire",
       "actives": [
         "panthenol"
-      ]
+      ],
+      "whyThis": {
+        "general": "La Roche-Posay Cicaplast Baume B5+ is a 40 ml moisturizer containing panthenol.",
+        "Dry": "This moisturizer is suited for dry skin to help add moisture."
+      },
+      "avoid": [
+        "Always do a patch test before trying a new product.",
+        "This product is not listed as sensitive-friendly, so check if it suits your skin."
+      ],
+      "howToUse": "Apply this moisturizer to your face as needed.",
+      "whyThisHi": {
+        "general": "La Roche-Posay Cicaplast Baume B5+ ek 40 ml moisturizer hai jisme panthenol hai jo dry skin ke liye theek hai."
+      },
+      "avoidHi": [
+        "Naya product use karne se pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Apne chehre par zaroorat ke mutabiq moisturizer lagayein.",
+      "whyThisTe": {
+        "general": "La Roche-Posay Cicaplast Baume B5+ oka 40 ml moisturizer, idhi panthenol tho dry skin kosam untundhi."
+      },
+      "avoidTe": [
+        "Kotha product vadede mundu patch test cheyandi."
+      ],
+      "howToUseTe": "Ee moisturizer ni mee mukku paina ledha face ki raasukondi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m9",
@@ -345,7 +780,35 @@
       "imageSource": "Open Beauty Facts",
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/8906005274083",
-      "imageCheckedOn": "2026-11-24"
+      "imageCheckedOn": "2026-11-24",
+      "whyThis": {
+        "general": "Cetaphil Moisturising Cream contains ceramide and is designed to moisturize.",
+        "Dry": "It provides moisture for dry skin.",
+        "Normal": "It suits normal skin."
+      },
+      "avoid": [
+        "Always do a patch test before trying a new moisturizer.",
+        "Note that this product is not marked as sensitive skin friendly."
+      ],
+      "howToUse": "Apply evenly to clean skin as needed.",
+      "whyThisHi": {
+        "general": "Cetaphil Moisturising Cream mein ceramide hai jo moisture deta hai."
+      },
+      "avoidHi": [
+        "Naya product use karne se pehle patch test zaroor karein.",
+        "Yeh product sensitive skin friendly ke roop mein listed nahi hai."
+      ],
+      "howToUseHi": "Saaf skin par zaroorat ke anusaar lagayein.",
+      "whyThisTe": {
+        "general": "Cetaphil Moisturising Cream lo ceramide untundi, idi skin ni moist ga unchadaniki help chestundi."
+      },
+      "avoidTe": [
+        "Kotha product try chese mundu patch test cheyyandi.",
+        "Idi sensitive skin friendly ani mention cheyyaledu."
+      ],
+      "howToUseTe": "Clean aina skin paina avasaram unnantha varaku apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m10",
@@ -370,7 +833,33 @@
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/3337875598996",
       "imageCheckedOn": "2026-11-24",
-      "imageNote": "Same product; OBF photo is listed as 177 (ml or g), catalog lists 77 ml."
+      "imageNote": "Same product; OBF photo is listed as 177 (ml or g), catalog lists 77 ml.",
+      "whyThis": {
+        "general": "A CeraVe moisturizer cream in a 77 ml pack containing ceramide.",
+        "Dry": "Suits dry skin types needing moisturization.",
+        "Normal": "Suits normal skin types needing moisturization."
+      },
+      "avoid": [
+        "Perform a patch test before first use.",
+        "Note that this product is not marked as sensitive skin friendly."
+      ],
+      "howToUse": "Apply the moisturizer cream to clean skin as needed.",
+      "whyThisHi": {
+        "general": "CeraVe moisturizer cream 77 ml pack jisme ceramide hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Moisturizer cream ko saaf skin par zaroorat ke mutabiq lagayein.",
+      "whyThisTe": {
+        "general": "CeraVe moisturizer cream 77 ml pack, andulo ceramide undi."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyyandi."
+      ],
+      "howToUseTe": "Moisturizer cream ni clean skin paina avasaramaina maaram raayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m11",
@@ -389,7 +878,34 @@
       "mrp": 499,
       "actives": [
         "green tea"
-      ]
+      ],
+      "whyThis": {
+        "general": "Plum Green Tea Mattifying Moisturiser is formulated to keep skin moisturized with a mattifying finish.",
+        "Oily": "Suits oily skin by providing moisture without adding extra shine.",
+        "Combination": "Helps balance hydration across combination skin types."
+      },
+      "avoid": [
+        "Perform a patch test before first use.",
+        "Not classified as sensitive-friendly, so proceed with caution if you have sensitive skin."
+      ],
+      "howToUse": "Apply evenly to clean skin as needed for daily moisturization.",
+      "whyThisHi": {
+        "general": "Plum Green Tea Mattifying Moisturiser skin ko moisture aur mattifying finish dene mein madad karta hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Yeh sensitive skin ke liye friendly nahi hai, toh dhyan se use karein."
+      ],
+      "howToUseHi": "Saaf skin par zaroorat ke anusaar barabar lagayein.",
+      "whyThisTe": {
+        "general": "Plum Green Tea Mattifying Moisturiser skin ki moisture needs ko care chestundi."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyyandi."
+      ],
+      "howToUseTe": "Clean skin meeda avasaram unnappudu apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "m12",
@@ -415,7 +931,35 @@
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/7891010882983",
       "imageCheckedOn": "2026-11-24",
-      "imageNote": "Same product; OBF photo is a 50 g pack."
+      "imageNote": "Same product; OBF photo is a 50 g pack.",
+      "whyThis": {
+        "general": "Neutrogena Hydro Boost Water Gel is a lightweight moisturizer featuring hyaluronic acid.",
+        "Normal": "It hydrates normal skin without a heavy feel.",
+        "Combination": "The water gel formula works well on combination skin types.",
+        "Oily": "It provides moisture for oily skin without heavy oils."
+      },
+      "avoid": [
+        "Perform a patch test before first use.",
+        "Not classified as sensitive-friendly, so use with caution if you have reactive skin."
+      ],
+      "howToUse": "Massage evenly onto your face and neck after cleansing.",
+      "whyThisHi": {
+        "general": "Neutrogena Hydro Boost Water Gel ek lightweight moisturizer hai jisme hyaluronic acid hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Sensitive skin ke liye cautious rahein."
+      ],
+      "howToUseHi": "Face clean karne ke baad face aur neck par evenly lagayein.",
+      "whyThisTe": {
+        "general": "Neutrogena Hydro Boost Water Gel oka lightweight moisturizer, idhi hyaluronic acid tho untundi."
+      },
+      "avoidTe": [
+        "Modati sari vaduthunnappudu patch test cheyyandi."
+      ],
+      "howToUseTe": "Face clean chesukunnaka face mariyu neck paina apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s1",
@@ -436,7 +980,35 @@
       "actives": [
         "vitc",
         "niacinamide"
-      ]
+      ],
+      "whyThis": {
+        "general": "Foxtale SPF 50 Glow Sunscreen comes in a 50 ml bottle and features Vitamin C and Niacinamide.",
+        "Dry": "This SPF 50 sunscreen suits dry skin types.",
+        "Normal": "This SPF 50 sunscreen suits normal skin types."
+      },
+      "avoid": [
+        "Do a patch test before regular use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Foxtale SPF 50 Glow Sunscreen mein Vitamin C aur Niacinamide hai aur yeh 50 ml size mein aata hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke nirdesh ke anusar lagayein aur dhoop mein dobara lagayein.",
+      "whyThisTe": {
+        "general": "Foxtale SPF 50 Glow Sunscreen lo Vitamin C mariyu Niacinamide unnavi, idi 50 ml size lo untundi."
+      },
+      "avoidTe": [
+        "Modata patch test cheyyandi.",
+        "Prati roju poddunne sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi mariyu bayata unnapudu malli rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s2",
@@ -453,7 +1025,36 @@
       "sens": false,
       "aud": "any",
       "src": "esquire",
-      "mrp": 649
+      "mrp": 649,
+      "whyThis": {
+        "general": "Lakme Sun Expert Dry Matte Fluid is a 50 ml sunscreen fluid.",
+        "Oily": "The dry matte formula suits oily skin types well.",
+        "Combination": "It works for combination skin types too."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Not listed as sensitive-friendly, so proceed with caution if you have sensitive skin.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Lakme Sun Expert Dry Matte Fluid ek 50 ml sunscreen fluid hai jo oily aur combination skin ke liye hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke anusaar lagayein aur bahar hone par dobara lagayein.",
+      "whyThisTe": {
+        "general": "Lakme Sun Expert Dry Matte Fluid oka 50 ml sunscreen fluid."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi, bayata unte malli apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s3",
@@ -470,7 +1071,36 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "Eucerin Hydro Protect Ultra-Light Sunscreen Fluid SPF 50+ comes in a 50 ml bottle, but its exact ingredients are unknown.",
+        "Oily": "This ultra-light sunscreen fluid suits oily skin.",
+        "Combination": "This ultra-light sunscreen fluid suits combination skin.",
+        "Normal": "This ultra-light sunscreen fluid suits normal skin."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Eucerin Hydro Protect Ultra-Light Sunscreen Fluid SPF 50+ 50 ml hai, lekin iske ingredients unknown hain."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke direction ke hisaab se lagayein aur outdoor hone par reapply karein.",
+      "whyThisTe": {
+        "general": "Eucerin Hydro Protect Ultra-Light Sunscreen Fluid SPF 50+ 50 ml pack, kaani deeni ingredients teliyavu."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyyandi.",
+        "Prati roju udhayam sunscreen raayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhamga raayandi mariyu bayata unnapudu malli apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s4",
@@ -487,7 +1117,37 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "La Roche-Posay Anthelios Invisible Fluid UVMune 400 is an SPF 50 sunscreen in a 50 ml bottle.",
+        "Oily": "This fluid texture works for oily skin.",
+        "Combination": "This fluid texture fits combination skin.",
+        "Normal": "This fluid texture suits normal skin."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Apply sunscreen every morning.",
+        "Note that this product is not marked as sensitive-friendly."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "La Roche-Posay Anthelios Invisible Fluid UVMune 400 ek SPF 50 sunscreen hai jo 50 ml size mein hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke direction ke hisaab se lagayein aur dhoop mein dobara reapply karein.",
+      "whyThisTe": {
+        "general": "La Roche-Posay Anthelios Invisible Fluid UVMune 400 oka SPF 50 sunscreen 50 ml size lo undi."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi mariyu bayata unnapudu malli apply cheyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s5",
@@ -503,7 +1163,36 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "Asaya Spot Light Sunscreen (50 g) offers high sun protection with SPF 50 PA++++.",
+        "Combination": "Suits your combination skin type for daily sun protection.",
+        "Normal": "A great fit for normal skin to guard against sun exposure."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Apply sunscreen every morning.",
+        "Note that this product is not certified sensitive-friendly."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Asaya Spot Light Sunscreen (50 g) mein SPF 50 PA++++ sun protection hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke anusaar lagayein aur bahar dobara reapply karein.",
+      "whyThisTe": {
+        "general": "Asaya Spot Light Sunscreen (50 g) lo SPF 50 PA++++ sun protection untadi."
+      },
+      "avoidTe": [
+        "Modati sari vadocchu mundu patch test cheyyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi, bayata unte malli apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s6",
@@ -520,7 +1209,28 @@
       "sens": false,
       "aud": "any",
       "src": "esquire",
-      "mrp": 499
+      "mrp": 499,
+      "whyThis": {
+        "Combination": "This sunscreen suits combination skin types.",
+        "Normal": "This sunscreen suits normal skin types."
+      },
+      "avoid": [
+        "Perform a patch test before first use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke nirdesh ke anusar lagayein aur bahar dubara lagayein.",
+      "avoidTe": [
+        "Modati sari vadocchu mundu patch test cheyyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi mariyu bayata unnapudu malli rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s7",
@@ -536,7 +1246,35 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "whyThis": {
+        "general": "Bioderma Photoderm XDefense Ultra-Fluid Invisible Sunscreen offers SPF 50+ PA++++ protection in a 40 g size.",
+        "Combination": "Provides daily sun protection for combination skin types.",
+        "Normal": "Provides daily sun protection for normal skin types."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Bioderma Photoderm XDefense Ultra-Fluid Invisible Sunscreen 40 g SPF 50+ PA++++ ke sath aata hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke nirdeshon ke anusar lagayein aur baahar dubara lagayein.",
+      "whyThisTe": {
+        "general": "Bioderma Photoderm XDefense Ultra-Fluid Invisible Sunscreen 40 g lo SPF 50+ PA++++ protection istundi."
+      },
+      "avoidTe": [
+        "Modati sari vadocchu mundu patch test cheyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi mariyu bayata unnapudu malli rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s8",
@@ -557,7 +1295,35 @@
       "mrp": 499,
       "actives": [
         "filters"
-      ]
+      ],
+      "whyThis": {
+        "general": "Minimalist SPF 50 PA++++ Sunscreen uses filters to provide sun protection.",
+        "Oily": "This sunscreen suits oily skin types.",
+        "Combination": "This sunscreen works well for combination skin types."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Minimalist SPF 50 PA++++ Sunscreen mein filters hain jo dhoop se bachav karte hain."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack par diye gaye nirdeshon ke anusaar lagayein aur bahar hone par dobara lagayein.",
+      "whyThisTe": {
+        "general": "Minimalist SPF 50 PA++++ Sunscreen lo filters untaayi, ivi nalla protection isthayi."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga rayandi, bayata unte malli apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s9",
@@ -575,7 +1341,37 @@
       ],
       "sens": true,
       "aud": "any",
-      "src": "nykaa"
+      "src": "nykaa",
+      "whyThis": {
+        "general": "Cetaphil SUN Light Gel offers SPF 50+ sun protection and is suitable for sensitive skin.",
+        "Dry": "Provides SPF 50+ protection while working across dry skin types.",
+        "Normal": "A reliable choice for normal skin types needing high SPF.",
+        "Combination": "Suits combination skin for daily sun protection.",
+        "Oily": "This light gel formulation works well for oily skin without heavy ingredients."
+      },
+      "avoid": [
+        "Perform a patch test before first use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "Cetaphil SUN Light Gel SPF 50+ deta hai aur sensitive skin ke liye safe hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test karein.",
+        "Har subah sunscreen zaroor lagayein."
+      ],
+      "howToUseHi": "Pack ke direction ke hisaab se lagayein aur bahar hone par dubara apply karein.",
+      "whyThisTe": {
+        "general": "Cetaphil SUN Light Gel SPF 50+ isthumandi mariyu sensitive skin ki manchidi."
+      },
+      "avoidTe": [
+        "Modati sari vaadedi mundu patch test cheyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga apply cheyandi, bayata unnapudu malli rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "s10",
@@ -593,7 +1389,37 @@
       ],
       "sens": true,
       "aud": "any",
-      "src": "blog"
+      "src": "blog",
+      "whyThis": {
+        "general": "La Shield Sensitive Protect Sunscreen offers SPF 50+ protection.",
+        "Dry": "Suits dry skin types while providing sun protection.",
+        "Normal": "Suits normal skin types while providing sun protection.",
+        "Combination": "Suits combination skin types while providing sun protection.",
+        "Oily": "Suits oily skin types while providing sun protection."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Apply sunscreen every morning."
+      ],
+      "howToUse": "Apply as the pack directs and reapply outdoors.",
+      "whyThisHi": {
+        "general": "La Shield Sensitive Protect Sunscreen SPF 50+ protection deta hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Har subah sunscreen lagayein."
+      ],
+      "howToUseHi": "Pack ke anusaar lagayein aur bahar dobara lagayein.",
+      "whyThisTe": {
+        "general": "La Shield Sensitive Protect Sunscreen SPF 50+ protection istundi."
+      },
+      "avoidTe": [
+        "Modati sari vade mundu patch test cheyandi.",
+        "Prati roju udhayam sunscreen rayandi."
+      ],
+      "howToUseTe": "Pack lo cheppinattu rayandi mariyu bayata unnapudu malli apply cheyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "i1",
@@ -607,7 +1433,33 @@
       "aud": "women",
       "note": "Lactic acid, pH about 3.5, free of parabens and SLS",
       "src": "purplle",
-      "mrp": 225
+      "mrp": 225,
+      "whyThis": {
+        "general": "VWash Plus Expert Intimate Hygiene wash comes in a 100 ml size with lactic acid, a pH of about 3.5, and is free of parabens and SLS."
+      },
+      "avoid": [
+        "For external use only.",
+        "Do a patch test before first use."
+      ],
+      "howToUse": "Use for external intimate hygiene as directed on the pack.",
+      "whyThisHi": {
+        "general": "VWash Plus Expert Intimate Hygiene wash 100 ml mein lactic acid aur pH 3.5 hai, aur yeh parabens aur SLS se free hai."
+      },
+      "avoidHi": [
+        "Sirf external use ke liye hai.",
+        "Pehli baar use karne se pehle patch test karein."
+      ],
+      "howToUseHi": "Pack ke anusaar external hygiene ke liye use karein.",
+      "whyThisTe": {
+        "general": "VWash Plus Expert Intimate Hygiene wash 100 ml lo, idhi lactic acid, pH takkuva 3.5, mariyu parabens & SLS leni product."
+      },
+      "avoidTe": [
+        "Keval external use kosame.",
+        "Modati sari vadetappudu patch test cheyyandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhanga external hygiene kosam vadandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "i2",
@@ -620,7 +1472,33 @@
       "sens": false,
       "aud": "women",
       "note": "Dermatologically tested, free of sulfates and parabens",
-      "src": "purplle"
+      "src": "purplle",
+      "whyThis": {
+        "general": "Sanfe Natural Intimate Wash with lavender and chamomile is dermatologically tested, and free of sulfates and parabens. Specific skin types are not listed, and its specific ingredients are not fully detailed."
+      },
+      "avoid": [
+        "Intimate wash is for external use only.",
+        "Do a patch test before first use."
+      ],
+      "howToUse": "Use for external cleansing as part of your daily routine.",
+      "whyThisHi": {
+        "general": "Sanfe Natural Intimate Wash lavender aur chamomile ke sath dermatologically tested hai, aur sulfates aur parabens se mukt hai. Ingredients ki puri list nahi di gayi hai."
+      },
+      "avoidHi": [
+        "Intimate wash sirf external use ke liye hai.",
+        "Pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "External cleaning ke liye ise use karein.",
+      "whyThisTe": {
+        "general": "Sanfe Natural Intimate Wash lavender and chamomile tho dermatologically tested, mariyu sulfates, parabens lekunda undi. Specific ingredients teliyaledu."
+      },
+      "avoidTe": [
+        "Intimate wash keval external use kosame.",
+        "Modati sari vadocchu mundhu patch test cheyyandi."
+      ],
+      "howToUseTe": "External cleansing kosam idi vadandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "i3",
@@ -633,7 +1511,33 @@
       "sens": false,
       "aud": "women",
       "note": "Free of parabens and sulfates, supports natural pH",
-      "src": "purplle"
+      "src": "purplle",
+      "whyThis": {
+        "general": "Good Vibes Intimate Care Hygiene Wash with Aloe Vera (100 ml) is free of parabens and sulfates, and it supports natural pH."
+      },
+      "avoid": [
+        "For external use only.",
+        "Do a patch test before regular use."
+      ],
+      "howToUse": "Use for external cleansing as needed, then rinse thoroughly with water.",
+      "whyThisHi": {
+        "general": "Good Vibes Intimate Care Hygiene Wash (Aloe Vera, 100 ml) parabens aur sulfates se free hai aur natural pH ko support karta hai."
+      },
+      "avoidHi": [
+        "Yeh sirf external use ke liye hai.",
+        "Use karne se pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Sirf external cleaning ke liye use karein aur paani se ache se dho lein.",
+      "whyThisTe": {
+        "general": "Good Vibes Intimate Care Hygiene Wash (Aloe Vera, 100 ml) lo paraben, sulfate ledhu mariyu natural pH ki support chestundi."
+      },
+      "avoidTe": [
+        "Idi kevalam external use kosam matrame.",
+        "Modalu pette mundu patch test cheyyandi."
+      ],
+      "howToUseTe": "Kevalam external cleaning kosam vadandi, tarvata neellatho shubhranga kadagandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "b1",
@@ -646,7 +1550,33 @@
       "sens": false,
       "aud": "men",
       "note": "Conditions and softens the beard",
-      "src": "ndtv"
+      "src": "ndtv",
+      "whyThis": {
+        "general": "Beardo Godfather Lite Beard Oil conditions and softens your beard."
+      },
+      "avoid": [
+        "Perform a patch test before regular use.",
+        "For external use only."
+      ],
+      "howToUse": "Apply a few drops to your beard and massage gently.",
+      "whyThisHi": {
+        "general": "Beardo Godfather Lite Beard Oil daadi ko soft aur conditioned rakhne mein madad karta hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Sirf external use ke liye hai."
+      ],
+      "howToUseHi": "Kuch boondein apni daadi par lagakar halka massage karein.",
+      "whyThisTe": {
+        "general": "Beardo Godfather Lite Beard Oil mee beard ni soft ga undadaniki sahayapaduthundi."
+      },
+      "avoidTe": [
+        "Modata patch test cheyyandi.",
+        "Bahar mathrame vadandi."
+      ],
+      "howToUseTe": "Konni drops mee beard ki raasi soft ga massage cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "t1",
@@ -667,7 +1597,36 @@
         "niacinamide"
       ],
       "src": "derma",
-      "note": "A popular India-made niacinamide serum"
+      "note": "A popular India-made niacinamide serum",
+      "whyThis": {
+        "general": "A popular India-made niacinamide serum by Minimalist in a 30 ml bottle.",
+        "Oily": "Suits oily skin types looking for a face serum.",
+        "Combination": "Works well for combination skin types.",
+        "Normal": "Fits normal skin routines."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Not marked as sensitive-friendly; patch test first if your skin is easily irritated."
+      ],
+      "howToUse": "Apply a few drops of the serum to clean skin.",
+      "whyThisHi": {
+        "general": "Minimalist ka 30 ml ka ek popular India-made niacinamide serum."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Sensitive skin ke liye theek nahi hai."
+      ],
+      "howToUseHi": "Saaf skin par serum ki kuch boondein lagayein.",
+      "whyThisTe": {
+        "general": "Minimalist nundi vachina 30 ml popular India-made niacinamide serum idi."
+      },
+      "avoidTe": [
+        "Modati sari vadunetappudu patch test cheyyandi.",
+        "Sensitive skin variki anukulam kadu."
+      ],
+      "howToUseTe": "Shubhranga unna skin paina konni drops serum apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "t2",
@@ -693,7 +1652,35 @@
       "imageSource": "Open Beauty Facts",
       "imageLicense": "ODbL",
       "imagePage": "https://world.openbeautyfacts.org/product/8904417307146",
-      "imageCheckedOn": "2026-11-24"
+      "imageCheckedOn": "2026-11-24",
+      "whyThis": {
+        "general": "The Derma Co 2% Salicylic Acid Serum comes in a 30 ml bottle and uses BHA for congested, oilier skin.",
+        "Oily": "This BHA serum helps with congested, oilier skin types.",
+        "Combination": "This BHA treatment fits combination skin that deals with oiliness."
+      },
+      "avoid": [
+        "Patch test before first use.",
+        "Do not stack too many acids at once."
+      ],
+      "howToUse": "Apply a few drops of this serum as directed on the pack.",
+      "whyThisHi": {
+        "general": "The Derma Co 2% Salicylic Acid Serum 30 ml bottle oilier aur congested skin ke liye BHA treatment hai."
+      },
+      "avoidHi": [
+        "Pehle patch test zaroor karein.",
+        "Zyada acids ek sath use na karein."
+      ],
+      "howToUseHi": "Pack par diye gaye instructions ke mutabiq serum ki kuch drops apply karein.",
+      "whyThisTe": {
+        "general": "The Derma Co 2% Salicylic Acid Serum 30 ml pack congested mariyu oilier skin kosam BHA treatment."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi.",
+        "Okatesari chala acids vadakandi."
+      ],
+      "howToUseTe": "Pack lo cheppina vidhamga konni drops serum apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "t3",
@@ -714,7 +1701,36 @@
         "vitc"
       ],
       "src": "derma",
-      "note": "Morning antioxidant serum; always follow with sunscreen"
+      "note": "Morning antioxidant serum; always follow with sunscreen",
+      "whyThis": {
+        "general": "Minimalist 16% Vitamin C Face Serum (30 ml) is a morning antioxidant serum.",
+        "Dry": "Suits dry skin as a morning antioxidant serum. Always follow with sunscreen.",
+        "Normal": "Suits normal skin as a morning antioxidant serum. Always follow with sunscreen.",
+        "Combination": "Suits combination skin as a morning antioxidant serum. Always follow with sunscreen."
+      },
+      "avoid": [
+        "Always follow with sunscreen.",
+        "Perform a patch test before regular use."
+      ],
+      "howToUse": "Apply in the morning as an antioxidant serum and always follow with sunscreen.",
+      "whyThisHi": {
+        "general": "Minimalist 16% Vitamin C Face Serum (30 ml) ek morning antioxidant serum hai."
+      },
+      "avoidHi": [
+        "Hamesha sunscreen ke sath use karein.",
+        "Pehle patch test zaroor karein."
+      ],
+      "howToUseHi": "Subah antioxidant serum ki tarah lagayein aur hamesha sunscreen follow karein.",
+      "whyThisTe": {
+        "general": "Minimalist 16% Vitamin C Face Serum (30 ml) oka morning antioxidant serum."
+      },
+      "avoidTe": [
+        "Eppudu sunscreen tho follow avvandi.",
+        "Modati sari vaadede mundu patch test cheyyandi."
+      ],
+      "howToUseTe": "Udane antioxidant serum laaga apply chesi, tappanisari ga sunscreen vadandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "t4",
@@ -734,7 +1750,35 @@
         "ceramide"
       ],
       "src": "derma",
-      "note": "Barrier-supporting ceramide serum"
+      "note": "Barrier-supporting ceramide serum",
+      "whyThis": {
+        "general": "A barrier-supporting ceramide serum by The Derma Co that is sensitive-friendly.",
+        "Dry": "Helps care for dry skin types.",
+        "Normal": "Suits normal skin types."
+      },
+      "avoid": [
+        "Always do a patch test before first use.",
+        "For external use only."
+      ],
+      "howToUse": "Apply a few drops of this 30 ml serum to clean skin.",
+      "whyThisHi": {
+        "general": "The Derma Co ka ye ceramide serum barrier support ke liye hai aur sensitive skin ke liye friendly hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Sirf external use ke liye hai."
+      ],
+      "howToUseHi": "Saaf skin par is serum ki kuch boondein lagayein.",
+      "whyThisTe": {
+        "general": "The Derma Co nunchi ee ceramide serum barrier support kosam and sensitive skin ki friendly ga untundi."
+      },
+      "avoidTe": [
+        "Modati sari vadetappudu patch test cheyyandi.",
+        "Bahar matrame vadali."
+      ],
+      "howToUseTe": "Clean skin meda ee serum konni drops apply cheyyandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     },
     {
       "id": "t5",
@@ -756,7 +1800,36 @@
         "cica"
       ],
       "src": "derma",
-      "note": "A milder BHA option often used on breakout-prone skin"
+      "note": "A milder BHA option often used on breakout-prone skin",
+      "whyThis": {
+        "general": "Dot & Key Cica + 2% Salicylic Acid Serum in 30 ml is a milder BHA option often used on breakout-prone skin, and it is sensitive-friendly.",
+        "Oily": "Suits oily skin as a milder BHA option for breakout-prone skin.",
+        "Combination": "Works well for combination skin types looking for a milder BHA option.",
+        "Normal": "Suitable for normal skin as a gentle BHA serum."
+      },
+      "avoid": [
+        "Do a patch test before first use.",
+        "Do not stack too many active acids at once."
+      ],
+      "howToUse": "Apply a few drops to clean skin as needed.",
+      "whyThisHi": {
+        "general": "Dot & Key Cica + 2% Salicylic Acid Serum (30 ml) ek milder BHA option hai jo breakout-prone skin ke liye use hota hai aur sensitive skin ke liye bhi friendly hai."
+      },
+      "avoidHi": [
+        "Pehli baar use karne se pehle patch test zaroor karein.",
+        "Ek sath zyada acids mix na karein."
+      ],
+      "howToUseHi": "Saaf skin par kuch boondein lagayein.",
+      "whyThisTe": {
+        "general": "Dot & Key Cica + 2% Salicylic Acid Serum (30 ml) oka milder BHA option, idi breakout-prone skin ki vadtharu mariyu sensitive skin ki kuda friendly ga untundi."
+      },
+      "avoidTe": [
+        "Modati sari vadune mundu patch test cheyyandi.",
+        "Okasare chala acids ekkuvaga vadakandi."
+      ],
+      "howToUseTe": "Shubhranga unna skin paina konni drops rayandi.",
+      "copyGeneratedBy": "gemini-3.5-flash-lite",
+      "copyGeneratedOn": "2026-11-24"
     }
   ]
 }

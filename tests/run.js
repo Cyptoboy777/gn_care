@@ -332,8 +332,13 @@ async function t(name, fn) {
     const niac = global.GN_PRODUCTS.find((x) => x.id === 't1');
     const serum = global.GN_PRODUCTS.filter((x) => x.cat === 'Serum');
     assert.ok(serum.length >= 4);
-    const why = P.whyThis(niac, 'Oily', ['acne']);
+    const why = P.whyThis({ brand: 'Minimalist', name: '10% Niacinamide Face Serum', cat: 'Serum', skin: ['Oily'], actives: ['niacinamide'] }, 'Oily', ['acne']);
     assert.ok(/niacinamide/i.test(why));
+    const fromCat = P.whyThis({ whyThis: { Oily: 'Catalog why for oily skin.', general: 'General why.' }, name: 'X', brand: 'Y' }, 'Oily', []);
+    assert.strictEqual(fromCat, 'Catalog why for oily skin.');
+    assert.strictEqual(P.howToUse({ howToUse: 'Use a pea-size amount.' }), 'Use a pea-size amount.');
+    assert.deepStrictEqual(P.productAvoid({ avoid: ['Patch test first.'] }), ['Patch test first.']);
+    assert.strictEqual(P.whyThis({ whyThis: { general: 'English why.' }, whyThisHi: { general: 'Hinglish why.' } }, 'Dry', [], 'hi'), 'Hinglish why.');
     const tips = P.avoidTips('Dry', ['sensitive'], true);
     assert.ok(tips.length >= 1);
     assert.ok(tips.some((s) => /fragrance|foaming|acid/i.test(s)));

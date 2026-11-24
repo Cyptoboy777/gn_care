@@ -356,3 +356,5 @@ textarea.input{min-height:96px;resize:vertical;line-height:1.5;font-family:inher
 .coupon p{margin:0;font-size:13px}
 .fashion .btn-grid{display:grid;grid-template-columns:1fr;gap:8px}
 @media (min-width:420px){.fashion .btn-grid{grid-template-columns:1fr 1fr}}
+.how-to,.avoid-this{margin-top:6px}
+.copy-lang{margin-top:8px}
