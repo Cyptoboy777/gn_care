@@ -15,6 +15,9 @@
   }
   /* Price used for budget maths. Products with no known price use the middle price of their category. */
   function effPrice(p) { return p.price != null ? p.price : median(p.cat); }
+  /* Live Flipkart price when the exact listing was matched, otherwise the approx. catalog price. */
+  function isLive(p) { return !!(p && p.fkProductId && p.fkPrice != null); }
+  function livePrice(p) { return isLive(p) ? p.fkPrice : effPrice(p); }
 
   function fit(p, type, sens) {
     var s = 0;
@@ -47,22 +50,32 @@
       if (swaps[cat]) manual = c.list.filter(function (p) { return p.id === swaps[cat]; })[0] || null;
       return { cat: cat, have: false, item: manual || c.list[0] || null, alts: c.list, noSens: c.noSens, manual: !!manual };
     });
-    var sum = function () { return items.reduce(function (a, i) { return a + (i.item ? effPrice(i.item) : 0); }, 0); };
+    var sum = function () { return items.reduce(function (a, i) { return a + (i.item ? livePrice(i.item) : 0); }, 0); };
     var min = items.reduce(function (a, i) {
       if (!i.item || !i.alts.length) return a;
-      return a + Math.min.apply(null, i.alts.map(effPrice));
+      return a + Math.min.apply(null, i.alts.map(livePrice));
     }, 0);
     if (budget > 0) {
       CUT_ORDER.forEach(function (cat) {
         if (sum() <= budget) return;
         var it = items.filter(function (i) { return i.cat === cat; })[0];
         if (!it || it.have || it.manual || !it.item) return;
-        var cheapest = it.alts.slice().sort(function (a, b) { return effPrice(a) - effPrice(b); })[0];
-        if (cheapest && effPrice(cheapest) < effPrice(it.item)) it.item = cheapest;
+        var cheapest = it.alts.slice().sort(function (a, b) { return livePrice(a) - livePrice(b); })[0];
+        if (cheapest && livePrice(cheapest) < livePrice(it.item)) it.item = cheapest;
       });
     }
+    /* Optional 4th step: one treatment, added only when it still fits the budget. */
+    if (opts.treat && !have.Treatment && !have.Serum) {
+      var tl = treatments(type, opts.concerns || []);
+      var room = budget > 0 ? budget - sum() : Infinity;
+      var tm = swaps.Treatment ? tl.filter(function (p) { return p.id === swaps.Treatment; })[0] : null;
+      var tp = tm || tl.filter(function (p) { return livePrice(p) <= room; })[0];
+      if (tp) items.splice(1, 0, { cat: 'Treatment', have: false, item: tp, alts: tl, noSens: false, manual: !!tm, optional: true });
+    }
     var total = sum();
-    return { items: items, total: total, min: min, fits: budget <= 0 || total <= budget };
+    var checked = items.reduce(function (a, i) { return i.item && isLive(i.item) && i.item.fkCheckedOn && i.item.fkCheckedOn > a ? i.item.fkCheckedOn : a; }, '');
+    var approx = items.some(function (i) { return i.item && !isLive(i.item); });
+    return { items: items, total: total, min: min, fits: budget <= 0 || total <= budget, checkedOn: checked, approx: approx };
   }
 
   function addOns(aud) {
@@ -268,7 +281,7 @@
     return raw;
   }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, livePrice: livePrice, isLive: isLive, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);

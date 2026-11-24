@@ -144,7 +144,7 @@ function applySkin(photoMetrics,flags){
   else{r={ok:!!(photoMetrics&&photoMetrics.ok)||!!f.length,needInput:!(photoMetrics&&photoMetrics.ok)&&!f.length,type:'Normal',sensitive:f.indexOf('sensitive')>-1,sensitiveLeaning:false,sun:f.indexOf('tan')>-1?2:0,source:photoMetrics&&photoMetrics.ok?'scan':'note',zones:null,metrics:photoMetrics&&photoMetrics.ok?photoMetrics:null,concerns:f}}
   if(!r||!r.ok)return false;
   S.skin={type:r.type,sensitive:!!r.sensitive,sensitiveLeaning:!!r.sensitiveLeaning,sun:r.sun,flags:r.concerns||f,note:scanNote,at:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'}),source:r.source||'note',metrics:r.metrics||null,zones:r.zones||null};
-  var k=kit();k.type=r.type;k.sens=!!(r.sensitive||r.sensitiveLeaning);k.budget=scanBudget;k.swaps={};
+  var k=kit();k.type=r.type;k.sens=!!(r.sensitive||r.sensitiveLeaning);k.budget=scanBudget;k.swaps={};PK={ai:'',err:'',busy:false,rated:false};
   save();return true}
 function zones(type){
   if(S.skin&&S.skin.zones)return S.skin.zones;
@@ -228,9 +228,10 @@ function viewScan(){
     var r=kitBuild();
     var msg=scanBudget>0?(r.fits?('About '+money(r.total)+' of your '+money(scanBudget)+' budget.'):('The lowest kit is about '+money(r.min)+', above your '+money(scanBudget)+' budget. Go back and raise the budget, or still use these picks.')):'About '+money(r.total)+', no budget cap.';
     var avoidScan=(window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(S.skin.type,S.skin.flags||[],S.skin.sensitive||S.skin.sensitiveLeaning).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
-    var trScan=(window.GNPicks&&GNPicks.treatments)?GNPicks.treatments(S.skin.type,S.skin.flags||[]).slice(0,3):[];
-    var treatScan=trScan.length?'<section class="tile"><h3 class="t">Serums that may suit you</h3><div class="list">'+trScan.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+priceTxt(p)+'</span>'+productCopyHtml(p,S.skin.type)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>':'';
-    kitHtml='<section class="tile"><h3 class="t">Your kit</h3><p class="hint">'+esc(msg)+' '+affDisc()+'</p></section>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('')+avoidScan+treatScan;
+    var inKit=r.items.map(function(i){return i.item&&i.item.id});
+    var trScan=(window.GNPicks&&GNPicks.treatments)?GNPicks.treatments(S.skin.type,S.skin.flags||[]).filter(function(p){return inKit.indexOf(p.id)<0}).slice(0,3):[];
+    var treatScan=trScan.length?'<section class="tile"><h3 class="t">Other serums that may suit you</h3><div class="list">'+trScan.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+priceTxt(p)+'</span>'+productCopyHtml(p,S.skin.type)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>':'';
+    kitHtml=kitSummary(r,S.skin.type,S.skin.sensitive||S.skin.sensitiveLeaning,scanBudget)+'<h3 class="t kit-detail-h">Product details</h3>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('')+avoidScan+treatScan;
   }
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
@@ -331,7 +332,7 @@ function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
 function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
 function priceTxt(p){
   if(p.fkPrice!=null)return 'Flipkart '+money(p.fkPrice)+(p.fkCheckedOn?' · checked '+p.fkCheckedOn:'');
-  return p.price!=null?'about '+money(p.price):'price varies';
+  return p.price!=null?'approx. '+money(p.price):'price varies';
 }
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
 var fashTab='women';
@@ -421,10 +422,33 @@ function buyBtn(p){
     '<a class="btn sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Amazon</a>'+
     '<a class="btn ghost sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener">Flipkart</a>'+
     '</div>'}
-function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave()})}
+function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave(),treat:true,concerns:kitConcerns()})}
+function kitPriceLbl(p){return GNPicks.isLive(p)?money(p.fkPrice)+' on Flipkart':(p.price!=null?'approx. '+money(p.price):'price varies, est. '+money(GNPicks.effPrice(p)))}
+function kitAIBox(r,type,sens){
+  if(PK.ai)return '<div class="answer fade-in">'+fmtAns(PK.ai)+'</div>'+thumbs(PK.rated,'aiFbK');
+  if(PK.busy)return '<div class="skel" aria-busy="true" aria-label="Getting an AI explanation"><i></i><i></i><i></i></div>';
+  return '<div class="answer">'+fmtAns(kitPlain(r,type,sens))+'</div>'+(PK.err?'<p class="hint">AI is busy right now, so this is our standard explanation.</p>':'')}
+/* One clear recommendation: the exact kit, real prices, total and the AI explanation of that kit. */
+function kitSummary(r,type,sens,budget){
+  var rows=r.items.filter(function(i){return i.item}).map(function(i,n){var p=i.item;
+    return '<li class="kit-row" style="--i:'+n+'"><span class="kit-step num">'+(n+1)+'</span><div class="grow"><span class="eyebrow">'+esc(i.cat)+(i.optional?' · optional':'')+'</span><b>'+esc(p.brand+' '+p.name)+'</b><span class="hint">'+esc([p.size,kitPriceLbl(p)].filter(Boolean).join(' · '))+'</span></div>'+
+      '<div class="kit-buy"><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" aria-label="Buy '+esc(p.brand+' '+p.name)+' on Flipkart">Flipkart</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener" aria-label="Find '+esc(p.brand+' '+p.name)+' on Amazon">Amazon</a></div></li>'}).join('');
+  var note=[];
+  if(r.checkedOn)note.push('Flipkart prices checked on '+r.checkedOn+'.');
+  if(r.approx)note.push('“approx.” prices are typical catalog prices, not live.');
+  note.push('Verify the price at checkout.');
+  var bmsg=budget>0?(r.fits?'Fits your '+money(budget)+' budget.':'Above your '+money(budget)+' budget. The lowest kit is about '+money(r.min)+'.'):'No budget cap.';
+  return '<section class="tile kit-best"><p class="eyebrow">Our pick for '+esc(String(type).toLowerCase())+' skin'+(sens?' · sensitive':'')+'</p><h3 class="t">Your best kit</h3>'+
+    '<ol class="kit-list">'+rows+'</ol>'+
+    '<div class="row sp wrap kit-total"><div><span class="hint">Total'+(r.approx?' (approx.)':'')+'</span><span class="big num">'+money(r.total)+'</span></div><span class="chip '+(r.fits?'good':'warn')+'">'+esc(bmsg)+'</span></div>'+
+    '<p class="hint">'+esc(note.join(' '))+' '+affDisc()+'</p>'+
+    '<div class="row sp wrap"><h3 class="t">Why this kit</h3><button class="btn sm" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+(PK.ai?'AI explained':'Explain with AI')+'</button></div>'+
+    kitAIBox(r,type,sens)+'</section>'}
 function kitQuestion(r,type,sens,budget){
-  var lines=['Skin type: '+type+(sens?', sensitive':'')+'. Budget: '+money(budget)+'.'];
-  r.items.forEach(function(i){if(i.item)lines.push(i.cat+': '+i.item.brand+' '+i.item.name+'.')});
+  var cs=kitConcerns();
+  var lines=['Skin type: '+type+(sens?', sensitive':'')+(cs.length?', concerns: '+cs.join(', '):'')+'. Budget: '+(budget>0?money(budget):'no limit')+'.'];
+  r.items.forEach(function(i){if(i.item)lines.push(i.cat+': '+i.item.brand+' '+i.item.name+' ('+kitPriceLbl(i.item)+').')});
+  lines.push('Kit total: '+money(r.total)+'.');
   return lines.join(' ')}
 /* Instant, rule-based kit explanation. No AI, no download, works offline. AI text replaces it only if it arrives. */
 function kitPlain(r,type,sens){
@@ -470,7 +494,7 @@ function viewPicks(){
     var have=r.items.filter(function(i){return i.have}).map(function(i){return i.cat.toLowerCase()});
     var pct=k.budget>0?Math.min(100,r.total/k.budget*100):0;
     var msg=r.fits?('That leaves about '+money(Math.max(0,k.budget-r.total))+' of your budget.'):('The lowest kit for '+type.toLowerCase()+' skin is about '+money(r.min)+', above your '+money(k.budget)+' budget. Raise the budget or skip an item.');
-    var aiBox=PK.ai?'<div class="answer">'+fmtAns(PK.ai)+'</div>'+thumbs(PK.rated,'aiFbK'):'<div class="answer">'+fmtAns(kitPlain(r,type,sens))+'</div>'+(PK.busy?'<p class="hint">Getting an AI explanation…</p>':(PK.err?'<p class="hint">AI is busy right now, so this is our standard explanation.</p>':''));
+    var aiBox=kitAIBox(r,type,sens);
     var add=GNPicks.addOns(k.aud);
     body='<div class="grid">'+r.items.map(function(i){return pickCard(i,type)}).join('')+
       '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain with AI</button></div>'+
@@ -608,7 +632,7 @@ function mark(){
 var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,timer:viewTimer,shelf:viewShelf,checker:viewChecker};
 function render(anim){
   var v=$('#view');v.innerHTML=views[tab]();
-  if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}
+  if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}else v.classList.remove('rise');
   mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','checker'].indexOf(tab)>-1);if(window.GNRemind&&S.remind)GNRemind.dueOnOpen(S.remind,S.uv&&S.uv.appliedAt)}
 function go(t,quiet){
   if(!views[t])t='home';
@@ -628,7 +652,9 @@ function applyPrefs(){
   document.body.classList.toggle('no-motion',!S.motion);
   syncTheme()}
 var deferredInstall=null;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredInstall=e});
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredInstall=e;syncInstall();if(tab==='home')render()});
+window.addEventListener('appinstalled',function(){deferredInstall=null;standalone=true;syncInstall();if(tab==='home')render();toast('GN Care installed')});
+function syncInstall(){var b=document.getElementById('install-top');if(b)b.hidden=!!standalone||!(deferredInstall||isIOS)}
 var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
 function installRow(){
@@ -701,7 +727,7 @@ var A={
  kitAI:function(){
    var k=kit(),r=kitBuild();if(!r.items.some(function(i){return i.item})){toast('Pick a skin type first');return}
    PK={ai:'',err:'',busy:true,rated:false};render();
-   sendAI('picks',kitQuestion(r,kitType(),kitSens(),k.budget),function(x){PK.busy=false;if(x.err)PK.err=x.err;else PK.ai=x.text;if(tab==='picks')render()})},
+   sendAI('picks',kitQuestion(r,kitType(),kitSens(),k.budget),function(x){PK.busy=false;if(x.err)PK.err=x.err;else PK.ai=x.text;if(tab==='picks'||tab==='scan')render()})},
  aiFbK:function(v){PK.rated=true;render();postJSON('/api/feedback',{stars:+v,kind:'ai',v:'3'})},
  onDevice:function(){S.onDevice=!S.onDevice;save();render()},
  aiProfile:function(){S.aiProfile=S.aiProfile===false;save();render()},
@@ -719,7 +745,9 @@ var A={
    else if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
  remindSpf:function(){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};S.remind.spf=!S.remind.spf;save();if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
  closeSettings:function(){$('#sheet').hidden=true},
- install:function(){if(!deferredInstall)return;deferredInstall.prompt();deferredInstall.userChoice.then(function(){deferredInstall=null;$('#sheet-body').innerHTML=settingsHTML()})},
+ install:function(){
+   if(!deferredInstall){toast(isIOS?'Tap Share, then Add to Home Screen':'Use the browser menu, then Install app');return}
+   deferredInstall.prompt();deferredInstall.userChoice.then(function(){deferredInstall=null;syncInstall();if(!$('#sheet').hidden)$('#sheet-body').innerHTML=settingsHTML();if(tab==='home')render()})},
  adPrefs:function(){$('#sheet').hidden=true;if(window.GNAds)GNAds.reopen()},
  pref:function(k,t){S[k]=!S[k];t.setAttribute('aria-checked',String(S[k]));save();applyPrefs()},
  resetAll:function(v,t){
@@ -831,7 +859,7 @@ document.addEventListener('gn-catalog',function(){if(tab==='picks'||tab==='scan'
 window.addEventListener('hashchange',onHash);
 
 /* ---------- boot ---------- */
-buildNav();applyPrefs();
+buildNav();applyPrefs();syncInstall();
 var h0=location.hash.replace('#','');tab=views[h0]?h0:'home';render(true);
 setInterval(function(){tickTimer();if(tab==='home'&&$('#uv-next'))$('#uv-next').textContent=uvNextText()},500);
 try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',syncTheme)}catch(e){}

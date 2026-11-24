@@ -40,8 +40,10 @@ const PROMPTS = {
   /* Products come from the app's own catalog, so this mode may name them, but only them. */
   picks:
     RULES.replace('Never recommend specific brands or give medicine doses. ', 'Never give medicine doses. ') +
-    ' The user gives a skin profile and a short list of products already chosen by the app. Explain in simple words why each listed product suits that skin type and budget, ' +
-    'and give one tip for how to use them (cleanser, moisturizer, then sunscreen in the morning). Talk only about the listed products. Never add other brands or products. ' +
+    ' The user gives a skin profile and the exact kit already chosen by the app, with each price and the kit total. Present it as one clear recommendation: ' +
+    'one bullet per listed product, naming it exactly as given with its price exactly as given, and why it suits this skin type and concerns. ' +
+    'Then one bullet with the morning and night order (cleanser, treatment if listed, moisturizer, sunscreen in the morning) and one bullet with the total exactly as given. ' +
+    'Never change, round or invent prices, discounts or coupons. Talk only about the listed products. Never add other brands or products. ' +
     'Make no medical claims, do not promise results, and remind the person to patch test.'
 };
 const LIMITS = { coach: 500, decode: 1500, picks: 900 };

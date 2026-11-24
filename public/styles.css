@@ -358,3 +358,37 @@ textarea.input{min-height:96px;resize:vertical;line-height:1.5;font-family:inher
 @media (min-width:420px){.fashion .btn-grid{grid-template-columns:1fr 1fr}}
 .how-to,.avoid-this{margin-top:6px}
 .copy-lang{margin-top:8px}
+
+/* ---------- v15: best-kit card, motion polish, skeletons ---------- */
+.install-top{padding:7px 12px;font-size:12.5px}
+.install-top .ico{width:16px;height:16px}
+.rise>.tile,.rise>.grid>.tile,.rise .scan-kit>.tile{animation:rise .45s cubic-bezier(.22,1,.36,1) both}
+.rise>.tile:nth-child(3),.rise>.grid>.tile:nth-child(2),.rise .scan-kit>.tile:nth-child(2){animation-delay:.05s}
+.rise>.tile:nth-child(4),.rise>.grid>.tile:nth-child(3),.rise .scan-kit>.tile:nth-child(3){animation-delay:.1s}
+.rise>.tile:nth-child(n+5),.rise>.grid>.tile:nth-child(n+4),.rise .scan-kit>.tile:nth-child(n+4){animation-delay:.14s}
+.chips button:active,.preset:active,.opts button:active,.moods button:active{transform:scale(.95)}
+.btn:focus-visible,.chips button:focus-visible,.icon-btn:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.fade-in{animation:fadeIn .35s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.skel{display:flex;flex-direction:column;gap:9px;padding:6px 0}
+.skel i{display:block;height:12px;border-radius:8px;background:var(--rule);position:relative;overflow:hidden}
+.skel i:nth-child(2){width:86%}.skel i:nth-child(3){width:64%}
+.skel i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:translateX(-100%);animation:shim 1.2s ease-in-out infinite}
+@keyframes shim{to{transform:translateX(100%)}}
+.p-img{background:var(--rule)}
+.kit-best{gap:12px}
+.kit-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.kit-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:var(--glass);border:1px solid var(--edge)}
+.rise .kit-row{animation:rise .4s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0)*60ms + .1s)}
+.kit-row b{display:block;font-size:14.5px;line-height:1.3;overflow-wrap:anywhere}
+.kit-row .eyebrow{font-size:10.5px}
+.kit-step{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--btn);color:#fff;font-weight:700;font-size:13px}
+.kit-buy{display:flex;flex-direction:column;gap:6px;flex:none}
+.kit-buy .btn{padding:7px 11px;font-size:12px}
+.kit-total .big{display:block;font-size:36px;line-height:1.1}
+.kit-detail-h{margin:10px 2px 0;grid-column:1/-1}
+@media (max-width:420px){.kit-row{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start}.kit-buy{grid-column:2;flex-direction:row}.kit-buy .btn{flex:1}}
+a.btn{text-decoration:none}
+.scan-kit>.tile{grid-column:auto}
+.scan-kit>.tile:first-child,.scan-kit>.kit-detail-h{grid-column:1/-1}
+@media (max-width:420px){.install-top{padding:7px 10px}.install-top .lbl{display:none}}
