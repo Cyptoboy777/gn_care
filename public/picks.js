@@ -311,8 +311,55 @@
     if (!/^https:\/\/(t\.me|telegram\.me)\/[-A-Za-z0-9_+/]+$/i.test(raw)) return '';
     return raw;
   }
+  function fitsSkin(p, type) {
+    return !!(type && p && p.skin && p.skin.indexOf(type) > -1);
+  }
+  function catalogCats(products) {
+    var seen = {}, out = [];
+    (products || []).forEach(function (p) {
+      if (p && p.cat && !seen[p.cat]) { seen[p.cat] = 1; out.push(p.cat); }
+    });
+    return out;
+  }
+  /* Honest browse helpers for the Shop grid. sort=price uses Flipkart live price when present, else typical catalog price; unknown prices go last. No ratings or invented discounts. */
+  function browseCatalog(products, opts) {
+    opts = opts || {};
+    var q = String(opts.q || '').trim().toLowerCase();
+    var cat = opts.cat || 'all';
+    var sort = opts.sort || 'match';
+    var type = opts.type || '';
+    var aud = opts.aud || 'any';
+    var list = [];
+    (products || []).forEach(function (p, i) {
+      if (!p) return;
+      if (cat && cat !== 'all' && p.cat !== cat) return;
+      if (aud === 'women' && p.aud === 'men') return;
+      if (aud === 'men' && p.aud === 'women') return;
+      if (q) {
+        var hay = [p.brand, p.name, p.size, p.cat].join(' ').toLowerCase();
+        if (hay.indexOf(q) < 0) return;
+      }
+      list.push({ p: p, i: i });
+    });
+    function priceOf(p) {
+      if (p.fkPrice != null && isFinite(p.fkPrice)) return p.fkPrice;
+      if (p.price != null && isFinite(p.price)) return p.price;
+      return Infinity;
+    }
+    list.sort(function (a, b) {
+      if (sort === 'price') {
+        var d = priceOf(a.p) - priceOf(b.p);
+        if (d) return d;
+        return a.i - b.i;
+      }
+      var fa = fitsSkin(a.p, type) ? 0 : 1, fb = fitsSkin(b.p, type) ? 0 : 1;
+      if (fa !== fb) return fa - fb;
+      return a.i - b.i;
+    });
+    return list.map(function (x) { return x.p; });
+  }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, storeOffers: storeOffers, lowestOffer: lowestOffer, livePrice: livePrice, isLive: isLive, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, storeOffers: storeOffers, lowestOffer: lowestOffer, livePrice: livePrice, isLive: isLive, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid, fitsSkin: fitsSkin, catalogCats: catalogCats, browseCatalog: browseCatalog };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);

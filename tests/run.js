@@ -441,6 +441,29 @@ async function t(name, fn) {
     live.forEach((p) => assert.ok(P.flipkartDealDiscount(p) > 0));
   });
 
+  await t('catalog browse filters, sorts honestly and invents no prices', async () => {
+    const all = global.GN_PRODUCTS;
+    assert.ok(P.catalogCats(all).indexOf('Sunscreen') > -1);
+    const sun = P.browseCatalog(all, { cat: 'Sunscreen' });
+    assert.ok(sun.length >= 1 && sun.every((p) => p.cat === 'Sunscreen'));
+    const q = P.browseCatalog(all, { q: 'cetaphil' });
+    assert.ok(q.length >= 1 && q.every((p) => (p.brand + ' ' + p.name).toLowerCase().indexOf('cetaphil') > -1));
+    const priced = P.browseCatalog(all, { sort: 'price' }).filter((p) => p.fkPrice != null || p.price != null);
+    for (let i = 1; i < priced.length; i++) {
+      const a = priced[i - 1].fkPrice != null ? priced[i - 1].fkPrice : priced[i - 1].price;
+      const b = priced[i].fkPrice != null ? priced[i].fkPrice : priced[i].price;
+      assert.ok(a <= b);
+    }
+    const oily = P.browseCatalog(all, { sort: 'match', type: 'Oily' });
+    const firstUnfit = oily.findIndex((p) => !P.fitsSkin(p, 'Oily'));
+    if (firstUnfit > -1) assert.ok(oily.slice(0, firstUnfit).every((p) => P.fitsSkin(p, 'Oily')));
+    assert.strictEqual(P.browseCatalog(all, { q: 'zzzxnotaproduct' }).length, 0);
+    const women = P.browseCatalog(all, { aud: 'women' });
+    assert.ok(women.every((p) => p.aud !== 'men'));
+    oily.forEach((p) => assert.ok(p.amzPrice == null || p.amzCheckedOn));
+  });
+
+
 
   console.log('facescan.js');
   const F = require('../public/facescan.js');

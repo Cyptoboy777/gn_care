@@ -237,22 +237,22 @@ function viewScan(){
   else if(S.skin&&window.GNPicks){
     var r=kitBuild();
     var msg=scanBudget>0?(r.fits?('About '+money(r.total)+' of your '+money(scanBudget)+' budget.'):('The lowest kit is about '+money(r.min)+', above your '+money(scanBudget)+' budget. Go back and raise the budget, or still use these picks.')):'About '+money(r.total)+', no budget cap.';
-    var avoidScan=(window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(S.skin.type,S.skin.flags||[],S.skin.sensitive||S.skin.sensitiveLeaning).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
+    var avoidScan=(window.GNPicks&&GNPicks.avoidTips)?'<section class="tile kit-span"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(S.skin.type,S.skin.flags||[],S.skin.sensitive||S.skin.sensitiveLeaning).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
     var inKit=r.items.map(function(i){return i.item&&i.item.id});
     var trScan=(window.GNPicks&&GNPicks.treatments)?GNPicks.treatments(S.skin.type,S.skin.flags||[]).filter(function(p){return inKit.indexOf(p.id)<0}).slice(0,3):[];
-    var treatScan=trScan.length?'<section class="tile"><h3 class="t">Other serums that may suit you</h3><div class="list">'+trScan.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+priceTxt(p)+'</span>'+productCopyHtml(p,S.skin.type)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>':'';
-    kitHtml=kitSummary(r,S.skin.type,S.skin.sensitive||S.skin.sensitiveLeaning,scanBudget)+'<h3 class="t kit-detail-h">Product details</h3>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('')+avoidScan+treatScan;
+    var treatScanGrid=trScan.length?'<section class="tile kit-span"><h3 class="t">Other serums that may suit you</h3><div class="prod-grid">'+trScan.map(function(p){return shopCard(p,S.skin.type)}).join('')+'</div></section>':'';
+    kitHtml=kitSummary(r,S.skin.type,S.skin.sensitive||S.skin.sensitiveLeaning,scanBudget)+'<h3 class="t kit-detail-h">Product details</h3>'+kitProductGrid(r.items,S.skin.type)+avoidScan+treatScanGrid;
   }
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
-  return head+(S.skin?('<section class="tile tile-hero" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Your result</h3>'+faceMap()+'<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+chips+'</div>'+meters+
+  return head+(S.skin?('<section class="tile tile-hero" style="margin:0 auto 14px;width:100%"><h3 class="t">Your result</h3>'+faceMap()+'<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+chips+'</div>'+meters+
     '<p class="hint">This is a cosmetic estimate, not a medical diagnosis. Lighting affects results.</p></section>'+progressHTML()+
     '<div class="scan-kit">'+kitHtml+'</div>'+
-    (window.GNSkin?'<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%"><h3 class="t">Why this plan</h3><div class="answer">'+fmtAns(GNSkin.explain({type:S.skin.type,sensitive:S.skin.sensitive||S.skin.sensitiveLeaning,concerns:S.skin.flags||[]},copyLang))+'</div></section>':'')+
-    '<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%;gap:16px"><h3 class="t">A simple AM and PM routine</h3><div class="routine-preview">'+col('Morning',routine.am)+col('Night',routine.pm)+'</div>'+
+    (window.GNSkin?'<section class="tile" style="margin:14px auto 0;width:100%"><h3 class="t">Why this plan</h3><div class="answer">'+fmtAns(GNSkin.explain({type:S.skin.type,sensitive:S.skin.sensitive||S.skin.sensitiveLeaning,concerns:S.skin.flags||[]},copyLang))+'</div></section>':'')+
+    '<section class="tile" style="margin:14px auto 0;width:100%;gap:16px"><h3 class="t">A simple AM and PM routine</h3><div class="routine-preview">'+col('Morning',routine.am)+col('Night',routine.pm)+'</div>'+
     '<button class="btn" data-act="setScanRoutine">'+ico('i-check')+(routineSet?'Routine updated — open Routine tab':'Set this routine')+'</button>'+
     '<p class="hint">This replaces the steps in the Routine tab. You can still edit them there.</p></section>'):'')+
-    '<div class="wiz-nav" style="max-width:640px;margin:16px auto 0"><button class="btn ghost" data-act="scanBack">Back</button><button class="btn ghost" data-act="scanRestart">Start again</button></div>'}
+    '<div class="wiz-nav" style="margin:16px auto 0"><button class="btn ghost" data-act="scanBack">Back</button><button class="btn ghost" data-act="scanRestart">Start again</button></div>'}
 
 /* timer */
 var PRE=[{n:'Cleanser massage',s:60,d:'1 min'},{n:'Face mask',s:600,d:'10 min'},{n:'Sheet mask',s:900,d:'15 min'},{n:'Hair oil',s:1800,d:'30 min'},{n:'Toner pat',s:30,d:'30 sec'},{n:'Eye patches',s:600,d:'10 min'}];
@@ -339,6 +339,7 @@ var picked=[];
 function key(a,b){return [a,b].sort().join('|')}
 /* ---------- shop: picks by skin type and budget ---------- */
 var PK={ai:'',err:'',busy:false,rated:false};
+var SH={q:'',cat:'all',sort:'match'};
 var SKINS=['Oily','Dry','Combination','Normal'];
 var AUDS=[['any','Anyone'],['women','Women'],['men','Men']];
 var BUDGETS=[1000,1500,2500,4000];
@@ -356,14 +357,20 @@ function priceTxt(p){
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
 var fashTab='women';
 var copyLang='en';
+function phHTML(p,alt){
+  return '<div class="p-img ph" role="img" aria-label="'+alt+'" data-brand="'+esc(p&&p.brand||'GN Care')+'" data-cat="'+esc(p&&p.cat||'Product')+'"><span class="ph-brand">'+esc(p&&p.brand||'GN Care')+'</span><span class="ph-cat">'+esc(p&&p.cat||'Product')+'</span></div>';
+}
 function productImg(p){
   var alt=esc(p.imageAlt||((p.brand||'')+' '+(p.name||'')).trim()||'Product');
   var src=(p.fkProductId&&p.fkImage)?p.fkImage:p.image;
   if(src){
-    return '<div class="p-img"><img src="'+esc(src)+'" alt="'+alt+'" width="160" height="160" loading="lazy" decoding="async"></div>';
+    return '<div class="p-img" data-brand="'+esc(p.brand||'GN Care')+'" data-cat="'+esc(p.cat||'Product')+'"><img src="'+esc(src)+'" alt="'+alt+'" width="160" height="160" loading="lazy" decoding="async"></div>';
   }
-  var letter=esc(((p.cat||'?')+'?').charAt(0));
-  return '<div class="p-img ph" role="img" aria-label="'+alt+'"><span>'+letter+'</span></div>';
+  return phHTML(p,alt);
+}
+function fitChip(p,type){
+  if(type&&window.GNPicks&&GNPicks.fitsSkin&&GNPicks.fitsSkin(p,type))return '<span class="chip good">Fits '+esc(type.toLowerCase())+'</span>';
+  return '';
 }
 function couponHtml(p){
   if(!(window.GNPicks&&GNPicks.couponLive&&GNPicks.couponLive(p.coupon)))return '';
@@ -446,6 +453,84 @@ function buyBtn(p){
     '<a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener">'+fkLbl(p)+'</a>'+
     '<a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">'+amzLbl(p)+'</a>'+
     '</div>'}
+function shopCard(p,type,opts){
+  opts=opts||{};
+  var label=esc((p.brand||'')+' '+(p.name||'')+' details');
+  var bits=[p.size,p.spf].filter(Boolean).map(esc);
+  return '<article class="shop-card">'+
+    '<button type="button" class="shop-card-hit" data-act="openProduct" data-v="'+esc(p.id)+'" aria-label="'+label+'">'+
+      productImg(p)+
+      '<div class="shop-info">'+
+        (opts.cat?'<span class="eyebrow">'+esc(opts.cat)+'</span>':'')+
+        '<span class="eyebrow">'+esc(p.brand||'')+'</span>'+
+        '<h4>'+esc(p.name||'')+'</h4>'+
+        (bits.length?'<p class="hint">'+bits.join(' · ')+'</p>':'')+
+        '<p class="shop-price">'+priceTxt(p)+'</p>'+
+        '<div class="row wrap" style="gap:6px">'+fitChip(p,type)+lowestChip(p)+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
+      '</div>'+
+    '</button></article>';
+}
+function productSheetHTML(p,type){
+  var alts='';
+  return '<div class="prod-sheet">'+productImg(p)+
+    '<p class="eyebrow" style="margin-top:10px">'+esc(p.brand||'')+(p.cat?' · '+esc(p.cat):'')+'</p>'+
+    '<h3 style="font-size:22px;font-weight:700;line-height:1.25;margin:4px 0 8px">'+esc(p.name||'')+'</h3>'+
+    '<p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p>'+
+    '<div class="row wrap" style="gap:6px;margin:10px 0">'+
+      '<span class="chip">'+priceTxt(p)+'</span>'+lowestChip(p)+fitChip(p,type)+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+
+    '</div>'+
+    (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
+    couponHtml(p)+
+    productCopyHtml(p,type)+
+    buyBtn(p)+
+    '<p class="hint" style="margin-top:10px">Prices shown as approx. are typical catalog prices, not live store prices, unless a Flipkart check date is shown. Verify at checkout. '+affDisc()+'</p>'+
+    '</div>';
+}
+function shopList(){
+  var all=window.GN_PRODUCTS||[];
+  if(!(window.GNPicks&&GNPicks.browseCatalog))return all.slice();
+  return GNPicks.browseCatalog(all,{q:SH.q,cat:SH.cat,sort:SH.sort,type:kitType(),aud:kit().aud});
+}
+function shopCardsHTML(list,type){
+  list=list||shopList();type=type||kitType();
+  if(!list.length)return '<p class="hint">No products match that search or filter.</p>';
+  return list.map(function(p){return shopCard(p,type)}).join('');
+}
+function shopCountText(n){
+  n=n==null?shopList().length:n;
+  return n+' product'+(n===1?'':'s');
+}
+function allProductsHTML(){
+  if(!window.GN_PRODUCTS||!GN_PRODUCTS.length)return '<section class="tile"><h3 class="t">All products</h3><div class="skel" aria-busy="true"><i></i><i></i><i></i></div></section>';
+  var cats=window.GNPicks&&GNPicks.catalogCats?GNPicks.catalogCats(GN_PRODUCTS):[];
+  var list=shopList();
+  var type=kitType();
+  return '<section class="tile shop-all" style="gap:14px">'+
+    '<h3 class="t">All products</h3>'+
+    '<p class="hint">Browse the catalog like a store. Tap a product for why it may suit you, how to use it, and buy links. Prices marked approx. are typical, not live, unless a Flipkart check date is shown. We do not invent ratings or discounts.</p>'+
+    '<label class="f">Search<input class="input" id="shop-q" type="search" maxlength="80" placeholder="Brand, name or size" value="'+esc(SH.q)+'" autocomplete="off"></label>'+
+    '<div class="chips shop-cats" role="group" aria-label="Category">'+
+      '<button type="button" data-act="shopCat" data-v="all" aria-pressed="'+(SH.cat==='all')+'">All</button>'+
+      cats.map(function(c){return '<button type="button" data-act="shopCat" data-v="'+esc(c)+'" aria-pressed="'+(SH.cat===c)+'">'+esc(c)+'</button>'}).join('')+
+    '</div>'+
+    '<div class="row sp wrap" style="gap:8px;align-items:center">'+
+      '<div class="chips" role="group" aria-label="Sort">'+
+        '<button type="button" data-act="shopSort" data-v="match" aria-pressed="'+(SH.sort==='match')+'">Best match</button>'+
+        '<button type="button" data-act="shopSort" data-v="price" aria-pressed="'+(SH.sort==='price')+'">Price: low to high</button>'+
+      '</div>'+
+      '<p class="hint" id="shop-count">'+shopCountText(list.length)+'</p>'+
+    '</div>'+
+    (!type?'<p class="hint">Pick a skin type above, or <a href="#scan" style="color:var(--acc)">take the face scan</a>, for a best-match order and fit chips.</p>':'')+
+    '<div class="prod-grid" id="shop-grid">'+shopCardsHTML(list,type)+'</div>'+
+  '</section>';
+}
+function refreshShopGrid(){
+  var g=$('#shop-grid'),c=$('#shop-count');
+  if(!g)return;
+  var list=shopList();
+  g.innerHTML=shopCardsHTML(list,kitType());
+  if(c)c.textContent=shopCountText(list.length);
+}
 function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave(),treat:true,concerns:kitConcerns()})}
 function kitPriceLbl(p){return GNPicks.isLive(p)?money(p.fkPrice)+' on Flipkart':(p.price!=null?'approx. '+money(p.price):'price varies, est. '+money(GNPicks.effPrice(p)))}
 function kitAIBox(r,type,sens){
@@ -456,7 +541,7 @@ function kitAIBox(r,type,sens){
 function kitSummary(r,type,sens,budget){
   var rows=r.items.filter(function(i){return i.item}).map(function(i,n){var p=i.item;
     return '<li class="kit-row" style="--i:'+n+'"><span class="kit-step num">'+(n+1)+'</span><div class="grow"><span class="eyebrow">'+esc(i.cat)+(i.optional?' · optional':'')+'</span><b>'+esc(p.brand+' '+p.name)+'</b><span class="hint">'+esc([p.size,kitPriceLbl(p)].filter(Boolean).join(' · '))+'</span></div>'+
-      '<div class="kit-buy"><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" >'+fkLbl(p)+'</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">'+amzLbl(p)+'</a></div>'+lowestChip(p)+'</li>'}).join('');
+      '<div class="kit-buy"><button type="button" class="btn ghost sm" data-act="openProduct" data-v="'+esc(p.id)+'">Details</button><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" >'+fkLbl(p)+'</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">'+amzLbl(p)+'</a></div>'+lowestChip(p)+'</li>'}).join('');
   var note=[];
   if(r.checkedOn)note.push('Flipkart prices checked on '+r.checkedOn+'.');
   if(r.approx)note.push('“approx.” prices are typical catalog prices, not live.');
@@ -486,21 +571,22 @@ function kitPlain(r,type,sens){
   GNPicks.avoidTips(type,cs,sens).slice(0,2).forEach(function(x){L.push('- '+x)});
   L.push('- Patch test each new product on your inner arm for 24 hours first. General guidance for '+t+' skin, not medical advice.');
   return L.join('\n')}
+function pickNotes(items,type){
+  return (items||[]).map(function(it){
+    if(it.have)return '<p class="shop-note">You already have a '+esc(it.cat.toLowerCase())+' on your shelf, so it is left out of this kit.</p>';
+    if(!it.item)return '<p class="shop-note">No match for '+esc((type||'').toLowerCase())+' skin yet in '+esc(it.cat)+'.</p>';
+    if(it.noSens)return '<p class="shop-note">No sensitive-skin option in our list for '+esc((type||'').toLowerCase())+' skin in '+esc(it.cat)+'. Patch test first.</p>';
+    return '';
+  }).join('');
+}
+function kitProductGrid(items,type){
+  var cards=(items||[]).filter(function(it){return it.item}).map(function(it){return shopCard(it.item,type,{cat:it.cat})}).join('');
+  return (cards?'<div class="prod-grid">'+cards+'</div>':'')+pickNotes(items,type);
+}
 function pickCard(it,type){
-  if(it.have)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">You already have a '+it.cat.toLowerCase()+' on your shelf, so it is left out of this kit.</p></section>';
-  if(!it.item)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">No match for '+esc(type.toLowerCase())+' skin yet. Add products in catalog.json.</p></section>';
-  var p=it.item;
-  var alts=it.alts.filter(function(a){return a.id!==p.id}).slice(0,3);
-  return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3>'+
-    '<div class="p-card">'+productImg(p)+'<div class="grow"><span class="eyebrow">'+esc(p.brand)+'</span><h4 style="font-size:17px;font-weight:700;line-height:1.25;margin-top:2px;overflow-wrap:anywhere">'+esc(p.name)+'</h4><p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p></div></div>'+
-    '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span>'+lowestChip(p)+'<span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
-    (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
-    couponHtml(p)+
-    productCopyHtml(p,type)+
-    (it.noSens?'<p class="hint">No sensitive-skin option in our list for '+esc(type.toLowerCase())+' skin. Patch test first.</p>':'')+
-    buyBtn(p)+
-    (alts.length?'<div class="list" style="gap:6px"><span class="hint">Other options</span>'+alts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.brand+' '+a.name)+'</b><span>'+priceTxt(a)+'</span></div><button class="btn ghost sm" data-act="kSwap" data-v="'+esc(a.id)+'" data-c="'+esc(it.cat)+'" aria-label="Use '+esc(a.brand+' '+a.name)+'">Use</button></div>'}).join('')+'</div>':'')+
-    '</section>'}
+  if(it.have||!it.item)return pickNotes([it],type);
+  return shopCard(it.item,type,{cat:it.cat});
+}
 function viewPicks(){
   var k=kit(),type=kitType(),sens=kitSens();
   var head='<div class="head"><p class="eyebrow">Shop smart</p><h2 class="page-h">Your skin, your <em>budget</em></h2><p class="sub">Choose your skin type and what you want to spend. You get a starter kit, and you can swap any item.</p></div>';
@@ -520,21 +606,20 @@ function viewPicks(){
     var msg=r.fits?('That leaves about '+money(Math.max(0,k.budget-r.total))+' of your budget.'):('The lowest kit for '+type.toLowerCase()+' skin is about '+money(r.min)+', above your '+money(k.budget)+' budget. Raise the budget or skip an item.');
     var aiBox=kitAIBox(r,type,sens);
     var add=GNPicks.addOns(k.aud);
-    body='<div class="grid">'+r.items.map(function(i){return pickCard(i,type)}).join('')+
-      '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain with AI</button></div>'+
+    body=kitSummary(r,type,sens,k.budget)+
+      '<section class="tile" style="margin-top:14px"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain with AI</button></div>'+
         '<div class="meter '+(r.fits?'':'over')+'"><i style="width:'+pct+'%"></i></div><p class="hint">'+msg+(have.length?' Left out because you already have a '+have.join(' and ')+' on your shelf.':'')+'</p>'+aiBox+'</section>'+
-      (add.length?'<section class="tile"><h3 class="t">Add-ons for '+(k.aud==='women'?'women':'men')+'</h3><div class="list">'+add.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p),p.note].filter(Boolean).map(esc).join(' · ')+'</span>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div>'+(k.aud==='women'?'<p class="hint">Intimate washes are for external use only. See a doctor for itching, odour or discharge that does not go away.</p>':'')+'</section>':'')+
-    '</div>';
+      (add.length?'<section class="tile" style="margin-top:14px"><h3 class="t">Add-ons for '+(k.aud==='women'?'women':'men')+'</h3><div class="prod-grid">'+add.map(function(p){return shopCard(p,type)}).join('')+'</div>'+(k.aud==='women'?'<p class="hint">Intimate washes are for external use only. See a doctor for itching, odour or discharge that does not go away.</p>':'')+'</section>':'');
   }
   var src=Object.keys(window.GN_SOURCES||{}).map(function(s){return GN_SOURCES[s]}).join('; ');
   var avoid=(type&&window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(type,kitConcerns(),sens).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
   var treatHtml='';
   if(type&&window.GNPicks&&GNPicks.treatments){
     var tr=GNPicks.treatments(type,kitConcerns()).slice(0,4);
-    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[esc(p.size||''),priceTxt(p)].filter(Boolean).join(' · ')+'</span>'+productCopyHtml(p,type)+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
+    if(tr.length)treatHtml='<section class="tile" style="margin-top:14px"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total. Tap a product for details and buy links.</p><div class="prod-grid">'+tr.map(function(p){return shopCard(p,type)}).join('')+'</div></section>';
   }
-  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3>'+obfCredit()+'<p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
-  return head+dealsHtml()+fashionHtml()+telegramRow()+copyLangBar()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
+  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3>'+obfCredit()+'<p class="hint">Buy links go to Amazon.in and Flipkart. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices marked approx. are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, unless a Flipkart check date is shown. Check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
+  return head+dealsHtml()+fashionHtml()+telegramRow()+copyLangBar()+ctl+(body?'<div style="height:14px"></div>'+body+treatHtml:'')+allProductsHTML()+(avoid||'')+disc}
 
 /* ---------- coach, label decoder, ratings ---------- */
 var LAB={bad:'Avoid',warn:'Separate',good:'Pairs well'};
@@ -807,6 +892,9 @@ var A={
  kSens:function(){var k=kit();k.sens=!kitSens();k.swaps={};PK={ai:'',err:'',busy:false,rated:false};save();render()},
  kPreset:function(v){kit().budget=+v;save();render()},
  kSwap:function(v,t){kit().swaps[t.dataset.c]=v;PK={ai:'',err:'',busy:false,rated:false};save();render()},
+ shopCat:function(v){SH.cat=v||'all';render()},
+ shopSort:function(v){SH.sort=v==='price'?'price':'match';render()},
+ openProduct:function(v){var p=(window.GN_PRODUCTS||[]).filter(function(x){return x.id===v})[0];if(!p)return;openSheet(p.brand||'Product',productSheetHTML(p,kitType()))},
  kitAI:function(){
    var k=kit(),r=kitBuild();if(!r.items.some(function(i){return i.item})){toast('Pick a skin type first');return}
    PK={ai:'',err:'',busy:true,rated:false};render();
@@ -940,6 +1028,7 @@ document.addEventListener('input',function(e){
   if(e.target.id==='coach-in')CO.q=e.target.value;
   if(e.target.id==='fb-msg')FB.msg=e.target.value;
   if(e.target.id==='scan-note')scanNote=e.target.value;
+  if(e.target.id==='shop-q'){SH.q=e.target.value;refreshShopGrid()}
   if(e.target.id==='uv-range'){S.uv.index=+e.target.value;save();updateUV()}
   var remIds={'rem-am':'am','rem-pm':'pm','rem-qf':'quietFrom','rem-qt':'quietTo','rem-day':'scanDay'};
   if(remIds[e.target.id]&&e.target.value!==''){var r=rem();r[remIds[e.target.id]]=e.target.id==='rem-day'?+e.target.value:e.target.value;save()}});
@@ -962,7 +1051,7 @@ setInterval(function(){remCheck()},60000);remPull();
 document.addEventListener('visibilitychange',function(){if(!document.hidden){remPull();remCheck(true)}});
 if(navigator.serviceWorker)navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.type==='gn-remind')remPull()});
 window.addEventListener('online',netPill);window.addEventListener('offline',netPill);netPill();
-document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.parentNode&&t.parentNode.classList&&t.parentNode.classList.contains('p-img')){var w=t.parentNode;w.classList.add('ph');w.setAttribute('role','img');w.setAttribute('aria-label',t.alt||'Product');w.innerHTML='<span>'+esc((t.alt||'?').charAt(0))+'</span>'}},true);
+document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.parentNode&&t.parentNode.classList&&t.parentNode.classList.contains('p-img')){var w=t.parentNode,brand=w.getAttribute('data-brand')||'GN Care',cat=w.getAttribute('data-cat')||'Product';w.classList.add('ph');w.setAttribute('role','img');w.setAttribute('aria-label',t.alt||'Product');w.innerHTML='<span class="ph-brand">'+esc(brand)+'</span><span class="ph-cat">'+esc(cat)+'</span>'}},true);
 var h0=location.hash.replace('#','');tab=views[h0]?h0:'home';render(true);booted=true;
 if(S.visits=(S.visits||0)+1,save(),S.visits>=3)setTimeout(nudgeInstall,4000);
 setInterval(function(){tickTimer();if(tab==='home'&&$('#uv-next'))$('#uv-next').textContent=uvNextText()},500);

@@ -1,5 +1,5 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
-const VERSION = 'gn-care-v21';
+const VERSION = 'gn-care-v22';
 try { importScripts('/remind.js'); } catch (e) { /* reminders are optional */ }
 const SHELL = [
   '/', '/index.html', '/offline.html', '/styles.css', '/app.js', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/picks.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
