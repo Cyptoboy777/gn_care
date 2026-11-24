@@ -328,14 +328,18 @@ function shelfHave(){var h={};S.shelf.forEach(function(i){if(!i.sample&&window.G
 function money(n){return '₹'+inr.format(Math.round(n))}
 function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
 function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
-function priceTxt(p){return p.price!=null?'about '+money(p.price):'price varies'}
+function priceTxt(p){
+  if(p.fkPrice!=null)return 'Flipkart '+money(p.fkPrice)+(p.fkCheckedOn?' · checked '+p.fkCheckedOn:'');
+  return p.price!=null?'about '+money(p.price):'price varies';
+}
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
 var fashTab='women';
 var copyLang='en';
 function productImg(p){
   var alt=esc(p.imageAlt||((p.brand||'')+' '+(p.name||'')).trim()||'Product');
-  if(p.image){
-    return '<div class="p-img"><img src="'+esc(p.image)+'" alt="'+alt+'" width="160" height="160" loading="lazy" decoding="async"></div>';
+  var src=(p.fkProductId&&p.fkImage)?p.fkImage:p.image;
+  if(src){
+    return '<div class="p-img"><img src="'+esc(src)+'" alt="'+alt+'" width="160" height="160" loading="lazy" decoding="async"></div>';
   }
   var letter=esc(((p.cat||'?')+'?').charAt(0));
   return '<div class="p-img ph" role="img" aria-label="'+alt+'"><span>'+letter+'</span></div>';
@@ -392,11 +396,21 @@ function obfCredit(){return '<p class="hint">Some product photos come from <a hr
 function kitConcerns(){return (S.skin&&S.skin.flags)||[]}
 function dealsHtml(){
   if(!(window.GNPicks&&GNPicks.deals))return '';
-  var list=GNPicks.deals().slice(0,6);
+  var live=GNPicks.flipkartDeals?GNPicks.flipkartDeals():[];
+  var list=(live.length?live:GNPicks.deals()).slice(0,6);
   if(!list.length)return '';
   var amz=esc(GNPicks.amazonDealsURL(affTag()));
   var fk=esc(GNPicks.flipkartOffersURL(fkAff()));
-  return '<section class="tile deals"><h3 class="t">Today\'s best deals</h3><p class="hint">Curated from our catalog using typical MRP vs typical price. This is an <b>approx. price, check store for today\'s deal</b>. We do not scrape live prices.</p><div class="list">'+list.map(function(p){var d=GNPicks.dealDiscount(p);return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span><s class="mrp">'+money(p.mrp)+'</s> '+priceTxt(p)+(d!=null?' <span class="chip good">'+d+'% off typ.</span>':'')+'</span>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div><div class="btn-grid" style="margin-top:10px"><a class="btn sm" href="'+amz+'" target="_blank" rel="sponsored nofollow noopener">Amazon deals</a><a class="btn ghost sm" href="'+fk+'" target="_blank" rel="sponsored nofollow noopener">Flipkart offers</a></div></section>'}
+  var hint=live.length
+    ?'Live Flipkart prices for catalog products we could match to the same size and variant. Checked on '+(list[0].fkCheckedOn||'today')+'. Verify at checkout. Products without a Flipkart match keep an approx. catalog price.'
+    :'Curated from our catalog using typical MRP vs typical price. This is an <b>approx. price, check store for today\'s deal</b>. We do not scrape live prices.';
+  return '<section class="tile deals"><h3 class="t">Today\'s best deals</h3><p class="hint">'+hint+'</p><div class="list">'+list.map(function(p){
+    var liveOff=GNPicks.flipkartDealDiscount&&GNPicks.flipkartDealDiscount(p);
+    var typOff=GNPicks.dealDiscount(p);
+    var mrp=liveOff!=null?p.fkMrp:p.mrp;
+    var chip=liveOff!=null?' <span class="chip good">'+liveOff+'% off on Flipkart</span>':(typOff!=null?' <span class="chip good">'+typOff+'% off typ.</span>':'');
+    return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+(mrp?'<s class="mrp">'+money(mrp)+'</s> ':'')+priceTxt(p)+chip+'</span>'+(p.fkOfferNote?'<p class="hint">'+esc(p.fkOfferNote)+'</p>':'')+couponHtml(p)+'</div>'+buyBtn(p)+'</div>';
+  }).join('')+'</div><div class="btn-grid" style="margin-top:10px"><a class="btn sm" href="'+amz+'" target="_blank" rel="sponsored nofollow noopener">Amazon deals</a><a class="btn ghost sm" href="'+fk+'" target="_blank" rel="sponsored nofollow noopener">Flipkart offers</a></div></section>'}
 function installHome(){
   if(standalone)return '';
   if(deferredInstall)return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">Add the app to your home screen for a faster, full-screen experience and reminders.</p><button class="btn sm" data-act="install">Install app</button></section>';

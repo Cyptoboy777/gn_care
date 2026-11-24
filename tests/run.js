@@ -394,6 +394,44 @@ async function t(name, fn) {
     assert.strictEqual(P.telegramURL(''), '');
   });
 
+  await t('Flipkart exact-listing match rejects wrong size and variants', async () => {
+    const M = require('../scripts/flipkart-match.js');
+    assert.deepStrictEqual(M.parseSize('118 ml'), { v: 118, u: 'ml' });
+    assert.strictEqual(M.sizeMatch(M.parseSize('118 ml'), M.parseSize('Gentle (236 ml)')), false);
+    assert.strictEqual(M.isCombo({ title: 'Cetaphil Gentle Skin Cleanser 118ml & Cream Combo(2 Items in the set)', categoryPath: 'Combos and Kits' }), true);
+    const c2 = { brand: 'Cetaphil', name: 'Gentle Skin Cleanser', size: '118 ml', cat: 'Cleanser' };
+    const pick = M.pickMatch(c2, [
+      { title: 'Cetaphil Gentle Skin Cleanser Face Wash(236 ml)', brand: 'Cetaphil' },
+      { title: 'Cetaphil Oily Skin Cleanser Face Wash(118 ml)', brand: 'Cetaphil' },
+      { title: 'Cetaphil Gentle Skin Cleanser Face Wash(118 ml)', brand: 'Cetaphil', productId: 'OK' }
+    ]);
+    assert.strictEqual(pick.ok, true);
+    assert.strictEqual(pick.listing.productId, 'OK');
+    assert.strictEqual(M.pickMatch({ brand: 'La Roche-Posay', name: 'Cicaplast Baume B5+', size: '40 ml', cat: 'Moisturizer' }, [
+      { title: 'La Roche-Posay Cicaplast Baume B5 Repair Moisturizer(40 ml)', brand: 'La Roche-Posay' }
+    ]).ok, false);
+  });
+
+  await t('Flipkart catalog fields are only set on matched listings', async () => {
+    const matched = global.GN_PRODUCTS.filter((p) => p.fkProductId);
+    assert.ok(matched.length >= 1);
+    matched.forEach((p) => {
+      assert.ok(p.fkUrl && p.fkUrl.indexOf('affid=thisisnarenda') > -1);
+      assert.ok(p.fkSourceUrl && p.fkCheckedOn && p.fkTitle);
+      assert.ok(p.fkPrice == null || p.fkPrice > 0);
+      if (p.fkImage) assert.ok(/^https:\/\/(rukminim\d?\.flixcart\.com|img\d?\.fkcdn\.com)\//.test(p.fkImage));
+      const exact = P.flipkartURL(p, 'thisisnarenda');
+      assert.ok(exact.indexOf('/p/') > -1 || exact.indexOf('pid=') > -1);
+    });
+    const amazonOnly = global.GN_PRODUCTS.find((p) => !p.fkProductId && p.image);
+    if (amazonOnly) {
+      assert.ok(!amazonOnly.fkImage);
+      assert.ok(P.flipkartURL(amazonOnly, 'thisisnarenda').startsWith('https://www.flipkart.com/search?'));
+    }
+    const live = P.flipkartDeals();
+    live.forEach((p) => assert.ok(P.flipkartDealDiscount(p) > 0));
+  });
+
 
   console.log('facescan.js');
   const F = require('../public/facescan.js');

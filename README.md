@@ -158,6 +158,8 @@ The app will not create a Telegram channel. When you have one, set `TELEGRAM_URL
 
 Product blurbs (“Why this suits you”, “How to use”, “What to avoid”, plus short Hinglish and Tenglish lines) are generated offline with Free-tier `gemini-3.5-flash-lite` and **no Search grounding**: `node scripts/gen-content.mjs`. The script resumes if it hits a rate limit. It will not invent prices, coupons, or medical claims. Shop can switch English / Hinglish / Tenglish when those fields exist.
 
+Flipkart live listings are refreshed offline with the official Affiliate API (`node scripts/sync-flipkart.mjs`, headers `Fk-Affiliate-Id` / `Fk-Affiliate-Token`). Only exact size and variant matches are saved. Shop uses the Flipkart image and product URL only for those matches; Amazon-only products never show a Flipkart photo. Typical catalog prices stay in `price`/`mrp`; live values are in `fkPrice` / `fkMrp` with `fkCheckedOn`.
+
 Do not call Google from the live app to update prices. Use `scripts/refresh-catalog.mjs` by hand (or a disabled Action) with a Free-tier `GEMINI_API_KEY`. It uses `gemini-2.5-flash-lite` plus Grounding with Google Search, stores `sourceUrl` and `checkedOn` for accepted facts, and marks the rest unknown. Coupons are never auto-applied. Official free-tier quotas, why Custom Search JSON API is not used, and the 1 December 2026 `gemini-2.5-flash` billing warning are in `docs/catalog-refresh.md`.
 
 1. Amazon Associates India tracking ID goes in `AFFILIATE_TAG` in `public/config.js` (now `gncare-21`). Flipkart affid goes in `FLIPKART_AFFID` (now `thisisnarenda`).
@@ -189,7 +191,7 @@ Face Scan is four short steps: an optional selfie, an optional note, a budget, t
 npm test
 ```
 
-Runs 93 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
+Runs 95 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
 
 ## Other income options
 

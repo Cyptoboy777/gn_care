@@ -78,6 +78,7 @@
     return u;
   }
   function flipkartURL(p, affid) {
+    if (p && p.fkProductId && p.fkUrl && /^https:\/\/www\.flipkart\.com\//i.test(p.fkUrl)) return p.fkUrl;
     var u = 'https://www.flipkart.com/search?q=' + encodeURIComponent(query(p));
     if (/^[A-Za-z0-9_]{3,40}$/.test(affid || '')) u += '&affid=' + encodeURIComponent(affid);
     return u;
@@ -95,6 +96,14 @@
   function dealDiscount(p) {
     if (!p || p.price == null || p.mrp == null || p.mrp <= p.price) return null;
     return Math.round((1 - p.price / p.mrp) * 100);
+  }
+  function flipkartDealDiscount(p) {
+    if (!p || !p.fkProductId || p.fkPrice == null || p.fkMrp == null || p.fkMrp <= p.fkPrice) return null;
+    return Math.round((1 - p.fkPrice / p.fkMrp) * 100);
+  }
+  function flipkartDeals() {
+    return products().filter(function (p) { return flipkartDealDiscount(p) != null; })
+      .sort(function (a, b) { return flipkartDealDiscount(b) - flipkartDealDiscount(a) || (a.id < b.id ? -1 : 1); });
   }
   function deals(ids) {
     var map = {};
@@ -259,7 +268,7 @@
     return raw;
   }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, flipkartDealDiscount: flipkartDealDiscount, flipkartDeals: flipkartDeals, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay, howToUse: howToUse, productAvoid: productAvoid };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);

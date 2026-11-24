@@ -7,6 +7,7 @@
     "test": "node tests/run.js",
     "refresh-catalog": "node scripts/refresh-catalog.mjs",
     "telegram-deals": "node scripts/post-telegram-deals.mjs --dry-run",
-    "gen-content": "node scripts/gen-content.mjs"
+    "gen-content": "node scripts/gen-content.mjs",
+    "sync-flipkart": "node scripts/sync-flipkart.mjs"
   }
 }

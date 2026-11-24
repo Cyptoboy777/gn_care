@@ -57,20 +57,36 @@ function todayISO() {
   return new Date(z).toISOString().slice(0, 10);
 }
 
-const deals = (typeof picks.deals === 'function' ? picks.deals(catalog.deals || []) : []).slice(0, 6);
-if (!deals.length) die('No curated deals in catalog.json (need products listed in "deals" with mrp > price).');
+const live = (typeof picks.flipkartDeals === 'function' ? picks.flipkartDeals() : []);
+const typ = (typeof picks.deals === 'function' ? picks.deals(catalog.deals || []) : []);
+const deals = (live.length ? live : typ).slice(0, 6);
+if (!deals.length) die('No deals to post (need Flipkart matches with MRP > price, or catalog deals with typical MRP > price).');
 
 const lines = [];
-lines.push(`GN Care — today's typical deals (${todayISO()})`);
-lines.push('Prices are approximate, from our catalog. Check the store for today\'s price.');
+const checked = deals.find((p) => p.fkCheckedOn)?.fkCheckedOn || todayISO();
+if (live.length) {
+  lines.push(`GN Care — today's Flipkart deals (${checked})`);
+  lines.push('Prices are live Flipkart listings that match our catalog (same size and variant). Verify at checkout.');
+} else {
+  lines.push(`GN Care — today's typical deals (${todayISO()})`);
+  lines.push('Prices are approximate, from our catalog. Check the store for today\'s price.');
+}
 lines.push('');
 for (const p of deals) {
-  const off = picks.dealDiscount(p);
-  const price = p.price != null ? `₹${Math.round(p.price)}` : 'price varies';
-  const mrp = p.mrp != null ? ` (typical MRP ₹${Math.round(p.mrp)})` : '';
-  const disc = off != null ? ` · ~${off}% off typ.` : '';
+  const liveOff = picks.flipkartDealDiscount ? picks.flipkartDealDiscount(p) : null;
+  const typOff = picks.dealDiscount(p);
   lines.push(`• ${p.brand} ${p.name}${p.size ? ' · ' + p.size : ''}`);
-  lines.push(`  ${price}${mrp}${disc}`);
+  if (p.fkPrice != null) {
+    const mrp = p.fkMrp != null ? ` (Flipkart MRP ₹${Math.round(p.fkMrp)})` : '';
+    const disc = liveOff != null ? ` · ${liveOff}% off` : '';
+    lines.push(`  Flipkart ₹${Math.round(p.fkPrice)}${mrp}${disc}${p.fkCheckedOn ? ' · checked ' + p.fkCheckedOn : ''}`);
+    if (p.fkOfferNote) lines.push(`  ${p.fkOfferNote}`);
+  } else {
+    const price = p.price != null ? `₹${Math.round(p.price)}` : 'price varies';
+    const mrp = p.mrp != null ? ` (typical MRP ₹${Math.round(p.mrp)})` : '';
+    const disc = typOff != null ? ` · ~${typOff}% off typ.` : '';
+    lines.push(`  ${price}${mrp}${disc}`);
+  }
   if (picks.couponLive && picks.couponLive(p.coupon)) {
     lines.push(`  Coupon ${p.coupon.code} — verify at checkout${p.coupon.expires ? ', expires ' + p.coupon.expires : ''}`);
   }
