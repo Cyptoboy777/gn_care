@@ -19,8 +19,122 @@
     underEyeR: [340, 346, 347, 254, 339, 253, 252, 446, 261, 448, 449, 450, 374, 380]
   };
 
+  /* MediaPipe Face Mesh FACE_OVAL loop, in connection order. */
+  var FACE_OVAL = [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109];
+  var OVERLAY_REGIONS = ['forehead', 'nose', 'cheekL', 'cheekR', 'chin'];
+
   function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
   function clamp100(n) { return Math.round(clamp(n, 0, 100)); }
+
+  /* Image-space pixels for the same region ids used when drawing the overlay. */
+  function landmarkImagePoints(landmarks, ids, w, h) {
+    var a = [], i, p;
+    for (i = 0; i < ids.length; i++) {
+      p = landmarks && landmarks[ids[i]];
+      if (!p) continue;
+      a.push({ x: p.x * w, y: p.y * h });
+    }
+    return a;
+  }
+
+  /*
+    Map a normalized image landmark (0–1, image space) into a display box.
+    Accounts for object-fit cover/contain (centered), optional front-camera
+    mirroring (CSS scaleX(-1) on the image), and devicePixelRatio for canvases.
+    For an SVG overlay in CSS pixels, pass dpr: 1.
+  */
+  function mapLandmarkToDisplay(nx, ny, imgW, imgH, boxW, boxH, opts) {
+    opts = opts || {};
+    var fit = opts.fit || 'cover';
+    var dpr = opts.dpr == null ? 1 : opts.dpr;
+    var mirror = !!opts.mirror;
+    if (!imgW || !imgH || !boxW || !boxH) return { x: 0, y: 0 };
+    var scale = fit === 'contain'
+      ? Math.min(boxW / imgW, boxH / imgH)
+      : Math.max(boxW / imgW, boxH / imgH);
+    var dw = imgW * scale, dh = imgH * scale;
+    var ox = (boxW - dw) / 2, oy = (boxH - dh) / 2;
+    var x = nx * dw + ox;
+    var y = ny * dh + oy;
+    if (mirror) x = boxW - x;
+    return { x: x * dpr, y: y * dpr };
+  }
+
+  function fitEllipse(points, pad) {
+    var n = points && points.length;
+    if (!n) return null;
+    var i, p, minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity, sx = 0, sy = 0;
+    for (i = 0; i < n; i++) {
+      p = points[i];
+      sx += p.x; sy += p.y;
+      if (p.x < minX) minX = p.x;
+      if (p.x > maxX) maxX = p.x;
+      if (p.y < minY) minY = p.y;
+      if (p.y > maxY) maxY = p.y;
+    }
+    var cx = sx / n, cy = sy / n;
+    var grow = pad == null ? 1.12 : pad;
+    var rx = Math.max(maxX - cx, cx - minX, 2) * grow;
+    var ry = Math.max(maxY - cy, cy - minY, 2) * grow;
+    return { cx: cx, cy: cy, rx: rx, ry: ry };
+  }
+
+  function overlayModel(landmarks, imgW, imgH, boxW, boxH, opts) {
+    opts = opts || {};
+    if (!landmarks || landmarks.length < 400 || !imgW || !imgH) {
+      return { found: false, oval: [], regions: {} };
+    }
+    function mapped(ids) {
+      var a = [], i, p;
+      for (i = 0; i < ids.length; i++) {
+        p = landmarks[ids[i]];
+        if (!p) continue;
+        a.push(mapLandmarkToDisplay(p.x, p.y, imgW, imgH, boxW, boxH, opts));
+      }
+      return a;
+    }
+    var regions = {}, i, name;
+    for (i = 0; i < OVERLAY_REGIONS.length; i++) {
+      name = OVERLAY_REGIONS[i];
+      regions[name] = fitEllipse(mapped(REGIONS[name]));
+    }
+    return { found: true, oval: mapped(FACE_OVAL), regions: regions };
+  }
+
+  function overlaySvg(landmarks, imgW, imgH, boxW, boxH, opts) {
+    opts = opts || {};
+    var model = overlayModel(landmarks, imgW, imgH, boxW, boxH, opts);
+    if (!model.found) return '';
+    var z = opts.zones || {};
+    var parts = [];
+    if (model.oval.length) {
+      var d = model.oval.map(function (p, i) {
+        return (i ? 'L' : 'M') + p.x.toFixed(2) + ',' + p.y.toFixed(2);
+      }).join(' ') + ' Z';
+      parts.push('<path class="outline" d="' + d + '"' + (opts.photo ? ' style="opacity:.85;stroke:#fff"' : '') + '/>');
+    }
+    function el(cls, e) {
+      if (!e || e.rx < 1 || e.ry < 1) return '';
+      return '<ellipse class="z ' + (cls || '') + '" cx="' + e.cx.toFixed(2) + '" cy="' + e.cy.toFixed(2) + '" rx="' + e.rx.toFixed(2) + '" ry="' + e.ry.toFixed(2) + '"/>';
+    }
+    var r = model.regions;
+    parts.push(el(z.f, r.forehead));
+    parts.push(el(z.n, r.nose));
+    parts.push(el(z.c, r.cheekL));
+    parts.push(el(z.c, r.cheekR));
+    parts.push(el(z.ch, r.chin));
+    return parts.join('');
+  }
+
+  function packLandmarks(marks) {
+    var a = [], i, p;
+    if (!marks) return a;
+    for (i = 0; i < marks.length; i++) {
+      p = marks[i];
+      a.push(p ? { x: p.x, y: p.y } : { x: 0, y: 0 });
+    }
+    return a;
+  }
 
   /* Map v from [lo, hi] onto 0–100. */
   function scale(v, lo, hi) {
@@ -351,15 +465,6 @@
       return buildMetrics({});
     }
     var w = imageData.width, h = imageData.height;
-    function pts(ids) {
-      var a = [];
-      for (var i = 0; i < ids.length; i++) {
-        var p = landmarks[ids[i]];
-        if (!p) continue;
-        a.push({ x: p.x * w, y: p.y * h });
-      }
-      return a;
-    }
     var left = landmarks[234], right = landmarks[454];
     var faceW = 0;
     if (left && right) {
@@ -368,7 +473,7 @@
     }
     var radius = Math.max(6, Math.round((faceW || Math.min(w, h) * 0.45) * 0.045));
     var parts = {};
-    for (var name in REGIONS) parts[name] = sampleAround(imageData, pts(REGIONS[name]), radius);
+    for (var name in REGIONS) parts[name] = sampleAround(imageData, landmarkImagePoints(landmarks, REGIONS[name], w, h), radius);
     return buildMetrics(parts);
   }
 
@@ -439,15 +544,17 @@
         var canvas = drawScaled(img, 480);
         var result = lm.detect(canvas);
         var marks = result && result.faceLandmarks && result.faceLandmarks[0];
+        var imageSize = { w: img.naturalWidth || img.width || canvas.width, h: img.naturalHeight || img.height || canvas.height };
         if (!marks || !marks.length) {
-          return { ok: false, reason: 'noface', message: 'No face was found. Centre your face, look at the camera, and retake.' };
+          return { ok: false, reason: 'noface', message: 'Face not detected, center your face', imageSize: imageSize, landmarks: null };
         }
+        var packed = packLandmarks(marks);
         var imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
         var metrics = metricsFromLandmarks(imageData, marks);
         if (!metrics.lighting.ok) {
-          return { ok: false, reason: metrics.lighting.reason, message: metrics.lighting.message, metrics: metrics };
+          return { ok: false, reason: metrics.lighting.reason, message: metrics.lighting.message, metrics: metrics, landmarks: packed, imageSize: imageSize };
         }
-        return { ok: true, metrics: metrics };
+        return { ok: true, metrics: metrics, landmarks: packed, imageSize: imageSize };
       });
     });
   }
@@ -472,6 +579,14 @@
     lightingQuality: lightingQuality,
     buildMetrics: buildMetrics,
     metricsFromLandmarks: metricsFromLandmarks,
+    landmarkImagePoints: landmarkImagePoints,
+    mapLandmarkToDisplay: mapLandmarkToDisplay,
+    fitEllipse: fitEllipse,
+    overlayModel: overlayModel,
+    overlaySvg: overlaySvg,
+    packLandmarks: packLandmarks,
+    REGIONS: REGIONS,
+    FACE_OVAL: FACE_OVAL,
     scale: scale,
     load: load,
     analyze: analyze,

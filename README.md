@@ -150,7 +150,7 @@ Face Scan is four short steps: an optional selfie, an optional note, a budget, t
 npm test
 ```
 
-Runs 86 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
+Runs 88 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
 
 ## Other income options
 

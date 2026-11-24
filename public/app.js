@@ -134,6 +134,7 @@ function viewRoutine(){
 /* scan */
 var scanning=false,scanMsg='',scanErr='',photo=S.savedPhoto||null;
 var scanStep=1,scanNote='',scanBudget=1000,scanFlags=[],scanMetrics=null,routineSet=false;
+var scanLandmarks=null,scanImageSize=null,scanMirror=false,scanNoFace=false;
 function applySkin(photoMetrics,flags){
   var FS=window.GNFaceScan;
   var f=flags||scanFlags||[];
@@ -167,16 +168,25 @@ function scanNav(opts){
     (opts.skip?'<button class="btn ghost" data-act="scanSkip"'+(scanning?' disabled':'')+'>Skip</button>':'')+
     (opts.next?'<button class="btn" data-act="scanNext"'+(opts.off||scanning?' disabled':'')+'>'+opts.next+'</button>':'')+
     '</div>'}
+function clearScanPhoto(){photo=null;scanErr='';scanMetrics=null;scanLandmarks=null;scanImageSize=null;scanNoFace=false;scanMirror=false}
 function faceMap(){
   var z=zones(S.skin?S.skin.type:'');
-  return '<div class="face">'+(photo?'<img src="'+photo+'" alt="Your photo">':'')+
-    '<svg class="map" viewBox="0 0 200 260" preserveAspectRatio="none" aria-hidden="true">'+
-    '<ellipse class="outline" cx="100" cy="130" rx="70" ry="95" style="'+(photo?'opacity:.8;stroke:#fff':'')+'"/>'+
-    '<ellipse class="z '+z.f+'" cx="100" cy="68" rx="48" ry="22"/><ellipse class="z '+z.n+'" cx="100" cy="136" rx="14" ry="36"/>'+
-    '<ellipse class="z '+z.c+'" cx="55" cy="150" rx="24" ry="32"/><ellipse class="z '+z.c+'" cx="145" cy="150" rx="24" ry="32"/>'+
-    '<ellipse class="z '+z.ch+'" cx="100" cy="213" rx="30" ry="16"/>'+
-    (photo?'':'<g class="outline" style="opacity:.4"><path d="M78 112h14M108 112h14M88 176c8 6 16 6 24 0" stroke-linecap="round"/></g>')+'</svg>'+
-    (scanning?'<span class="laser"></span>':'')+'</div>'}
+  var FS=window.GNFaceScan;
+  var inner='',msg='';
+  if(photo&&scanLandmarks&&scanImageSize&&FS&&FS.overlaySvg){
+    inner=FS.overlaySvg(scanLandmarks,scanImageSize.w,scanImageSize.h,200,260,{fit:'cover',mirror:!!scanMirror,dpr:1,zones:z,photo:true});
+  }else if(photo&&scanNoFace){
+    msg='<p class="face-msg">Face not detected, center your face</p>';
+  }else if(!photo){
+    inner='<ellipse class="outline" cx="100" cy="130" rx="70" ry="95"/>'+
+      '<ellipse class="z '+z.f+'" cx="100" cy="68" rx="48" ry="22"/><ellipse class="z '+z.n+'" cx="100" cy="136" rx="14" ry="36"/>'+
+      '<ellipse class="z '+z.c+'" cx="55" cy="150" rx="24" ry="32"/><ellipse class="z '+z.c+'" cx="145" cy="150" rx="24" ry="32"/>'+
+      '<ellipse class="z '+z.ch+'" cx="100" cy="213" rx="30" ry="16"/>'+
+      '<g class="outline" style="opacity:.4"><path d="M78 112h14M108 112h14M88 176c8 6 16 6 24 0" stroke-linecap="round"/></g>';
+  }
+  return '<div class="face">'+(photo?'<img src="'+photo+'" alt="Your photo"'+(scanMirror?' class="mirror"':'')+'>':'')+
+    '<svg class="map" viewBox="0 0 200 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+inner+'</svg>'+
+    msg+(scanning?'<span class="laser"></span>':'')+'</div>'}
 function viewScan(){
   var head='<div class="head"><p class="eyebrow">Quick scan</p><h2 class="page-h">Face <em>scan</em></h2>'+scanDots(scanStep)+'</div>';
   if(scanStep===1){
@@ -569,7 +579,7 @@ var A={
  pref:function(k,t){S[k]=!S[k];t.setAttribute('aria-checked',String(S[k]));save();applyPrefs()},
  resetAll:function(v,t){
    if(!resetArm){resetArm=true;t.textContent='Tap again to erase';clearTimeout(resetT);resetT=setTimeout(function(){resetArm=false;t.textContent='Reset'},3500);return}
-   try{localStorage.removeItem(KEY)}catch(e){}S=defaults();picked=[];photo=null;scanErr='';scanMsg='';scanStep=1;scanNote='';scanBudget=1000;scanFlags=[];scanMetrics=null;routineSet=false;resetArm=false;applyPrefs();$('#sheet').hidden=true;render(true);toast('Data cleared')},
+   try{localStorage.removeItem(KEY)}catch(e){}S=defaults();picked=[];clearScanPhoto();scanMsg='';scanStep=1;scanNote='';scanBudget=1000;scanFlags=[];routineSet=false;resetArm=false;applyPrefs();$('#sheet').hidden=true;render(true);toast('Data cleared')},
  period:function(v){period=v;render(true)},
  goRoutine:function(v){period=v;A.nav('routine')},
  step:function(v){
@@ -589,28 +599,33 @@ var A={
    var done=function(url){S.savedPhoto=url;photo=url;save();render();toast('Photo saved on this device only')};
    if(window.GNFaceScan&&GNFaceScan.resizeDataUrl)GNFaceScan.resizeDataUrl(photo,640,0.72).then(done,function(){done(photo)});
    else done(photo)},
- clearPhoto:function(){delete S.savedPhoto;photo=null;scanErr='';scanMetrics=null;save();render();toast('Saved photo removed')},
- clearSessionPhoto:function(){photo=null;scanErr='';scanMetrics=null;render()},
+ clearPhoto:function(){delete S.savedPhoto;clearScanPhoto();save();render();toast('Saved photo removed')},
+ clearSessionPhoto:function(){clearScanPhoto();render()},
  scanBudget:function(v){scanBudget=+v;if(isNaN(scanBudget))scanBudget=0;render()},
  scanBack:function(){if(scanning)return;if(scanStep>1){scanStep--;render(true)}},
  scanRestart:function(){scanStep=1;scanErr='';routineSet=false;render(true)},
- scanSkip:function(){if(scanning)return;photo=null;scanMetrics=null;scanErr='';scanStep=2;render(true)},
+ scanSkip:function(){if(scanning)return;clearScanPhoto();scanStep=2;render(true)},
  scanNext:function(){
    if(scanning)return;
    if(scanStep===1){
      if(!photo){scanStep=2;render(true);return}
      scanErr='';scanMsg='Reading your photo on this device…';scanning=true;render();
-     var done=function(metrics,msg){
+     var done=function(metrics,msg,extra){
+       extra=extra||{};
        scanMetrics=metrics||null;scanning=false;scanMsg='';
+       scanLandmarks=extra.landmarks||null;
+       scanImageSize=extra.imageSize||null;
+       scanNoFace=extra.reason==='noface';
        if(!metrics)scanErr=msg||'The photo could not be used. You can retake it, or continue and tell us about your skin.';
        else scanErr='';
        scanStep=2;render(true);
        if(metrics)toast('Selfie read on this device');
-       else toast('Continue with a short note, or retake')};
+       else toast(scanNoFace?'Face not detected, center your face':'Continue with a short note, or retake')};
      if(!(window.GNFaceScan&&GNFaceScan.analyze)){setTimeout(function(){done(null,'The on-device face model could not load. You can still write a short note.')},200);return}
      GNFaceScan.analyze(photo,function(msg){scanMsg=msg||scanMsg;var h=$('#view .hint');if(h&&scanMsg)h.textContent=scanMsg}).then(function(r){
-       if(r&&r.ok)done(r.metrics);
-       else done(null,(r&&r.message)||'No face was found or the lighting was poor. Retake, or write a short note instead.');
+       var extra={landmarks:r&&r.landmarks,imageSize:r&&r.imageSize,reason:r&&r.reason};
+       if(r&&r.ok)done(r.metrics,'',extra);
+       else done(null,(r&&r.message)||'No face was found or the lighting was poor. Retake, or write a short note instead.',extra);
      },function(){done(null,'The on-device face model could not load. You can still write a short note.')});
      return}
    if(scanStep===2){
@@ -662,7 +677,7 @@ document.addEventListener('change',function(e){
   if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='photo-in'){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){
-      var next=function(url){photo=url;scanErr='';render()};
+      var next=function(url){photo=url;scanErr='';scanMetrics=null;scanLandmarks=null;scanImageSize=null;scanNoFace=false;scanMirror=false;render()};
       if(window.GNFaceScan&&GNFaceScan.resizeDataUrl)GNFaceScan.resizeDataUrl(r.result,1280,0.85).then(next,function(){next(r.result)});
       else next(r.result)};r.readAsDataURL(f)}});
 window.addEventListener('hashchange',onHash);

@@ -486,6 +486,65 @@ async function t(name, fn) {
     assert.ok(r.am.some((s) => /fragrance-free/i.test(s.n)));
   });
 
+  await t('maps landmarks through object-fit cover, contain, mirror and devicePixelRatio', async () => {
+    const M = F.mapLandmarkToDisplay;
+    /* Square image in a taller 200×260 box, cover: scale to height, crop left/right. */
+    const mid = M(0.5, 0.5, 1000, 1000, 200, 260, { fit: 'cover', dpr: 1, mirror: false });
+    assert.ok(Math.abs(mid.x - 100) < 1e-6, 'cover center x ' + mid.x);
+    assert.ok(Math.abs(mid.y - 130) < 1e-6, 'cover center y ' + mid.y);
+    const left = M(0, 0.5, 1000, 1000, 200, 260, { fit: 'cover' });
+    assert.ok(Math.abs(left.x - (-30)) < 1e-6, 'cropped left x ' + left.x);
+    /* Tall 9:16 selfie in the same box: scale to width, crop top/bottom.
+       Fixed ovals (forehead cy=68, chin cy=213) missed a face in the upper crop. */
+    const tall = { imgW: 1080, imgH: 1920, boxW: 200, boxH: 260 };
+    const forehead = M(0.5, 0.18, tall.imgW, tall.imgH, tall.boxW, tall.boxH, { fit: 'cover' });
+    const chin = M(0.5, 0.55, tall.imgW, tall.imgH, tall.boxW, tall.boxH, { fit: 'cover' });
+    assert.ok(Math.abs(forehead.x - 100) < 1e-6);
+    assert.ok(forehead.y < 40, 'forehead should sit near the top of the crop, got ' + forehead.y);
+    assert.ok(chin.y > 120 && chin.y < 180, 'chin should sit mid-box, not on the shirt, got ' + chin.y);
+    const contained = M(0.5, 0.5, 1000, 1000, 200, 260, { fit: 'contain' });
+    assert.ok(Math.abs(contained.x - 100) < 1e-6);
+    assert.ok(Math.abs(contained.y - 130) < 1e-6);
+    const a = M(0.25, 0.4, 1000, 1000, 200, 260, { mirror: false });
+    const b = M(0.25, 0.4, 1000, 1000, 200, 260, { mirror: true });
+    assert.ok(Math.abs((a.x + b.x) - 200) < 1e-6, 'mirror should flip x in the display box');
+    assert.ok(Math.abs(a.y - b.y) < 1e-6);
+    const hi = M(0.5, 0.5, 1000, 1000, 200, 260, { dpr: 3 });
+    assert.ok(Math.abs(hi.x - mid.x * 3) < 1e-6);
+    assert.ok(Math.abs(hi.y - mid.y * 3) < 1e-6);
+    const blank = M(0.5, 0.5, 0, 0, 200, 260, {});
+    assert.strictEqual(blank.x, 0);
+    assert.strictEqual(blank.y, 0);
+  });
+
+  await t('overlay regions use the same landmark ids as pixel sampling', async () => {
+    const marks = [];
+    for (let i = 0; i < 468; i++) marks.push({ x: 0.5, y: 0.5 });
+    /* Oval first, then region points (some ids are shared, regions must win for the ellipse test). */
+    F.FACE_OVAL.forEach((id, i) => {
+      const a = (i / F.FACE_OVAL.length) * Math.PI * 2;
+      marks[id] = { x: 0.5 + Math.cos(a) * 0.35, y: 0.5 + Math.sin(a) * 0.45 };
+    });
+    F.REGIONS.forehead.forEach((id) => { marks[id] = { x: 0.5, y: 0.2 }; });
+    F.REGIONS.nose.forEach((id) => { marks[id] = { x: 0.5, y: 0.45 }; });
+    F.REGIONS.cheekL.forEach((id) => { marks[id] = { x: 0.3, y: 0.55 }; });
+    F.REGIONS.cheekR.forEach((id) => { marks[id] = { x: 0.7, y: 0.55 }; });
+    F.REGIONS.chin.forEach((id) => { marks[id] = { x: 0.5, y: 0.8 }; });
+    const pts = F.landmarkImagePoints(marks, F.REGIONS.cheekL, 200, 200);
+    assert.ok(pts.length === F.REGIONS.cheekL.length);
+    assert.ok(pts.every((p) => Math.abs(p.x - 60) < 1e-6 && Math.abs(p.y - 110) < 1e-6));
+    const model = F.overlayModel(marks, 200, 200, 200, 200, { fit: 'cover', dpr: 1, mirror: false });
+    assert.strictEqual(model.found, true);
+    assert.strictEqual(model.oval.length, F.FACE_OVAL.length);
+    assert.ok(Math.abs(model.regions.forehead.cy - 40) < 1, 'forehead cy ' + model.regions.forehead.cy);
+    assert.ok(Math.abs(model.regions.nose.cy - 90) < 1);
+    assert.ok(Math.abs(model.regions.cheekL.cx - 60) < 1);
+    assert.ok(Math.abs(model.regions.cheekR.cx - 140) < 1);
+    assert.ok(Math.abs(model.regions.chin.cy - 160) < 1);
+    assert.strictEqual(F.overlayModel([], 200, 200, 200, 200).found, false);
+    assert.strictEqual(F.overlaySvg(null, 200, 200, 200, 200), '');
+  });
+
   console.log('kit budgets');
   const budgets = F.KIT_BUDGETS;
   await t('budget chips map to 500, 1000, 2000 and no limit', async () => {
