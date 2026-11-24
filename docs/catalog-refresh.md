@@ -69,3 +69,5 @@ After `--apply`, read the git diff, run `node tests/run.js`, bump `sw.js` if you
 ## If the free grounding option goes away
 
 Stop running the script. Do not point it at a billed model or at Vertex AI to “keep it going.” Update this doc when you next check the official pricing page.
+
+Checked with a new Free-tier key on 24 November 2026 (Asia/Calcutta): `gemini-2.5-flash-lite` returned HTTP 404 (“no longer available to new users”; Google suggests `gemini-3.5-flash-lite`). `gemini-3.5-flash-lite` without tools succeeded, but the same model with Grounding with Google Search returned HTTP 429 `RESOURCE_EXHAUSTED` (“check your plan and billing details”). That matches official pricing (Search grounding “Not available” on the Free tier for Gemini 3.x). The script stays on the `gemini-2.5-flash-lite` allowlist and does not auto-switch.

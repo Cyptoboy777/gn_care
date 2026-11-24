@@ -324,8 +324,14 @@ async function main() {
         console.error('Hit a rate limit (429). Stopping to stay on the free quota. Try again after midnight Pacific Time, or lower --limit.');
         break;
       }
-      if (err.status === 400 || err.status === 403 || err.status === 401) {
-        console.error('Stopping: API rejected the request. Check the key, model, and that the project is still on the Free tier.');
+      if (err.status === 400 || err.status === 403 || err.status === 401 || err.status === 404 || err.status === 410) {
+        if (err.status === 404 || /no longer available/i.test(err.message || '')) {
+          console.error('Stopping: gemini-2.5-flash-lite is not available on this key (Google now tells new users to use gemini-3.5-flash-lite).');
+          console.error('This script will not switch to Gemini 3/4 with Search grounding: official pricing lists that tool as not available on the Free tier, and a probe of gemini-3.5-flash-lite + google_search returned 429 RESOURCE_EXHAUSTED asking to check billing. Tokens-only 3.5-flash-lite still works, but without grounding we would be guessing.');
+          console.error('Leave catalog.json unchanged. See docs/catalog-refresh.md.');
+        } else {
+          console.error('Stopping: API rejected the request. Check the key, model, and that the project is still on the Free tier.');
+        }
         break;
       }
     }
