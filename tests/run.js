@@ -483,9 +483,16 @@ async function t(name, fn) {
     assert.ok(app.indexOf("kitHtml=kitSummary") > -1 && app.indexOf('kitOtherOptions(r.items') > -1);
     assert.ok(app.indexOf('kitProductGrid(r.items,S.skin.type)') < 0, 'do not render the same kit items again as a card grid on scan results');
     assert.ok(/text-overflow:\s*ellipsis/.test(css) && /\.p-img\.ph\{[^}]*overflow:\s*hidden/.test(css));
-    assert.ok(index.indexOf('styles.css?v=24') > -1 && index.indexOf('app.js?v=24') > -1);
-    assert.ok(sw.indexOf("gn-care-v24") > -1 && sw.indexOf('styles.css?v=24') > -1);
+    assert.ok(index.indexOf('styles.css?v=25') > -1 && index.indexOf('app.js?v=25') > -1);
+    assert.ok(sw.indexOf("gn-care-v25") > -1 && sw.indexOf('styles.css?v=25') > -1);
+
+    assert.ok(!/\.li \.grow b\{[^}]*overflow-wrap:\s*anywhere/.test(css));
+    assert.ok(/\.li \.grow b\{[^}]*overflow-wrap:\s*break-word/.test(css));
+    assert.ok(/\.li \.btn-grid\{[^}]*flex:\s*1 0 100%/.test(css), 'deal/shop list buttons must take a full row on narrow screens');
+    assert.ok(/\.kit-buy\{[^}]*flex:\s*1 0 100%/.test(css));
+    assert.ok(!/overflow-wrap:\s*anywhere/.test(css), 'no letter-break anywhere on product text');
   });
+
 
 
 
@@ -903,7 +910,7 @@ async function t(name, fn) {
 
   await t('sw caches deals assets and prefers a fresh deals.json', async () => {
     const sw = require('fs').readFileSync(require('path').join(__dirname, '../public/sw.js'), 'utf8');
-    assert.ok(sw.includes("const VERSION = 'gn-care-v24'"));
+    assert.ok(sw.includes("const VERSION = 'gn-care-v25'"));
     assert.ok(sw.includes('/deals.js') && sw.includes('/deals.css') && sw.includes('/deals.json'));
     assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
   });
