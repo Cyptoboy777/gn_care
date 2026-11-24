@@ -483,8 +483,17 @@ async function t(name, fn) {
     assert.ok(app.indexOf("kitHtml=kitSummary") > -1 && app.indexOf('kitOtherOptions(r.items') > -1);
     assert.ok(app.indexOf('kitProductGrid(r.items,S.skin.type)') < 0, 'do not render the same kit items again as a card grid on scan results');
     assert.ok(/text-overflow:\s*ellipsis/.test(css) && /\.p-img\.ph\{[^}]*overflow:\s*hidden/.test(css));
-    assert.ok(index.indexOf('styles.css?v=25') > -1 && index.indexOf('app.js?v=25') > -1);
-    assert.ok(sw.indexOf("gn-care-v25") > -1 && sw.indexOf('styles.css?v=25') > -1);
+    assert.ok(index.indexOf('styles.css?v=26') > -1 && index.indexOf('app.js?v=26') > -1);
+    assert.ok(sw.indexOf("gn-care-v26") > -1 && sw.indexOf('styles.css?v=26') > -1);
+
+    const adsTxt = fs.readFileSync(path.join(root, 'public/ads.txt'), 'utf8').trim();
+    assert.equal(adsTxt, 'google.com, pub-6915700686027349, DIRECT, f08c47fec0942fa0');
+    const meta = 'name="google-adsense-account" content="ca-pub-6915700686027349"';
+    assert.ok(index.includes(meta));
+    for (const page of ['privacy.html', 'terms.html', 'about.html', 'guides/index.html']) {
+      assert.ok(fs.readFileSync(path.join(root, 'public', page), 'utf8').includes(meta), page + ' needs AdSense account meta');
+    }
+    assert.ok(!index.includes('adsbygoogle.js'), 'do not load AdSense in head; ads.js already injects the official loader after consent');
 
     assert.ok(!/\.li \.grow b\{[^}]*overflow-wrap:\s*anywhere/.test(css));
     assert.ok(/\.li \.grow b\{[^}]*overflow-wrap:\s*break-word/.test(css));
@@ -975,7 +984,7 @@ async function t(name, fn) {
 
   await t('sw caches deals assets and prefers a fresh deals.json', async () => {
     const sw = require('fs').readFileSync(require('path').join(__dirname, '../public/sw.js'), 'utf8');
-    assert.ok(sw.includes("const VERSION = 'gn-care-v25'"));
+    assert.ok(sw.includes("const VERSION = 'gn-care-v26'"));
     assert.ok(sw.includes('/deals.js') && sw.includes('/deals.css') && sw.includes('/deals.json'));
     assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
   });
