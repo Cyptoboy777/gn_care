@@ -303,7 +303,10 @@
     sensitive: 'Sensitivity',
     dull: 'Dullness',
     tan: 'Tanning',
-    circles: 'Dark circles'
+    circles: 'Dark circles',
+    pores: 'Blackheads and pores',
+    lines: 'Fine lines',
+    texture: 'Uneven texture'
   };
 
   /* English plus a few common Hinglish and Tenglish words. No AI required. */
@@ -315,6 +318,9 @@
     ['sensitive', /\b(sensitive|sensitivity|fragrance|perfume|parfum|allerg(?:y|ic)|stings?|redness)\b|mandutund|mandipoth|sugandh|khushbu|perfume ki/],
     ['dull', /\b(dull|dullness|no glow|glow ledu|kammi? glow|mothaga|thandaga)\b/],
     ['tan', /\b(tann?ing|tanned|sun ?tan|sunburn)\b|endulo nalla|endalo nalla|tan ayin/],
+    ['pores', /\b(blackheads?|whiteheads?|open pores?|large pores?|big pores?|pores?)\b|nalla chukkalu|kaale daane/],
+    ['lines', /\b(fine lines?|wrinkles?|lines on|ageing|aging|crow'?s feet)\b|mudathalu|jhurri/],
+    ['texture', /\b(rough|bumpy|uneven texture|texture|bumps)\b|gharuku|khurdur/],
     ['circles', /\b(dark circles?|under[- ]?eyes?|eye bags?)\b|kalla kinda|aankh ke neeche|ankhon ke neeche/]
   ];
 

@@ -12,6 +12,8 @@
   Protection: input limits, per-visitor limits, per-minute and daily caps, 24 hour answer cache.
 */
 const L = require('./_lib');
+let SKIN = null;
+try { SKIN = require('../public/skin-knowledge.js'); } catch (e) { SKIN = null; }
 
 /* EEA, Switzerland and UK. Google's terms allow only paid Gemini services for users here. */
 const EEA = new Set([
@@ -150,7 +152,7 @@ function cleanCtx(c) {
   const types = ['Oily', 'Dry', 'Combination', 'Normal'];
   if (types.indexOf(c.type) < 0) return null;
   const sun = Number(c.sun);
-  const allow = ['oily', 'dry', 'acne', 'pigment', 'sensitive', 'dull', 'tan', 'circles'];
+  const allow = ['oily', 'dry', 'acne', 'pigment', 'sensitive', 'dull', 'tan', 'circles', 'pores', 'lines', 'texture'];
   const concerns = (Array.isArray(c.concerns) ? c.concerns : []).filter((x) => allow.indexOf(x) > -1).slice(0, 8);
   return { type: c.type, sensitive: !!c.sensitive, sun: sun >= 0 && sun <= 2 ? Math.floor(sun) : 0, concerns };
 }
@@ -194,7 +196,8 @@ async function handler(req, res) {
   if ((await L.incr('gn:rpm:' + Math.floor(Date.now() / 60000), 120)) > c.rpm) return fail(res, 429, 'busy');
   if ((await L.incr('gn:day:' + L.ptDate(), 90000)) > c.dayCap) return fail(res, 429, 'busy');
 
-  const system = PROMPTS[mode];
+  let system = PROMPTS[mode];
+  if (SKIN && ctx && mode !== 'decode') { try { system += ' ' + SKIN.promptContext(ctx); } catch (e) { /* keep base rules */ } }
   const user = userMessage(mode, q, ctx);
   let text = '';
   let misconfigured = 0;

@@ -1,7 +1,7 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
 const VERSION = 'gn-care-v13';
 const SHELL = [
-  '/', '/index.html', '/offline.html', '/styles.css', '/app.js', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/picks.js', '/ondevice.js', '/facescan.js', '/remind.js',
+  '/', '/index.html', '/offline.html', '/styles.css', '/app.js', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/picks.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
   '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'
 ];
 const NETWORK_FIRST = ['/config.js', '/ads.js', '/products.js', '/catalog.json', '/consent.js'];

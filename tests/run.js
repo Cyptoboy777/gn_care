@@ -691,5 +691,35 @@ async function t(name, fn) {
     if (!r.fits) assert.ok(r.min >= 500 || r.total > 500);
   });
 
+
+  console.log('skin-knowledge.js');
+  const K = require('../public/skin-knowledge.js');
+  const TYPES = ['Oily', 'Dry', 'Combination', 'Normal'];
+  const ALL = ['acne', 'pores', 'pigment', 'tan', 'circles', 'sensitive', 'dry', 'oily', 'lines', 'texture', 'dull'];
+  await t('knowledge base covers every skin type and concern with all fields', async () => {
+    TYPES.forEach((ty) => { const x = K.TYPES[ty]; assert.ok(x && x.cause && x.cleanser && x.moisturizer && x.avoid.length && x.te && x.hi, ty); });
+    ALL.forEach((c) => { const x = K.CONCERNS[c]; assert.ok(x, c); ['label', 'cause', 'am', 'pm', 'time', 'te', 'hi'].forEach((f) => assert.ok(x[f], c + '.' + f)); assert.ok(x.helps.length >= 3 && x.avoid.length >= 2 && x.red.length >= 1, c); assert.ok(K.ORDER.indexOf(c) > -1, c); });
+  });
+  await t('explanation always appears for every type x concern x sensitivity x language', async () => {
+    TYPES.forEach((ty) => [false, true].forEach((sens) => ['en', 'te', 'hi'].forEach((lang) => [[]].concat(ALL.map((c) => [c])).forEach((cs) => {
+      const s = K.explain({ type: ty, sensitive: sens, concerns: cs }, lang);
+      assert.ok(/Morning: .*sunscreen SPF 30/.test(s) && /Night: /.test(s) && /See a dermatologist if:/.test(s) && /not a diagnosis/.test(s), ty + cs);
+      cs.forEach((c) => assert.ok(s.includes(K.CONCERNS[c].label), c));
+      assert.ok(!/cure|guarantee|100%|permanent(ly)? remove/i.test(s));
+    }))));
+  });
+  await t('explanation survives bad input', async () => {
+    [undefined, null, {}, { type: 'X', concerns: ['nope', 'acne', 'acne'] }].forEach((c) => assert.ok(K.explain(c).length > 100));
+  });
+  await t('combinations: oily + pigment, sensitive + actives, dry + acne', async () => {
+    assert.ok(/niacinamide and a gel or matte sunscreen/.test(K.explain({ type: 'Oily', concerns: ['pigment'] })));
+    assert.ok(/start only one active/.test(K.explain({ type: 'Normal', sensitive: true, concerns: ['acne'] })));
+    assert.ok(/never skip a non-comedogenic moisturizer/.test(K.explain({ type: 'Dry', concerns: ['acne'] })));
+    assert.ok(/different nights/.test(K.explain({ type: 'Normal', concerns: ['lines', 'texture'] })));
+  });
+  await t('AI prompt gets the knowledge base as guardrails', async () => {
+    const s = K.promptContext({ type: 'Combination', concerns: ['acne', 'circles'] });
+    assert.ok(s.includes('Benzoyl peroxide') && s.includes('Red flags') && s.length < 2500);
+  });
   console.log('\n' + passed + ' checks passed' + (process.exitCode ? ', some FAILED' : ''));
 })();

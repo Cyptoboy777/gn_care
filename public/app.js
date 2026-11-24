@@ -236,6 +236,7 @@ function viewScan(){
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
   return head+(S.skin?('<section class="tile tile-hero" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Your result</h3>'+faceMap()+'<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+chips+'</div>'+meters+
     '<p class="hint">This is a cosmetic estimate, not a medical diagnosis. Lighting affects results.</p></section>'+
+    (window.GNSkin?'<section class="tile" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Why this plan</h3><div class="answer">'+fmtAns(GNSkin.explain({type:S.skin.type,sensitive:S.skin.sensitive||S.skin.sensitiveLeaning,concerns:S.skin.flags||[]},copyLang))+'</div></section>':'')+
     '<div class="scan-kit">'+kitHtml+'</div>'+
     '<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%;gap:16px"><h3 class="t">A simple AM and PM routine</h3><div class="routine-preview">'+col('Morning',routine.am)+col('Night',routine.pm)+'</div>'+
     '<button class="btn" data-act="setScanRoutine">'+ico('i-check')+(routineSet?'Routine updated — open Routine tab':'Set this routine')+'</button>'+
@@ -428,7 +429,8 @@ function kitQuestion(r,type,sens,budget){
 /* Instant, rule-based kit explanation. No AI, no download, works offline. AI text replaces it only if it arrives. */
 function kitPlain(r,type,sens){
   var L=[],t=String(type||'').toLowerCase(),cs=kitConcerns();
-  r.items.forEach(function(i){if(i.item)L.push('- '+i.cat+': '+i.item.brand+' '+i.item.name+'. '+GNPicks.whyThis(i.item,type,cs,'en'))});
+  try{r.items.forEach(function(i){if(i.item)L.push('- '+i.cat+': '+i.item.brand+' '+i.item.name+'. '+GNPicks.whyThis(i.item,type,cs,'en'))})}catch(e){}
+  if(window.GNSkin){try{return (L.length?L.join('\n')+'\n':'')+GNSkin.explain({type:type,sensitive:sens,concerns:cs},copyLang)}catch(e){}}
   var has=function(c){return r.items.some(function(i){return i.item&&i.cat===c})};
   var am=['Cleanser','Moisturizer','Sunscreen'].filter(has),pm=['Cleanser','Serum','Moisturizer'].filter(has);
   if(am.length)L.push('- Morning: '+am.join(', then ').toLowerCase()+'.');
@@ -562,7 +564,9 @@ function ratePrompt(){
   if(S.fbSnooze&&Date.now()<S.fbSnooze)return '';
   return '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Enjoying GN Care?</h3><p class="hint" style="margin-top:6px">Tap a star to rate it. It takes ten seconds.</p></div><div class="stars-row" role="group" aria-label="Rate GN Care">'+[1,2,3,4,5].map(function(n){return '<button class="star" data-act="rateNow" data-v="'+n+'" aria-label="'+n+' star'+(n>1?'s':'')+'">'+ico('i-star')+'</button>'}).join('')+'</div><button class="btn ghost sm" data-act="snooze">Not now</button></div></section>'}
 function serverAI(mode,q,done){
-  postJSON('/api/ai',{mode:mode,q:q,ctx:aiCtx()}).then(function(j){done(j&&j.ok?{text:j.text}:{err:(j&&j.msg)||'Something went wrong. Try again later.'})})}
+  var fin=false,end=function(x){if(!fin){fin=true;done(x)}};
+  setTimeout(function(){end({err:'The AI took too long. Showing our standard answer.'})},12000);
+  postJSON('/api/ai',{mode:mode,q:q,ctx:aiCtx()}).then(function(j){end(j&&j.ok&&j.text?{text:j.text}:{err:(j&&j.msg)||'Something went wrong. Try again later.'})},function(){end({err:'Something went wrong. Try again later.'})})}
 function sendAI(mode,q,done){
   if(!S.odOff){S.odOff=1;S.onDevice=false;save()}
   if(!(S.onDevice&&window.GNOnDevice&&GNOnDevice.supported())){serverAI(mode,q,done);return}
