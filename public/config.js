@@ -13,7 +13,7 @@
   Affiliate links: Amazon Associates India tracking ID in AFFILIATE_TAG, Flipkart affid in FLIPKART_AFFID.
 */
 window.GN_CONFIG = {
-  SITE_URL: 'https://gn-care.vercel.app',
+  SITE_URL: 'https://gncare.xyz',
   ADSENSE_CLIENT: '',
   SLOTS: { app: '', guide: '' },
   AFFILIATE_TAG: 'gncare-21', /* Amazon Associates India tracking ID */

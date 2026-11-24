@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gn-care.vercel.app/sitemap.xml
+Sitemap: https://gncare.xyz/sitemap.xml
