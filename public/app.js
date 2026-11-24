@@ -237,8 +237,8 @@ function viewScan(){
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
   return head+(S.skin?('<section class="tile tile-hero" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Your result</h3>'+faceMap()+'<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+chips+'</div>'+meters+
     '<p class="hint">This is a cosmetic estimate, not a medical diagnosis. Lighting affects results.</p></section>'+
-    (window.GNSkin?'<section class="tile" style="max-width:640px;margin:0 auto 14px;width:100%"><h3 class="t">Why this plan</h3><div class="answer">'+fmtAns(GNSkin.explain({type:S.skin.type,sensitive:S.skin.sensitive||S.skin.sensitiveLeaning,concerns:S.skin.flags||[]},copyLang))+'</div></section>':'')+
     '<div class="scan-kit">'+kitHtml+'</div>'+
+    (window.GNSkin?'<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%"><h3 class="t">Why this plan</h3><div class="answer">'+fmtAns(GNSkin.explain({type:S.skin.type,sensitive:S.skin.sensitive||S.skin.sensitiveLeaning,concerns:S.skin.flags||[]},copyLang))+'</div></section>':'')+
     '<section class="tile" style="max-width:640px;margin:14px auto 0;width:100%;gap:16px"><h3 class="t">A simple AM and PM routine</h3><div class="routine-preview">'+col('Morning',routine.am)+col('Night',routine.pm)+'</div>'+
     '<button class="btn" data-act="setScanRoutine">'+ico('i-check')+(routineSet?'Routine updated — open Routine tab':'Set this routine')+'</button>'+
     '<p class="hint">This replaces the steps in the Routine tab. You can still edit them there.</p></section>'):'')+
@@ -525,7 +525,7 @@ function labelConflicts(ids){var o=[];for(var i=0;i<ids.length;i++){for(var j=i+
 function fmtAns(t){
   var out='',open=false;
   String(t).split(/\n+/).forEach(function(l){
-    l=l.replace(/\*\*/g,'').trim();if(!l)return;
+    l=l.replace(/\*\*/g,'').trim().replace(/^\*(.+)\*$/,'$1');if(!l)return;
     var m=/^[-*•]\s+(.*)$/.exec(l);
     if(m){if(!open){out+='<ul class="checks">';open=true}out+='<li>'+esc(m[1])+'</li>'}
     else{if(open){out+='</ul>';open=false}out+='<p>'+esc(l)+'</p>'}
