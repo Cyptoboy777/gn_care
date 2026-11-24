@@ -8,3 +8,7 @@ node_modules/
 # Cloudflare local dev
 .dev.vars
 .wrangler/
+
+# Local catalog refresh output (may contain sourced quotes; not secrets)
+scripts/out/
+scripts/catalog-refresh-last.json

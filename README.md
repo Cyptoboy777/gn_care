@@ -121,6 +121,43 @@ Visitors can rate from Settings > Rate, and the Home screen asks once after two 
 
 The Shop tab builds a cleanser, moisturizer and sunscreen kit from the skin type and budget, with add-ons for women and men. The catalog is `public/catalog.json` (loaded by `public/products.js`). Edit the JSON file to add, re-price or flag deal items. Prices are estimates from 2026 reviews, not live store prices. Shop also shows a curated Today's best deals section with typical MRP vs typical price, labelled as approximate.
 
+### Product photos
+
+Add an optional `image` URL per product, plus `imageAlt`, `imageSource`, `imageLicense`, `imagePage` and `imageCheckedOn`. The app lazy-loads the photo in a fixed square so the layout does not jump; if there is no image it shows a category placeholder. **Only use photos you have the right to use:** Open Beauty Facts (ODbL, link the product page) or a brand's official asset. Do not hotlink or scrape Amazon or Flipkart images. A few catalog items already have verified Open Beauty Facts photos; the rest are left blank on purpose.
+
+`img-src` in `vercel.json` and `public/_headers` allows `https://images.openbeautyfacts.org` and, because AdSense also needs images, a general `https:` fallback.
+
+### Coupons and offers (owner)
+
+Optional per product:
+
+```json
+"coupon": {
+  "code": "OFFICIALCODE",
+  "discountType": "percent",
+  "value": 10,
+  "minOrder": 499,
+  "store": "Amazon",
+  "expires": "2026-12-31",
+  "sourceUrl": "https://official.example/offer"
+},
+"offerNote": "Short official offer text"
+```
+
+`discountType` is `percent` or `flat`. The Shop card shows “Coupon CODE: save ₹X → approx ₹Y”, a copy button, the expiry, and “verify at checkout”. Expired or badly dated coupons are hidden. **Do not invent codes.** Only add a code you have opened on an official brand or store page, and drop it when it expires. This catalog currently has no coupons, because none were independently verified at the time of writing. `offerNote` can be used for a non-code official offer.
+
+### Fashion deals
+
+Shop has a Fashion deals block with Women / Men tabs. These are **category search links** to Amazon.in and Flipkart (under ₹499 and ₹999) with your affiliate tags. There are no made-up fashion products or prices.
+
+### Telegram deals channel
+
+The app will not create a Telegram channel. When you have one, set `TELEGRAM_URL` in `public/config.js` (for example `https://t.me/yourchannel`) to show a “Join our Telegram deals” button. Setup, a post script, and a disabled GitHub Action are in `docs/telegram-deals.md` and `scripts/post-telegram-deals.mjs`.
+
+### Refreshing catalog facts with Gemini (free, offline)
+
+Do not call Google from the live app to update prices. Use `scripts/refresh-catalog.mjs` by hand (or a disabled Action) with a Free-tier `GEMINI_API_KEY`. It uses `gemini-2.5-flash-lite` plus Grounding with Google Search, stores `sourceUrl` and `checkedOn` for accepted facts, and marks the rest unknown. Coupons are never auto-applied. Official free-tier quotas, why Custom Search JSON API is not used, and the 1 December 2026 `gemini-2.5-flash` billing warning are in `docs/catalog-refresh.md`.
+
 1. Amazon Associates India tracking ID goes in `AFFILIATE_TAG` in `public/config.js` (now `gncare-21`). Flipkart affid goes in `FLIPKART_AFFID` (now `thisisnarenda`).
 2. Shop and kit cards show Amazon and Flipkart buttons. Until those IDs are set, the search links still work but earn nothing.
 3. Read the Associates Program rules before you go live. Check what they say about showing prices and about disclosure. I did not verify them, and the app shows prices as estimates only. Remove the price chips if the rules do not allow them.
@@ -150,7 +187,7 @@ Face Scan is four short steps: an optional selfie, an optional note, a budget, t
 npm test
 ```
 
-Runs 90 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
+Runs 93 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
 
 ## Other income options
 

@@ -345,3 +345,14 @@ textarea.input{min-height:96px;resize:vertical;line-height:1.5;font-family:inher
   .page-h{overflow-wrap:anywhere}
   .dock button{min-height:48px}
 }
+
+.p-card{display:flex;gap:12px;align-items:flex-start}
+.p-img{flex:0 0 72px;width:72px;height:72px;border-radius:14px;background:var(--acc-soft);overflow:hidden;display:grid;place-items:center;aspect-ratio:1/1}
+.p-img img{width:100%;height:100%;object-fit:contain;background:#fff}
+.p-img.ph{color:var(--acc);font-weight:700;font-size:22px}
+.p-img.ph span{line-height:1}
+.li .p-img{flex-basis:56px;width:56px;height:56px;border-radius:12px}
+.coupon{margin-top:8px;padding:8px 10px;border-radius:12px;background:var(--acc-soft);display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.coupon p{margin:0;font-size:13px}
+.fashion .btn-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media (min-width:420px){.fashion .btn-grid{grid-template-columns:1fr 1fr}}

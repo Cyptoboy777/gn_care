@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-24",
-  "note": "Prices are approximate typical India prices from published 2026 reviews and brand listings, not live store prices. MRP is the typical printed list price when known. Check the store for today's deal.",
+  "note": "Prices are approximate typical India prices from published 2026 reviews and brand listings, not live store prices. MRP is the typical printed list price when known. Check the store for today's deal. Coupons are optional and must be real, current codes from an official source; none are listed until verified. Do not invent codes. Hide a coupon when it expires.",
   "sources": {
     "esquire": "Esquire India, best face washes, moisturisers and sunscreens 2026",
     "nykaa": "Nykaa Beauty Book, top moisturisers 2026 and sunscreens under ₹1000",
@@ -8,7 +8,8 @@
     "purplle": "Purplle Magazine, best intimate washes for women",
     "ndtv": "NDTV Shopping, beard oils under ₹500",
     "derma": "Typical India retail listings for The Derma Co, Minimalist and similar serums, 2026. Prices are approximate.",
-    "brand": "Brand or retailer list prices seen in 2026 Indian listings. Prices are approximate and not live store prices."
+    "brand": "Brand or retailer list prices seen in 2026 Indian listings. Prices are approximate and not live store prices.",
+    "openBeautyFacts": "Product photos, where present, are from Open Beauty Facts (https://world.openbeautyfacts.org/), used under the Open Database License (ODbL). Pack size in a photo may differ from the size listed here. Products without a verified photo have no image field."
   },
   "deals": [
     "c2",
@@ -38,7 +39,14 @@
       "src": "esquire",
       "actives": [
         "ceramide"
-      ]
+      ],
+      "image": "https://images.openbeautyfacts.org/images/products/333/787/559/7180/front_en.35.400.jpg",
+      "imageAlt": "CeraVe Hydrating Cleanser bottle",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/3337875597180",
+      "imageCheckedOn": "2026-11-24",
+      "imageNote": "Same product; OBF photo is a 236 ml pack, catalog lists 88 ml."
     },
     {
       "id": "c2",
@@ -54,7 +62,14 @@
       "sens": true,
       "aud": "any",
       "src": "esquire",
-      "mrp": 549
+      "mrp": 549,
+      "image": "https://images.openbeautyfacts.org/images/products/890/600/527/4106/front_en.6.400.jpg",
+      "imageAlt": "Cetaphil Gentle Skin Cleanser bottle",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/8906005274106",
+      "imageCheckedOn": "2026-11-24",
+      "imageNote": "Same product; OBF photo is a 125 ml pack, catalog lists 118 ml."
     },
     {
       "id": "c3",
@@ -136,7 +151,13 @@
       ],
       "sens": false,
       "aud": "any",
-      "src": "esquire"
+      "src": "esquire",
+      "image": "https://images.openbeautyfacts.org/images/products/357/466/128/8345/front_en.9.400.jpg",
+      "imageAlt": "Neutrogena Hydro Boost Cleanser Water Gel tube",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/3574661288345",
+      "imageCheckedOn": "2026-11-24"
     },
     {
       "id": "c8",
@@ -275,7 +296,14 @@
       "src": "esquire",
       "actives": [
         "lipid"
-      ]
+      ],
+      "image": "https://images.openbeautyfacts.org/images/products/370/112/980/5329/front_en.10.400.jpg",
+      "imageAlt": "Bioderma Atoderm Crème Ultra jar",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/3701129805329",
+      "imageCheckedOn": "2026-11-24",
+      "imageNote": "Same product line (Atoderm Crème Ultra). Pack size on the photo may differ from 200 ml."
     },
     {
       "id": "m8",
@@ -311,7 +339,13 @@
       "mrp": 599,
       "actives": [
         "ceramide"
-      ]
+      ],
+      "image": "https://images.openbeautyfacts.org/images/products/890/600/527/4083/front_en.3.400.jpg",
+      "imageAlt": "Cetaphil Moisturising Cream tub",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/8906005274083",
+      "imageCheckedOn": "2026-11-24"
     },
     {
       "id": "m10",
@@ -329,7 +363,14 @@
       "src": "esquire",
       "actives": [
         "ceramide"
-      ]
+      ],
+      "image": "https://images.openbeautyfacts.org/images/products/333/787/559/8996/front_en.28.400.jpg",
+      "imageAlt": "CeraVe Moisturizing Cream tub",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/3337875598996",
+      "imageCheckedOn": "2026-11-24",
+      "imageNote": "Same product; OBF photo is listed as 177 (ml or g), catalog lists 77 ml."
     },
     {
       "id": "m11",
@@ -367,7 +408,14 @@
       "src": "nykaa",
       "actives": [
         "ha"
-      ]
+      ],
+      "image": "https://images.openbeautyfacts.org/images/products/789/101/088/2983/front_es.11.400.jpg",
+      "imageAlt": "Neutrogena Hydro Boost Water Gel jar",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/7891010882983",
+      "imageCheckedOn": "2026-11-24",
+      "imageNote": "Same product; OBF photo is a 50 g pack."
     },
     {
       "id": "s1",
@@ -639,7 +687,13 @@
         "bha"
       ],
       "src": "derma",
-      "note": "BHA treatment for congested, oilier skin"
+      "note": "BHA treatment for congested, oilier skin",
+      "image": "https://images.openbeautyfacts.org/images/products/890/441/730/7146/front_en.3.400.jpg",
+      "imageAlt": "The Derma Co 2% Salicylic Acid Face Serum bottle",
+      "imageSource": "Open Beauty Facts",
+      "imageLicense": "ODbL",
+      "imagePage": "https://world.openbeautyfacts.org/product/8904417307146",
+      "imageCheckedOn": "2026-11-24"
     },
     {
       "id": "t3",

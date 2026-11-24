@@ -330,6 +330,47 @@ function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
 function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
 function priceTxt(p){return p.price!=null?'about '+money(p.price):'price varies'}
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
+var fashTab='women';
+function productImg(p){
+  var alt=esc(p.imageAlt||((p.brand||'')+' '+(p.name||'')).trim()||'Product');
+  if(p.image){
+    return '<div class="p-img"><img src="'+esc(p.image)+'" alt="'+alt+'" width="160" height="160" loading="lazy" decoding="async"></div>';
+  }
+  var letter=esc(((p.cat||'?')+'?').charAt(0));
+  return '<div class="p-img ph" role="img" aria-label="'+alt+'"><span>'+letter+'</span></div>';
+}
+function couponHtml(p){
+  if(!(window.GNPicks&&GNPicks.couponLive&&GNPicks.couponLive(p.coupon)))return '';
+  var c=p.coupon,code=String(c.code),save=GNPicks.couponSave(p.price,c),approx=GNPicks.couponApprox(p.price,c);
+  var line='Coupon <b>'+esc(code)+'</b>';
+  if(save!=null&&approx!=null)line+=': save '+money(save)+' → approx '+money(approx);
+  else if(c.minOrder!=null)line+=' (min. order '+money(c.minOrder)+')';
+  var meta=[];
+  if(c.expires)meta.push('expires '+c.expires);
+  if(c.store)meta.push(c.store);
+  meta.push('verify at checkout');
+  return '<div class="coupon"><p>'+line+'</p><p class="hint">'+esc(meta.join(' · '))+'</p>'+
+    '<button type="button" class="btn ghost sm" data-act="copyCoupon" data-v="'+esc(code)+'">Copy code</button></div>';
+}
+function fashionHtml(){
+  if(!(window.GNPicks&&GNPicks.fashionLinks))return '';
+  var links=GNPicks.fashionLinks(affTag(),fkAff());
+  var tab=fashTab==='men'?'men':'women';
+  var list=links[tab]||[];
+  return '<section class="tile fashion"><h3 class="t">Fashion deals</h3>'+
+    '<p class="hint">Category links to Amazon.in and Flipkart sale sections. We do not list made-up products or prices here. Check the store for today\'s deal.</p>'+
+    '<div class="chips" style="margin-bottom:10px">'+
+      '<button data-act="fashTab" data-v="women" aria-pressed="'+(tab==='women')+'">Women</button>'+
+      '<button data-act="fashTab" data-v="men" aria-pressed="'+(tab==='men')+'">Men</button></div>'+
+    '<div class="btn-grid">'+list.map(function(x){return '<a class="btn sm '+(x.store==='Flipkart'?'ghost':'')+'" href="'+esc(x.url)+'" target="_blank" rel="sponsored nofollow noopener">'+esc(x.store+': '+x.label)+'</a>'}).join('')+'</div></section>';
+}
+function telegramRow(){
+  var raw=(window.GN_CONFIG&&GN_CONFIG.TELEGRAM_URL)||'';
+  var url=window.GNPicks&&GNPicks.telegramURL?GNPicks.telegramURL(raw):'';
+  if(!url)return '';
+  return '<p class="hint" style="margin:8px 0 0"><a class="btn sm" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Join our Telegram deals</a></p>';
+}
+function obfCredit(){return '<p class="hint">Some product photos come from <a href="https://world.openbeautyfacts.org/" target="_blank" rel="noopener">Open Beauty Facts</a> (ODbL). Pack size in a photo may differ from the size we list. Items without a verified photo show a category placeholder. We do not use Amazon or Flipkart images.</p>';}
 function kitConcerns(){return (S.skin&&S.skin.flags)||[]}
 function dealsHtml(){
   if(!(window.GNPicks&&GNPicks.deals))return '';
@@ -337,7 +378,7 @@ function dealsHtml(){
   if(!list.length)return '';
   var amz=esc(GNPicks.amazonDealsURL(affTag()));
   var fk=esc(GNPicks.flipkartOffersURL(fkAff()));
-  return '<section class="tile deals"><h3 class="t">Today\'s best deals</h3><p class="hint">Curated from our catalog using typical MRP vs typical price. This is an <b>approx. price, check store for today\'s deal</b>. We do not scrape live prices.</p><div class="list">'+list.map(function(p){var d=GNPicks.dealDiscount(p);return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span><s class="mrp">'+money(p.mrp)+'</s> '+priceTxt(p)+(d!=null?' <span class="chip good">'+d+'% off typ.</span>':'')+'</span></div>'+buyBtn(p)+'</div>'}).join('')+'</div><div class="btn-grid" style="margin-top:10px"><a class="btn sm" href="'+amz+'" target="_blank" rel="sponsored nofollow noopener">Amazon deals</a><a class="btn ghost sm" href="'+fk+'" target="_blank" rel="sponsored nofollow noopener">Flipkart offers</a></div></section>'}
+  return '<section class="tile deals"><h3 class="t">Today\'s best deals</h3><p class="hint">Curated from our catalog using typical MRP vs typical price. This is an <b>approx. price, check store for today\'s deal</b>. We do not scrape live prices.</p><div class="list">'+list.map(function(p){var d=GNPicks.dealDiscount(p);return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span><s class="mrp">'+money(p.mrp)+'</s> '+priceTxt(p)+(d!=null?' <span class="chip good">'+d+'% off typ.</span>':'')+'</span>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div><div class="btn-grid" style="margin-top:10px"><a class="btn sm" href="'+amz+'" target="_blank" rel="sponsored nofollow noopener">Amazon deals</a><a class="btn ghost sm" href="'+fk+'" target="_blank" rel="sponsored nofollow noopener">Flipkart offers</a></div></section>'}
 function installHome(){
   if(standalone)return '';
   if(deferredInstall)return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">Add the app to your home screen for a faster, full-screen experience and reminders.</p><button class="btn sm" data-act="install">Install app</button></section>';
@@ -358,9 +399,10 @@ function pickCard(it,type){
   var p=it.item;
   var alts=it.alts.filter(function(a){return a.id!==p.id}).slice(0,3);
   return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3>'+
-    '<div><span class="eyebrow">'+esc(p.brand)+'</span><h4 style="font-size:17px;font-weight:700;line-height:1.25;margin-top:2px;overflow-wrap:anywhere">'+esc(p.name)+'</h4><p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p></div>'+
+    '<div class="p-card">'+productImg(p)+'<div class="grow"><span class="eyebrow">'+esc(p.brand)+'</span><h4 style="font-size:17px;font-weight:700;line-height:1.25;margin-top:2px;overflow-wrap:anywhere">'+esc(p.name)+'</h4><p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p></div></div>'+
     '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span><span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
     (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
+    couponHtml(p)+
     (window.GNPicks&&GNPicks.whyThis?'<p class="hint why-this"><b>Why this suits you.</b> '+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p>':'')+
     (it.noSens?'<p class="hint">No sensitive-skin option in our list for '+esc(type.toLowerCase())+' skin. Patch test first.</p>':'')+
     buyBtn(p)+
@@ -388,7 +430,7 @@ function viewPicks(){
     body='<div class="grid">'+r.items.map(function(i){return pickCard(i,type)}).join('')+
       '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain my kit with AI</button></div>'+
         '<div class="meter '+(r.fits?'':'over')+'"><i style="width:'+pct+'%"></i></div><p class="hint">'+msg+(have.length?' Left out because you already have a '+have.join(' and ')+' on your shelf.':'')+'</p>'+aiBox+'</section>'+
-      (add.length?'<section class="tile"><h3 class="t">Add-ons for '+(k.aud==='women'?'women':'men')+'</h3><div class="list">'+add.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p),p.note].filter(Boolean).map(esc).join(' · ')+'</span></div>'+buyBtn(p)+'</div>'}).join('')+'</div>'+(k.aud==='women'?'<p class="hint">Intimate washes are for external use only. See a doctor for itching, odour or discharge that does not go away.</p>':'')+'</section>':'')+
+      (add.length?'<section class="tile"><h3 class="t">Add-ons for '+(k.aud==='women'?'women':'men')+'</h3><div class="list">'+add.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p),p.note].filter(Boolean).map(esc).join(' · ')+'</span>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div>'+(k.aud==='women'?'<p class="hint">Intimate washes are for external use only. See a doctor for itching, odour or discharge that does not go away.</p>':'')+'</section>':'')+
     '</div>';
   }
   var src=Object.keys(window.GN_SOURCES||{}).map(function(s){return GN_SOURCES[s]}).join('; ');
@@ -396,10 +438,10 @@ function viewPicks(){
   var treatHtml='';
   if(type&&window.GNPicks&&GNPicks.treatments){
     var tr=GNPicks.treatments(type,kitConcerns()).slice(0,4);
-    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p)].filter(Boolean).join(' · ')+'</span><p class="hint why-this">'+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p></div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
+    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p)].filter(Boolean).join(' · ')+'</span><p class="hint why-this">'+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
   }
-  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3><p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
-  return head+dealsHtml()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
+  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3>'+obfCredit()+'<p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
+  return head+dealsHtml()+fashionHtml()+telegramRow()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
 
 /* ---------- coach, label decoder, ratings ---------- */
 var LAB={bad:'Avoid',warn:'Separate',good:'Pairs well'};
@@ -590,7 +632,16 @@ var A={
    if(CO.q.trim().length<3){toast('Type a question first');return}
    CO.busy=true;CO.err='';CO.ans='';CO.rated=false;render();
    sendAI('coach',CO.q,function(r){CO.busy=false;if(r.err)CO.err=r.err;else CO.ans=r.text;if(tab==='checker')render()})},
- kAud:function(v){kit().aud=v;save();render()},
+ kAud:function(v){kit().aud=v;if(v==='men'||v==='women')fashTab=v;save();render()},
+ fashTab:function(v){fashTab=(v==='men'?'men':'women');render()},
+ copyCoupon:function(v){
+   var code=String(v||'');
+   if(!code)return;
+   var ok=function(){toast('Copied '+code+' — verify at checkout')};
+   if(navigator.clipboard&&navigator.clipboard.writeText){
+     navigator.clipboard.writeText(code).then(ok).catch(function(){toast('Copy failed. Code: '+code)});
+   } else toast('Copy this code and verify at checkout: '+code);
+ },
  kType:function(v){var k=kit();k.type=v;k.swaps={};PK={ai:'',err:'',busy:false,rated:false};save();render()},
  kSens:function(){var k=kit();k.sens=!kitSens();k.swaps={};PK={ai:'',err:'',busy:false,rated:false};save();render()},
  kPreset:function(v){kit().budget=+v;save();render()},

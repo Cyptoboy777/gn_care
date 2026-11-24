@@ -1,0 +1,33 @@
+# Disabled by default. This never runs in the shop app.
+# Enable only after adding the GEMINI_API_KEY secret and setting
+# the repository variable ENABLE_CATALOG_REFRESH=true.
+# It writes a review artifact only; it does not commit catalog.json.
+name: Catalog refresh (manual)
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 3 * * 1'  # Mondays 03:00 UTC — uncomment only when you are ready
+
+jobs:
+  refresh:
+    if: ${{ vars.ENABLE_CATALOG_REFRESH == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Refresh catalog (review file only)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CATALOG_REFRESH_LIMIT: '10'
+        run: node scripts/refresh-catalog.mjs --limit 10
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: catalog-refresh
+          path: scripts/out/
+          if-no-files-found: ignore

@@ -4,6 +4,8 @@
   "private": true,
   "description": "GN Personal Hygiene and Skin Care: PWA with ads, AI coach and feedback",
   "scripts": {
-    "test": "node tests/run.js"
+    "test": "node tests/run.js",
+    "refresh-catalog": "node scripts/refresh-catalog.mjs",
+    "telegram-deals": "node scripts/post-telegram-deals.mjs --dry-run"
   }
 }

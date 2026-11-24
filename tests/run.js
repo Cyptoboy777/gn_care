@@ -342,6 +342,53 @@ async function t(name, fn) {
     assert.ok(tr[0].cat === 'Serum');
   });
 
+  await t('coupon math and expiry hide expired or invalid codes', async () => {
+    const now = new Date('2026-11-24T12:00:00+05:30');
+    const percent = { code: 'SAVE10', discountType: 'percent', value: 10, expires: '2026-12-31', store: 'Amazon' };
+    assert.strictEqual(P.couponLive(percent, now), true);
+    assert.strictEqual(P.couponSave(499, percent), 50);
+    assert.strictEqual(P.couponApprox(499, percent), 449);
+    const flat = { code: 'FLAT100', discountType: 'flat', value: 100, minOrder: 400 };
+    assert.strictEqual(P.couponSave(399, flat), null);
+    assert.strictEqual(P.couponSave(500, flat), 100);
+    assert.strictEqual(P.couponApprox(500, flat), 400);
+    const expired = { code: 'OLD', discountType: 'percent', value: 20, expires: '2026-11-23' };
+    assert.strictEqual(P.couponLive(expired, now), false);
+    const today = { code: 'TODAY', discountType: 'flat', value: 20, expires: '2026-11-24' };
+    assert.strictEqual(P.couponLive(today, now), true);
+    assert.strictEqual(P.couponLive({ discountType: 'percent', value: 10 }, now), false);
+    assert.strictEqual(P.couponLive({ code: 'X', expires: 'soon' }, now), false);
+    assert.ok(P.couponLive === undefined || global.GN_PRODUCTS.every((x) => !x.coupon || P.couponLive(x.coupon, now)));
+  });
+
+  await t('catalog images are only used when present and coupons are not invented', async () => {
+    const withImg = global.GN_PRODUCTS.filter((x) => x.image);
+    assert.ok(withImg.length >= 1);
+    withImg.forEach((x) => {
+      assert.ok(String(x.image).startsWith('https://images.openbeautyfacts.org/'));
+      assert.strictEqual(x.imageSource, 'Open Beauty Facts');
+      assert.ok(String(x.imagePage || '').startsWith('https://world.openbeautyfacts.org/product/'));
+      assert.ok(x.imageAlt);
+    });
+    assert.ok(global.GN_PRODUCTS.every((x) => !x.coupon), 'do not invent catalog coupons');
+  });
+
+  await t('fashion category links carry tags and invent no products', async () => {
+    const f = P.fashionLinks('gncare-21', 'thisisnarenda');
+    assert.ok(f.men.length === 4 && f.women.length === 4);
+    f.men.concat(f.women).forEach((l) => {
+      assert.ok(l.url.startsWith('https://www.amazon.in/') || l.url.startsWith('https://www.flipkart.com/'));
+      if (l.store === 'Amazon') assert.ok(l.url.indexOf('tag=gncare-21') > -1);
+      if (l.store === 'Flipkart') assert.ok(l.url.indexOf('affid=thisisnarenda') > -1);
+      assert.ok(!('price' in l) && !('mrp' in l));
+    });
+    const bare = P.fashionLinks('', '');
+    bare.men.concat(bare.women).forEach((l) => assert.ok(!/tag=|affid=/.test(l.url)));
+    assert.strictEqual(P.telegramURL('https://t.me/examplechannel'), 'https://t.me/examplechannel');
+    assert.strictEqual(P.telegramURL('https://evil.example/t.me'), '');
+    assert.strictEqual(P.telegramURL(''), '');
+  });
+
 
   console.log('facescan.js');
   const F = require('../public/facescan.js');

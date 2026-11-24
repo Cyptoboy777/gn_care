@@ -157,7 +157,77 @@
     return tips.slice(0, 3);
   }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips };
+  function isoDay(now) {
+    var d = now ? new Date(now) : new Date();
+    if (isNaN(d.getTime())) return '';
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+  /* Coupons: hide when expired or missing a code. expires is an inclusive YYYY-MM-DD calendar date. */
+  function couponLive(coupon, now) {
+    if (!coupon || !coupon.code) return false;
+    if (coupon.expires) {
+      var exp = String(coupon.expires);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(exp)) return false;
+      var today = isoDay(now);
+      if (!today || today > exp) return false;
+    }
+    return true;
+  }
+  function couponSave(price, coupon) {
+    if (price == null || price <= 0 || !coupon || coupon.value == null) return null;
+    if (coupon.minOrder != null && price < coupon.minOrder) return null;
+    var v = Number(coupon.value);
+    if (!(v > 0)) return null;
+    if (coupon.discountType === 'percent') return Math.round(price * v / 100);
+    if (coupon.discountType === 'flat') return Math.min(Math.round(price), Math.round(v));
+    return null;
+  }
+  function couponApprox(price, coupon) {
+    var save = couponSave(price, coupon);
+    if (price == null || save == null) return null;
+    return Math.max(0, Math.round(price) - save);
+  }
+  function safeTag(tag) { return /^[A-Za-z0-9_-]{1,40}$/.test(tag || '') ? tag : ''; }
+  function amazonSearchURL(q, tag, priceCeil) {
+    var u = 'https://www.amazon.in/s?k=' + encodeURIComponent(q) + '&i=apparel';
+    if (priceCeil) u += '&rh=' + encodeURIComponent('p_36:-' + (priceCeil * 100));
+    tag = safeTag(tag);
+    if (tag) u += '&tag=' + encodeURIComponent(tag);
+    return u;
+  }
+  function flipkartSearchURL(q, affid) {
+    var u = 'https://www.flipkart.com/search?q=' + encodeURIComponent(q);
+    affid = safeTag(affid);
+    if (affid) u += '&affid=' + encodeURIComponent(affid);
+    return u;
+  }
+  /* Category / search links only. No invented products or prices. */
+  function fashionLinks(tag, affid) {
+    return {
+      men: [
+        { store: 'Amazon', label: 'Men’s fashion under ₹499', url: amazonSearchURL('men fashion', tag, 499) },
+        { store: 'Amazon', label: 'Men’s fashion under ₹999', url: amazonSearchURL('men fashion', tag, 999) },
+        { store: 'Flipkart', label: 'Men’s fashion under ₹499', url: flipkartSearchURL('men fashion under 499', affid) },
+        { store: 'Flipkart', label: 'Men’s fashion under ₹999', url: flipkartSearchURL('men fashion under 999', affid) }
+      ],
+      women: [
+        { store: 'Amazon', label: 'Women’s fashion under ₹499', url: amazonSearchURL('women fashion', tag, 499) },
+        { store: 'Amazon', label: 'Women’s fashion under ₹999', url: amazonSearchURL('women fashion', tag, 999) },
+        { store: 'Flipkart', label: 'Women’s fashion under ₹499', url: flipkartSearchURL('women fashion under 499', affid) },
+        { store: 'Flipkart', label: 'Women’s fashion under ₹999', url: flipkartSearchURL('women fashion under 999', affid) }
+      ]
+    };
+  }
+  function telegramURL(raw) {
+    raw = String(raw || '').trim();
+    if (!/^https:\/\/(t\.me|telegram\.me)\/[-A-Za-z0-9_+/]+$/i.test(raw)) return '';
+    return raw;
+  }
+
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips, couponLive: couponLive, couponSave: couponSave, couponApprox: couponApprox, fashionLinks: fashionLinks, telegramURL: telegramURL, isoDay: isoDay };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);

@@ -1,0 +1,27 @@
+# Disabled by default. Does not create a Telegram channel.
+# Enable only after you have created the channel and bot (see docs/telegram-deals.md),
+# added TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL secrets, and set
+# ENABLE_TELEGRAM_DEALS=true.
+name: Telegram deals (manual)
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 10 * * 1'  # Mondays 10:00 UTC — uncomment only when you are ready
+
+jobs:
+  post:
+    if: ${{ vars.ENABLE_TELEGRAM_DEALS == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Post catalog deals
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+        run: node scripts/post-telegram-deals.mjs
