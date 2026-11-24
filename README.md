@@ -142,7 +142,7 @@ The `functions/` folder and `wrangler.toml` let the same code run on Cloudflare 
 
 ## Face Scan
 
-The Face Scan tab always uses the five-question quiz. If you add a selfie, [MediaPipe Face Landmarker](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker/web_js) loads from a CDN the first time you map your skin, runs only in the browser, and never uploads the photo. It estimates shine, redness, evenness and under-eye darkness in the T-zone, cheeks and chin, then combines those scores with the quiz. This is a cosmetic estimate, not a medical diagnosis, and lighting affects the result. If the model cannot load, no face is found, or the photo is too dark or too bright, the app asks you to retake and falls back to the quiz. The photo stays in the session unless you tap Save photo on this device.
+Face Scan is four short steps: an optional selfie, an optional note, a budget, then a kit and a one-tap AM/PM routine. You need a selfie or a note (or both). The note is parsed on the device with simple keyword matching (English plus common Hinglish and Tenglish words) and does not need an AI key. If you add a selfie, [MediaPipe Face Landmarker](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker/web_js) loads from a CDN the first time, runs only in the browser, and never uploads the photo. It estimates shine, redness, evenness and under-eye darkness in the T-zone, cheeks and chin, then combines those scores with the note. This is a cosmetic estimate, not a medical diagnosis, and lighting affects the result. If the model cannot load, no face is found, or the photo is too dark or too bright, the app asks you to retake or continue with a note. The photo stays in the session unless you tap Save photo on this device. "Set this routine" writes the suggested morning and night steps into the Routine tab.
 
 ## Tests
 
@@ -150,7 +150,7 @@ The Face Scan tab always uses the five-question quiz. If you add a selfie, [Medi
 npm test
 ```
 
-Runs 73 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metric and skin-type mapping functions, using mocks, so it costs nothing.
+Runs 85 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
 
 ## Other income options
 

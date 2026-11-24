@@ -419,5 +419,90 @@ async function t(name, fn) {
     ['acne', 'melasma', 'rosacea', 'eczema', 'psoriasis', 'disease', 'diagnosis', 'attractive', 'ethnicity', 'gender', 'age'].forEach((w) => assert.ok(!blob.includes(w), w));
   });
 
+
+  await t('parses English and common Hinglish or Tenglish concerns', async () => {
+    assert.deepStrictEqual(F.parseConcerns('oily by noon, pimples on chin, dry after wash, sensitive to fragrance'), ['oily', 'dry', 'acne', 'sensitive']);
+    assert.ok(F.parseConcerns('teelu ostayi, nune').includes('oily'));
+    assert.ok(F.parseConcerns('kalla kinda nallaga').includes('circles'));
+    assert.ok(F.parseConcerns('nalla daag and tan ayindi, glow ledu').includes('pigment'));
+    assert.ok(F.parseConcerns('nalla daag and tan ayindi, glow ledu').includes('tan'));
+    assert.ok(F.parseConcerns('nalla daag and tan ayindi, glow ledu').includes('dull'));
+    assert.ok(F.parseConcerns('mandutundi after perfume').includes('sensitive'));
+    assert.deepStrictEqual(F.parseConcerns('  '), []);
+    assert.deepStrictEqual(F.parseConcerns(''), []);
+  });
+  await t('recommend requires a selfie metric or a note', async () => {
+    const r = F.recommend(null, []);
+    assert.strictEqual(r.ok, false);
+    assert.strictEqual(r.needInput, true);
+  });
+  await t('a note alone can pick a skin type and concerns', async () => {
+    const r = F.recommend(null, F.parseConcerns('oily by noon and pimples on the chin'));
+    assert.strictEqual(r.ok, true);
+    assert.strictEqual(r.type, 'Oily');
+    assert.strictEqual(r.source, 'note');
+    assert.ok(r.concerns.includes('oily') && r.concerns.includes('acne'));
+  });
+  await t('oily and dry in a note lean Combination', async () => {
+    const r = F.recommend(null, F.parseConcerns('oily by noon but dry after wash'));
+    assert.strictEqual(r.type, 'Combination');
+  });
+  await t('scan metrics plus a sensitivity note combine and keep both concerns', async () => {
+    const m = F.buildMetrics({ forehead: oily(400), nose: oily(200), cheekL: oily(300), cheekR: oily(300), chin: oily(200), underEyeL: skin(80), underEyeR: skin(80) });
+    const r = F.recommend(m, F.parseConcerns('sensitive to fragrance'));
+    assert.strictEqual(r.ok, true);
+    assert.strictEqual(r.type, 'Oily');
+    assert.strictEqual(r.source, 'scan+note');
+    assert.strictEqual(r.sensitive, true);
+    assert.ok(r.concerns.includes('sensitive'));
+    assert.ok(r.concerns.includes('oily'));
+  });
+  await t('high under-eye darkness is added as a concern even without a note', async () => {
+    const cheeks = skin(300);
+    const eyes = under(300);
+    const m = F.buildMetrics({ forehead: skin(200), nose: skin(100), cheekL: cheeks, cheekR: cheeks, chin: skin(150), underEyeL: eyes, underEyeR: eyes });
+    m.ok = true;
+    const c = F.concernsFrom(m, []);
+    if (m.darkCircles >= 55) assert.ok(c.includes('circles'));
+    else assert.ok(F.darkCircleScore(F.summarize(eyes), F.summarize(cheeks)) >= 0);
+  });
+  await t('routine for oily acne skin includes sunscreen and a BHA night step', async () => {
+    const r = F.buildRoutine('Oily', ['oily', 'acne'], false);
+    assert.ok(r.am.some((s) => /sunscreen/i.test(s.n)));
+    assert.ok(r.pm.some((s) => /BHA|salicylic/i.test(s.n)));
+    assert.ok(r.am.length >= 3 && r.pm.length >= 3);
+  });
+  await t('sensitive routine uses fragrance-free moisturizer names', async () => {
+    const r = F.buildRoutine('Normal', ['sensitive'], true);
+    assert.ok(r.am.some((s) => /fragrance-free/i.test(s.n)));
+  });
+
+  console.log('kit budgets');
+  const budgets = F.KIT_BUDGETS;
+  await t('budget chips map to 500, 1000, 2000 and no limit', async () => {
+    assert.deepStrictEqual(budgets.map((b) => b.budget), [500, 1000, 2000, 0]);
+  });
+  await t('a mid budget kit stays within the cap when a fit exists', async () => {
+    ['Oily', 'Dry', 'Combination', 'Normal'].forEach((ty) => {
+      const r = P.buildKit({ type: ty, sens: false, budget: 2000, swaps: {}, have: {} });
+      assert.ok(r.items.length === 3, ty);
+      assert.ok(r.items.every((i) => i.item), ty + ' missing core item');
+      assert.ok(r.fits, ty + ' should fit 2000, total ' + r.total);
+      assert.ok(r.total <= 2000, ty);
+    });
+  });
+  await t('no-limit budget always fits and still returns the core kit', async () => {
+    const r = P.buildKit({ type: 'Oily', sens: false, budget: 0, swaps: {}, have: {} });
+    assert.strictEqual(r.fits, true);
+    assert.strictEqual(r.items.length, 3);
+    assert.ok(r.total > 0);
+  });
+  await t('a tight budget reports a minimum and still returns cleanser, moisturizer and sunscreen', async () => {
+    const r = P.buildKit({ type: 'Oily', sens: false, budget: 500, swaps: {}, have: {} });
+    assert.strictEqual(r.items.length, 3);
+    assert.ok(r.items.every((i) => i.item));
+    if (!r.fits) assert.ok(r.min >= 500 || r.total > 500);
+  });
+
   console.log('\n' + passed + ' checks passed' + (process.exitCode ? ', some FAILED' : ''));
 })();

@@ -243,6 +243,19 @@ label.f{display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:
 .legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;font-size:11.5px;color:var(--fg-2);font-weight:600}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
 .consent-note{text-align:center;max-width:340px;margin:0 auto}
+.steps{display:flex;gap:8px;justify-content:center;margin:8px 0 0}
+.steps i{width:8px;height:8px;border-radius:50%;background:var(--rule);display:block}
+.steps i.on{background:var(--btn);transform:scale(1.25)}
+.wiz-nav{display:flex;gap:10px;margin-top:8px}
+.wiz-nav .btn{flex:1;min-height:48px;font-size:16px}
+.budget-picks{display:flex;flex-wrap:wrap;gap:8px}
+.budget-picks button{flex:1 1 calc(50% - 8px);min-height:52px;font-size:16px;border-radius:16px}
+#scan-note{min-height:120px;font-size:16px;line-height:1.45}
+.routine-preview{display:grid;gap:16px}
+@media (min-width:640px){.routine-preview{grid-template-columns:1fr 1fr}}
+.scan-kit{display:grid;gap:12px;max-width:640px;margin:0 auto}
+@media (min-width:720px){.scan-kit{grid-template-columns:1fr 1fr}}
+.scan-kit .tile:first-child{grid-column:1/-1}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:4px 0 2px}
 .metrics div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px;background:var(--acc-soft)}
 .metrics b{font-size:18px;font-variant-numeric:tabular-nums}

@@ -180,7 +180,120 @@
     };
   }
 
+
+  var CONCERN_LABELS = {
+    oily: 'Oily / shine',
+    dry: 'Dryness',
+    acne: 'Pimples',
+    pigment: 'Dark spots',
+    sensitive: 'Sensitivity',
+    dull: 'Dullness',
+    tan: 'Tanning',
+    circles: 'Dark circles'
+  };
+
+  /* English plus a few common Hinglish and Tenglish words. No AI required. */
+  var CONCERN_RULES = [
+    ['oily', /\b(oily|oiliness|greasy|shiny|shine)\b|\boil (by|at) noon\b|\boil (vasth|vast|ost)|teelu+|telu+|\bnune\b|chamak(ta|ti|the)?|\btel nikal/],
+    ['dry', /\b(dry|dryness|tight|tightness|flak(?:y|es)|peeling)\b|khushk|\bsukha\b|dry (ayipoth|ayipothun|avuth|avut)|tarvata dry|after wash.{0,20}dry|varisa/],
+    ['acne', /\b(pimples?|acne|breakouts?|zits?|mungurulu?|muhase)\b|\bdaane\b/],
+    ['pigment', /\b(pigment(?:ation)?|melasma|blemish(?:es)?|dark spots?|acne marks?|black (?:spots?|marks?|patches))\b|\bdaags?\b|\bdags?\b|nalla (daag|dag|spots?)/],
+    ['sensitive', /\b(sensitive|sensitivity|fragrance|perfume|parfum|allerg(?:y|ic)|stings?|redness)\b|mandutund|mandipoth|sugandh|khushbu|perfume ki/],
+    ['dull', /\b(dull|dullness|no glow|glow ledu|kammi? glow|mothaga|thandaga)\b/],
+    ['tan', /\b(tann?ing|tanned|sun ?tan|sunburn)\b|endulo nalla|endalo nalla|tan ayin/],
+    ['circles', /\b(dark circles?|under[- ]?eyes?|eye bags?)\b|kalla kinda|aankh ke neeche|ankhon ke neeche/]
+  ];
+
+  function parseConcerns(text) {
+    var s = String(text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    var flags = [];
+    if (!s) return flags;
+    CONCERN_RULES.forEach(function (r) {
+      if (r[1].test(s) && flags.indexOf(r[0]) < 0) flags.push(r[0]);
+    });
+    return flags;
+  }
+
+  function flagsToTally(flags) {
+    var t = { dry: 0, oil: 0, tz: 0, sens: 0, sun: 0 };
+    function has(id) { return (flags || []).indexOf(id) > -1; }
+    if (has('oily')) t.oil += 2;
+    if (has('dry')) t.dry += 2;
+    if (has('oily') && has('dry')) t.tz += 2;
+    if (has('sensitive')) t.sens += 2;
+    if (has('tan')) t.sun += 2;
+    if (has('acne') && has('oily')) t.oil += 1;
+    return t;
+  }
+
+  function concernsFrom(metrics, flags) {
+    var out = (flags || []).slice();
+    function add(id) { if (out.indexOf(id) < 0) out.push(id); }
+    if (metrics && metrics.ok) {
+      if (metrics.shine >= 55) add('oily');
+      if (metrics.shine <= 30) add('dry');
+      if (metrics.darkCircles >= 55) add('circles');
+      if (metrics.redness >= 70) add('sensitive');
+      if (metrics.evenness <= 40) add('dull');
+    }
+    return out;
+  }
+
+  function recommend(metrics, flags) {
+    var f = flags || [];
+    var m = metrics && metrics.ok ? metrics : null;
+    if (!m && !f.length) {
+      return { ok: false, needInput: true, type: '', concerns: [], sensitive: false, sensitiveLeaning: false, sun: 0, source: '', zones: null, metrics: null, tally: flagsToTally([]) };
+    }
+    var r = combine(flagsToTally(f), m);
+    r.ok = true;
+    r.needInput = false;
+    r.concerns = concernsFrom(m, f);
+    r.source = m && f.length ? 'scan+note' : (m ? 'scan' : 'note');
+    return r;
+  }
+
+  var KIT_BUDGETS = [
+    { id: 'u500', n: 'Under ₹500', budget: 500 },
+    { id: 'u1000', n: '₹500–1000', budget: 1000 },
+    { id: 'u2000', n: '₹1000–2000', budget: 2000 },
+    { id: 'open', n: 'No limit', budget: 0 }
+  ];
+
+  function buildRoutine(type, flags, sensitive) {
+    function has(id) { return (flags || []).indexOf(id) > -1; }
+    var am = [], pm = [];
+    if (type === 'Oily') {
+      am = ['Gel cleanser', 'Oil-free moisturizer', 'Sunscreen SPF 30+'];
+      pm = ['Gel cleanser', has('acne') ? 'Salicylic acid (BHA) — 2 or 3 nights a week' : 'Niacinamide', 'Oil-free moisturizer'];
+    } else if (type === 'Dry') {
+      am = ['Cream or milk cleanser', 'Hyaluronic acid on damp skin', 'Ceramide moisturizer', 'Sunscreen SPF 30+'];
+      pm = ['Cream or milk cleanser', 'Ceramide moisturizer'];
+    } else if (type === 'Combination') {
+      am = ['Gentle gel cleanser', 'Light lotion, richer cream on cheeks', 'Sunscreen SPF 30+'];
+      pm = ['Gentle gel cleanser'];
+      if (has('acne')) pm.push('BHA on forehead, nose and chin only');
+      pm.push('Moisturizer');
+    } else {
+      am = ['Gentle cleanser', 'Light moisturizer', 'Sunscreen SPF 30+'];
+      pm = ['Gentle cleanser', 'Moisturizer'];
+    }
+    if (has('dull') || has('pigment')) {
+      if (am.indexOf('Vitamin C serum') < 0) am.splice(Math.min(1, am.length), 0, 'Vitamin C serum');
+    }
+    if (has('circles')) pm.push('Gentle eye cream');
+    if (sensitive || has('sensitive')) {
+      am = am.map(function (n) { return /moisturizer|cream|lotion/i.test(n) && n.indexOf('fragrance-free') < 0 ? 'Fragrance-free ' + n.charAt(0).toLowerCase() + n.slice(1) : n; });
+      pm = pm.map(function (n) { return /moisturizer|cream|lotion/i.test(n) && n.indexOf('fragrance-free') < 0 ? 'Fragrance-free ' + n.charAt(0).toLowerCase() + n.slice(1) : n; });
+    }
+    return {
+      am: am.map(function (n, i) { return { id: 'am' + (i + 1), n: n }; }),
+      pm: pm.map(function (n, i) { return { id: 'pm' + (i + 1), n: n }; })
+    };
+  }
+
   function buildMetrics(parts) {
+
     var tzonePx = (parts.forehead || []).concat(parts.nose || []);
     var cheekPx = (parts.cheekL || []).concat(parts.cheekR || []);
     var chinPx = parts.chin || [];
@@ -344,6 +457,13 @@
     typeFromTally: typeFromTally,
     zonesFromType: zonesFromType,
     combine: combine,
+    parseConcerns: parseConcerns,
+    flagsToTally: flagsToTally,
+    concernsFrom: concernsFrom,
+    recommend: recommend,
+    buildRoutine: buildRoutine,
+    CONCERN_LABELS: CONCERN_LABELS,
+    KIT_BUDGETS: KIT_BUDGETS,
     summarize: summarize,
     shineScore: shineScore,
     rednessScore: rednessScore,
