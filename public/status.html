@@ -29,7 +29,8 @@ a{color:inherit}
   var pub=(C.ADSENSE_CLIENT||'').replace(/^ca-/,'');
   add(!!C.ADSENSE_CLIENT,'Ads: AdSense ID','Filled in config.js. Ads also need a custom domain and AdSense approval before they show.');
   add(!!(C.SLOTS&&(C.SLOTS.app||C.AUTO_ADS)),'Ads: ad unit','Set SLOTS.app in config.js, or AUTO_ADS to true.');
-  add(/^[A-Za-z0-9-]{3,40}$/.test(C.AFFILIATE_TAG||''),'Affiliate tracking ID','Set AFFILIATE_TAG in config.js. Without it, Shop links earn nothing.');
+  add(/^[A-Za-z0-9-]{3,40}$/.test(C.AFFILIATE_TAG||''),'Amazon tracking ID','Set AFFILIATE_TAG in config.js. Without it, Amazon links earn nothing.');
+  add(/^[A-Za-z0-9_]{3,40}$/.test(C.FLIPKART_AFFID||''),'Flipkart affiliate ID','Set FLIPKART_AFFID in config.js. Without it, Flipkart links earn nothing.');
   add(!!C.SITE_URL&&C.SITE_URL.indexOf('YOUR-DOMAIN')<0,'Site address','SITE_URL in config.js should be your real domain.');
   Promise.all([
     get('/ads.txt').then(function(t){return pub&&t.indexOf(pub.replace('pub-',''))>-1},function(){return false}),

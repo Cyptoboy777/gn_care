@@ -303,6 +303,15 @@ async function t(name, fn) {
     assert.ok(!/tag=/.test(P.buyURL(p, 'bad tag&x=1')));
     assert.ok(P.buyURL({ brand: "L'Oreal", name: 'A & B' }, '').indexOf('%26') > -1);
   });
+  await t('Flipkart links are search URLs with a safe affid', async () => {
+    const p = global.GN_PRODUCTS[0];
+    const u = P.flipkartURL(p, 'thisisnarenda');
+    assert.ok(u.startsWith('https://www.flipkart.com/search?q='));
+    assert.ok(/&affid=thisisnarenda$/.test(u));
+    assert.ok(!/affid=/.test(P.flipkartURL(p, '')));
+    assert.ok(!/affid=/.test(P.flipkartURL(p, 'bad id&x=1')));
+    assert.ok(P.flipkartURL({ brand: "L'Oreal", name: 'A & B' }, '').indexOf('%26') > -1);
+  });
 
 
   console.log('facescan.js');

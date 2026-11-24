@@ -121,8 +121,8 @@ Visitors can rate from Settings > Rate, and the Home screen asks once after two 
 
 The Shop tab builds a cleanser, moisturizer and sunscreen kit from the skin type and budget, with add-ons for women and men. The catalog is `public/products.js`. Edit it to add or re-price products. Prices there are estimates from 2026 reviews, not live prices.
 
-1. Join Amazon Associates India and get your tracking ID, for example `yourname-21`.
-2. Put it in `AFFILIATE_TAG` in `public/config.js` and redeploy. Until then, links work but earn nothing.
+1. Amazon Associates India tracking ID goes in `AFFILIATE_TAG` in `public/config.js` (now `gncare-21`). Flipkart affid goes in `FLIPKART_AFFID` (now `thisisnarenda`).
+2. Shop and kit cards show Amazon and Flipkart buttons. Until those IDs are set, the search links still work but earn nothing.
 3. Read the Associates Program rules before you go live. Check what they say about showing prices and about disclosure. I did not verify them, and the app shows prices as estimates only. Remove the price chips if the rules do not allow them.
 4. Amazon usually needs a few qualifying sales within 180 days of joining, so share your site first.
 
@@ -150,7 +150,7 @@ Face Scan is four short steps: an optional selfie, an optional note, a budget, t
 npm test
 ```
 
-Runs 85 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
+Runs 86 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
 
 ## Other income options
 

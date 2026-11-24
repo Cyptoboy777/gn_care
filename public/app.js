@@ -216,7 +216,7 @@ function viewScan(){
   if(S.skin&&window.GNPicks){
     var r=kitBuild();
     var msg=scanBudget>0?(r.fits?('About '+money(r.total)+' of your '+money(scanBudget)+' budget.'):('The lowest kit is about '+money(r.min)+', above your '+money(scanBudget)+' budget. Go back and raise the budget, or still use these picks.')):'About '+money(r.total)+', no budget cap.';
-    kitHtml='<section class="tile"><h3 class="t">Your kit</h3><p class="hint">'+esc(msg)+'</p></section>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('');
+    kitHtml='<section class="tile"><h3 class="t">Your kit</h3><p class="hint">'+esc(msg)+' '+affDisc()+'</p></section>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('');
   }
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
@@ -313,8 +313,14 @@ function kitSens(){var k=kit();return (k.sens===null||k.sens===undefined)?!!(S.s
 function shelfHave(){var h={};S.shelf.forEach(function(i){if(!i.sample&&window.GNPicks&&GNPicks.CORE.indexOf(i.c)>-1)h[i.c]=true});return h}
 function money(n){return '₹'+inr.format(Math.round(n))}
 function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
+function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
 function priceTxt(p){return p.price!=null?'about '+money(p.price):'price varies'}
-function buyBtn(p){return '<a class="btn sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener" style="align-self:flex-start">View on Amazon</a>'}
+function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
+function buyBtn(p){
+  return '<div class="btn-grid" style="justify-content:flex-start">'+
+    '<a class="btn sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Amazon</a>'+
+    '<a class="btn ghost sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener">Flipkart</a>'+
+    '</div>'}
 function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave()})}
 function kitQuestion(r,type,sens,budget){
   var lines=['Skin type: '+type+(sens?', sensitive':'')+'. Budget: '+money(budget)+'.'];
@@ -359,7 +365,7 @@ function viewPicks(){
     '</div>';
   }
   var src=Object.keys(window.GN_SOURCES||{}).map(function(s){return GN_SOURCES[s]}).join('; ');
-  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3><p class="hint">'+(affTag()?'Links go to Amazon.in. If you buy through them, GN Care may earn a small commission at no extra cost to you. As an Amazon Associate we earn from qualifying purchases. ':'Links go to Amazon.in search. ')+'Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
+  var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3><p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
   return head+ctl+(body?'<div style="height:14px"></div>'+body:'')+disc}
 
 /* ---------- coach, label decoder, ratings ---------- */

@@ -1,5 +1,5 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
-const VERSION = 'gn-care-v6';
+const VERSION = 'gn-care-v7';
 const SHELL = [
   '/', '/index.html', '/styles.css', '/app.js', '/config.js', '/ads.js', '/label.js', '/products.js', '/picks.js', '/ondevice.js', '/facescan.js',
   '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'

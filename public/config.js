@@ -8,13 +8,14 @@
        guide = the ad inside the guide articles
   4. Redeploy.
 
-  Affiliate links: join Amazon Associates India, then put your tracking ID in AFFILIATE_TAG below.
+  Affiliate links: Amazon Associates India tracking ID in AFFILIATE_TAG, Flipkart affid in FLIPKART_AFFID.
 */
 window.GN_CONFIG = {
   SITE_URL: 'https://gn-care.vercel.app',
   ADSENSE_CLIENT: '',
   SLOTS: { app: '', guide: '' },
-  AFFILIATE_TAG: '',          /* Amazon Associates India tracking ID, for example 'yourname-21'. Links earn nothing until this is set. */
+  AFFILIATE_TAG: 'gncare-21', /* Amazon Associates India tracking ID */
+  FLIPKART_AFFID: 'thisisnarenda', /* Flipkart affiliate id, added as affid= on Flipkart search links */
   AUTO_ADS: false,            /* true = Google places ads automatically and SLOTS are ignored */
   OWN_CONSENT_BANNER: true    /* set false if you use Google's own Privacy & messaging banner */
 };

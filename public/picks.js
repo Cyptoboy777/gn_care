@@ -70,15 +70,20 @@
     return products().filter(function (p) { return p.aud === aud; });
   }
 
-  /* Every link is an Amazon.in search, so it stays valid when products are renamed. The affiliate tag is added when set. */
+  /* Search links stay valid when products are renamed. Affiliate ids are added only when they look safe. */
+  function query(p) { return [p.brand, p.name, p.size].filter(Boolean).join(' '); }
   function buyURL(p, tag) {
-    var q = [p.brand, p.name, p.size].filter(Boolean).join(' ');
-    var u = 'https://www.amazon.in/s?k=' + encodeURIComponent(q);
+    var u = 'https://www.amazon.in/s?k=' + encodeURIComponent(query(p));
     if (/^[A-Za-z0-9-]{3,40}$/.test(tag || '')) u += '&tag=' + encodeURIComponent(tag);
     return u;
   }
+  function flipkartURL(p, affid) {
+    var u = 'https://www.flipkart.com/search?q=' + encodeURIComponent(query(p));
+    if (/^[A-Za-z0-9_]{3,40}$/.test(affid || '')) u += '&affid=' + encodeURIComponent(affid);
+    return u;
+  }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, effPrice: effPrice };
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, effPrice: effPrice };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);
