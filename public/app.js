@@ -17,17 +17,14 @@ var defaults=function(){return {
     pm:[{id:'p1',n:'Oil or balm cleanser'},{id:'p2',n:'Water-based cleanser'},{id:'p3',n:'Treatment (retinol or exfoliant)'},{id:'p4',n:'Moisturizer'},{id:'p5',n:'Lip balm'}]
   },
   done:{},water:{},goal:2500,checkins:{},budget:1500,
-  shelf:[
-    {id:'s1',n:'Hydrating cleanser',c:'Cleanser',p:450,o:'2026-09-20',m:12,sample:true},
-    {id:'s2',n:'Vitamin C serum',c:'Serum',p:799,o:'2026-10-12',m:3,sample:true},
-    {id:'s3',n:'Ceramide moisturizer',c:'Moisturizer',p:620,o:'2026-08-30',m:12,sample:true},
-    {id:'s4',n:'SPF 50 gel sunscreen',c:'Sunscreen',p:550,o:'2026-06-15',m:6,sample:true}
-  ],
+  shelf:[],
   skin:null,uv:{index:6,appliedAt:null},firstSeen:Date.now(),rated:null,fbSnooze:0,aiProfile:true,onDevice:false,
   remind:{asked:false,on:false,am:'08:00',pm:'21:00',spf:true}
 }};
 var S=defaults();
 try{var raw=localStorage.getItem(KEY);if(raw){var L=JSON.parse(raw);for(var k in L){S[k]=L[k]}}}catch(e){}
+/* Old builds seeded made-up sample products and prices. Drop them so every ₹ shown is the user's own data. */
+if(Array.isArray(S.shelf))S.shelf=S.shelf.filter(function(i){return i&&!i.sample});else S.shelf=[];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 /* ---------- helpers ---------- */
@@ -36,6 +33,7 @@ var TABS=[
   {id:'timer',n:'Timer',i:'i-timer'},{id:'shelf',n:'Shelf & ₹',i:'i-bag'},{id:'checker',n:'Coach',i:'i-flask'}];
 var tab='home',period=new Date().getHours()<15?'am':'pm';
 var toastT;
+function buzz(ms){try{if(S.motion!==false&&navigator.vibrate&&!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))navigator.vibrate(ms||10)}catch(e){}}
 function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on')},2200)}
 
 function dayDone(k){var d=S.done[k]||{am:[],pm:[]};return d}
@@ -51,10 +49,10 @@ function waterLog(){var w=S.water[today()];return Array.isArray(w)?w:[]}
 function waterTotal(){return waterLog().reduce(function(a,b){return a+b},0)}
 
 var UVC=[
-  {max:2,n:'Low',c:'#3E9B6B',t:'#fff',adv:'SPF 30 on your face is still a good daily habit. Skip reapplying while indoors.'},
+  {max:2,n:'Low',c:'#2A7550',t:'#fff',adv:'SPF 30 on your face is still a good daily habit. Skip reapplying while indoors.'},
   {max:5,n:'Moderate',c:'#C9B22A',t:'#2A2400',adv:'Use SPF 30 or higher. Look for shade around midday.'},
   {max:7,n:'High',c:'#D9822B',t:'#1E1418',adv:'Use SPF 50. Reapply every 2 hours when outdoors.'},
-  {max:10,n:'Very high',c:'#C9473A',t:'#fff',adv:'SPF 50+, a hat and sunglasses. Avoid direct sun from 11 am to 4 pm.'},
+  {max:10,n:'Very high',c:'#A8372C',t:'#fff',adv:'SPF 50+, a hat and sunglasses. Avoid direct sun from 11 am to 4 pm.'},
   {max:99,n:'Extreme',c:'#8454B8',t:'#fff',adv:'Stay in shade where you can. SPF 50+ and cover up, reapply often.'}];
 function uvCat(i){for(var k=0;k<UVC.length;k++){if(i<=UVC[k].max)return UVC[k]}return UVC[4]}
 function fmtTime(ms){return new Date(ms).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'})}
@@ -111,10 +109,10 @@ function viewHome(){
     '<div class="row sp wrap"><button class="btn sm" data-act="uvApply">I applied sunscreen</button><span class="hint" id="uv-next">'+uvNextText()+'</span></div></section>'+
   '<section class="tile s4"><h3 class="t">Skin check-in</h3><div class="moods">'+moods+'</div><div class="bars" aria-label="Last 7 days of check-ins">'+bars+'</div>'+(anyCheck?'':'<p class="hint">Tap how your skin feels today. Your week fills in here.</p>')+'</section>'+
   '<section class="tile s6"><h3 class="t">Skin profile</h3>'+prof+'</section>'+
-  '<section class="tile s6"><h3 class="t">'+ico('i-bag')+'Shelf watch</h3><div class="row sp"><div><b class="num" style="font-size:22px">₹'+inr.format(Math.round(run))+'</b><span class="hint"> / month running cost</span></div><span class="chip '+(run>S.budget?'bad':'good')+'">Budget ₹'+inr.format(S.budget)+'</span></div>'+
+  '<section class="tile s6"><h3 class="t">'+ico('i-bag')+'Shelf watch</h3>'+(!S.shelf.length?'<p class="hint">Add the products you own to track their monthly cost and when they expire after opening.</p><button class="btn ghost sm" data-act="nav" data-v="shelf" style="align-self:flex-start">Add products</button></section>':'<div class="row sp"><div><b class="num" style="font-size:22px">₹'+inr.format(Math.round(run))+'</b><span class="hint"> / month running cost</span></div><span class="chip '+(run>S.budget?'bad':'good')+'">Budget ₹'+inr.format(S.budget)+'</span></div>'+
     '<div class="meter '+(run>S.budget?'over':'')+'"><i style="width:'+Math.min(100,S.budget?run/S.budget*100:0)+'%"></i></div>'+
     (alerts.length?'<div class="list">'+alerts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.it.n)+'</b></div><span class="chip '+a.s.c+'">'+a.s.t+'</span></div>'}).join('')+'</div>':'<p class="hint">Nothing is expiring in the next 30 days.</p>')+
-    '<button class="btn ghost sm" data-act="nav" data-v="shelf" style="align-self:flex-start">Open shelf</button></section>'+
+    '<button class="btn ghost sm" data-act="nav" data-v="shelf" style="align-self:flex-start">Open shelf</button></section>')+
   (installHome())+ratePrompt()+'</div>'}
 
 function viewRoutine(){
@@ -161,7 +159,7 @@ var RECS={
  Combination:['Gentle gel cleanser all over.','Lightweight lotion on the T-zone, a richer cream on the cheeks.','Use BHA only on forehead, nose and chin.'],
  Normal:['Gentle cleanser and a light moisturizer.','Keep sunscreen as the one non-negotiable step.','Add one new active at a time, two weeks apart.']};
 function scanDots(n){
-  return '<div class="steps" aria-label="Step '+n+' of 4">'+[1,2,3,4].map(function(i){return '<i'+(i===n?' class="on"':'')+'></i>'}).join('')+'</div>'}
+  return '<p class="step-lbl">Step '+n+' of 4 · '+['Selfie (optional)','Your note','Budget','Your kit'][n-1]+'</p><div class="steps" aria-hidden="true">'+[1,2,3,4].map(function(i){return '<i'+(i===n?' class="on"':'')+'></i>'}).join('')+'</div>'}
 function scanNav(opts){
   opts=opts||{};
   return '<div class="wiz-nav">'+
@@ -224,7 +222,8 @@ function viewScan(){
   var meters=m?('<div class="metrics" aria-label="Cosmetic estimates">'+
     '<div><b>'+m.shine+'</b><span>Shine</span></div><div><b>'+m.redness+'</b><span>Redness</span></div><div><b>'+m.evenness+'</b><span>Evenness</span></div><div><b>'+m.darkCircles+'</b><span>Under-eye darkness</span></div></div>'):'';
   var kitHtml='';
-  if(S.skin&&window.GNPicks){
+  if(S.skin&&!(window.GN_PRODUCTS&&GN_PRODUCTS.length))kitHtml='<section class="tile"><h3 class="t">Your best kit</h3><div class="skel" aria-busy="true" aria-label="Loading products"><i></i><i></i><i></i></div></section>';
+  else if(S.skin&&window.GNPicks){
     var r=kitBuild();
     var msg=scanBudget>0?(r.fits?('About '+money(r.total)+' of your '+money(scanBudget)+' budget.'):('The lowest kit is about '+money(r.min)+', above your '+money(scanBudget)+' budget. Go back and raise the budget, or still use these picks.')):'About '+money(r.total)+', no budget cap.';
     var avoidScan=(window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(S.skin.type,S.skin.flags||[],S.skin.sensitive||S.skin.sensitiveLeaning).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
@@ -417,10 +416,11 @@ function installHome(){
   if(standalone)return '';
   if(deferredInstall)return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">Add the app to your home screen for a faster, full-screen experience and reminders.</p><button class="btn sm" data-act="install">Install app</button></section>';
   return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">'+(isIOS?'On iPhone, tap Share, then Add to Home Screen.':'Use your browser menu and choose Install app or Add to Home screen.')+'</p></section>'}
+function fkLbl(p){return GNPicks.isLive&&GNPicks.isLive(p)?'Buy on Flipkart '+money(p.fkPrice):'Find on Flipkart'}
 function buyBtn(p){
   return '<div class="btn-grid" style="justify-content:flex-start">'+
-    '<a class="btn sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Amazon</a>'+
-    '<a class="btn ghost sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener">Flipkart</a>'+
+    '<a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener">'+fkLbl(p)+'</a>'+
+    '<a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Check price on Amazon</a>'+
     '</div>'}
 function kitBuild(){var k=kit();return GNPicks.buildKit({type:kitType(),sens:kitSens(),budget:k.budget,swaps:k.swaps,have:shelfHave(),treat:true,concerns:kitConcerns()})}
 function kitPriceLbl(p){return GNPicks.isLive(p)?money(p.fkPrice)+' on Flipkart':(p.price!=null?'approx. '+money(p.price):'price varies, est. '+money(GNPicks.effPrice(p)))}
@@ -432,7 +432,7 @@ function kitAIBox(r,type,sens){
 function kitSummary(r,type,sens,budget){
   var rows=r.items.filter(function(i){return i.item}).map(function(i,n){var p=i.item;
     return '<li class="kit-row" style="--i:'+n+'"><span class="kit-step num">'+(n+1)+'</span><div class="grow"><span class="eyebrow">'+esc(i.cat)+(i.optional?' · optional':'')+'</span><b>'+esc(p.brand+' '+p.name)+'</b><span class="hint">'+esc([p.size,kitPriceLbl(p)].filter(Boolean).join(' · '))+'</span></div>'+
-      '<div class="kit-buy"><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" aria-label="Buy '+esc(p.brand+' '+p.name)+' on Flipkart">Flipkart</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener" aria-label="Find '+esc(p.brand+' '+p.name)+' on Amazon">Amazon</a></div></li>'}).join('');
+      '<div class="kit-buy"><a class="btn sm" href="'+esc(GNPicks.flipkartURL(p,fkAff()))+'" target="_blank" rel="sponsored nofollow noopener" >'+fkLbl(p)+'</a><a class="btn ghost sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Check price on Amazon</a></div></li>'}).join('');
   var note=[];
   if(r.checkedOn)note.push('Flipkart prices checked on '+r.checkedOn+'.');
   if(r.approx)note.push('“approx.” prices are typical catalog prices, not live.');
@@ -454,9 +454,9 @@ function kitQuestion(r,type,sens,budget){
 function kitPlain(r,type,sens){
   var L=[],t=String(type||'').toLowerCase(),cs=kitConcerns();
   try{r.items.forEach(function(i){if(i.item)L.push('- '+i.cat+': '+i.item.brand+' '+i.item.name+'. '+GNPicks.whyThis(i.item,type,cs,'en'))})}catch(e){}
-  if(window.GNSkin){try{return (L.length?L.join('\n')+'\n':'')+GNSkin.explain({type:type,sensitive:sens,concerns:cs},copyLang)}catch(e){}}
+  if(window.GNSkin&&tab!=='scan'){try{return (L.length?L.join('\n')+'\n':'')+GNSkin.explain({type:type,sensitive:sens,concerns:cs},copyLang)}catch(e){}}
   var has=function(c){return r.items.some(function(i){return i.item&&i.cat===c})};
-  var am=['Cleanser','Moisturizer','Sunscreen'].filter(has),pm=['Cleanser','Serum','Moisturizer'].filter(has);
+  var am=['Cleanser','Treatment','Moisturizer','Sunscreen'].filter(has),pm=['Cleanser','Treatment','Serum','Moisturizer'].filter(has);
   if(am.length)L.push('- Morning: '+am.join(', then ').toLowerCase()+'.');
   if(pm.length)L.push('- Night: '+pm.join(', then ').toLowerCase()+'.');
   GNPicks.avoidTips(type,cs,sens).slice(0,2).forEach(function(x){L.push('- '+x)});
@@ -578,7 +578,19 @@ function fbHTML(){
     (FB.err?'<div class="res bad"><span class="tag">Notice</span><div><p>'+esc(FB.err)+'</p></div></div>':'')+
     '<p class="ai-note">Do not include personal details. We only receive the rating, type and your message.</p>'+
     '<button class="btn" type="submit"'+(FB.busy?' disabled':'')+'>'+(FB.busy?'Sending…':'Send feedback')+'</button></form>'}
-function openSheet(title,html){$('#sheet-title').textContent=title;$('#sheet-body').innerHTML=html;$('#sheet').hidden=false}
+var sheetReturn=null;
+function openSheet(title,html){
+  if($('#sheet').hidden)sheetReturn=document.activeElement;
+  $('#sheet-title').textContent=title;$('#sheet-body').innerHTML=html;$('#sheet').hidden=false;
+  var d=$('#sheet .sheet-in');d.setAttribute('aria-modal','true');setTimeout(function(){var c=$('#sheet [data-act="closeSettings"]');if(c)c.focus()},30)}
+function closeSheet(){if($('#sheet').hidden)return;$('#sheet').hidden=true;var r=sheetReturn;sheetReturn=null;if(r&&document.contains(r)&&r.focus)try{r.focus({preventScroll:true})}catch(e){}}
+function trapFocus(e){
+  if(e.key!=='Tab'||$('#sheet').hidden)return;
+  var f=[].slice.call($('#sheet .sheet-in').querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])')).filter(function(x){return x.offsetParent!==null});
+  if(!f.length)return;var first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  else if(!$('#sheet .sheet-in').contains(document.activeElement)){e.preventDefault();first.focus()}}
 function refreshFB(){$('#sheet-body').innerHTML=fbHTML()}
 function openFeedback(stars,kind){FB={stars:stars||0,kind:kind||'app',msg:'',busy:false,done:false,err:''};openSheet('Rate GN Care',fbHTML())}
 function feedbackRow(){return '<div class="set"><div><b>Rate and feedback</b><span>Tell us what to improve.</span></div><button class="btn sm" data-act="openFeedback">Rate</button></div>'}
@@ -624,20 +636,31 @@ function viewChecker(){
 /* ---------- render / nav ---------- */
 function buildNav(){
   var side=TABS.map(function(t){return '<button data-act="nav" data-v="'+t.id+'" data-tab="'+t.id+'">'+ico(t.i)+'<span>'+t.n+'</span>'+(t.id==='timer'?'<span class="dot" style="display:none"></span>':'')+'</button>'}).join('');
-  var dock=TABS.map(function(t){return '<button data-act="nav" data-v="'+t.id+'" data-tab="'+t.id+'">'+ico(t.i)+'<span>'+t.n.replace(' & ₹','')+'</span></button>'}).join('');
+  var dock=TABS.filter(function(t){return MORE.indexOf(t.id)<0}).map(function(t){return '<button data-act="nav" data-v="'+t.id+'" data-tab="'+t.id+'">'+ico(t.i)+'<span>'+t.n.replace(' & ₹','')+'</span></button>'}).join('')+
+    '<button data-act="openMore" id="dock-more" aria-haspopup="dialog">'+ico('i-more')+'<span>More</span></button>';
   $('#nav-side').innerHTML=side;$('#nav-dock').innerHTML=dock}
+var MORE=['timer','shelf','checker'];
+var TITLES={home:'Home',routine:'Routine',scan:'Face scan',picks:'Shop',timer:'Ritual timer',shelf:'Shelf and budget',checker:'Coach and checker'};
+function moreHTML(){
+  return '<div class="more-list">'+TABS.filter(function(t){return MORE.indexOf(t.id)>-1}).map(function(t){return '<button class="more-item" data-act="moreGo" data-v="'+t.id+'"'+(t.id===tab?' aria-current="page"':'')+'>'+ico(t.i)+'<span>'+esc(t.n)+'</span></button>'}).join('')+
+    '<button class="more-item" data-act="openSettings">'+ico('i-gear')+'<span>Settings</span></button></div>'+
+    '<div class="legal" style="margin-top:10px"><a href="/guides/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a></div>'}
 function mark(){
   document.querySelectorAll('[data-tab]').forEach(function(b){if(b.dataset.tab===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  var dm=$('#dock-more');if(dm){if(MORE.indexOf(tab)>-1)dm.setAttribute('aria-current','page');else dm.removeAttribute('aria-current')}
+  document.title=(TITLES[tab]||'Home')+' · GN Care';
   $('#side-skin').textContent=S.skin?S.skin.type+(S.skin.sensitive?' · sensitive':''):'Not scanned yet'}
 var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,timer:viewTimer,shelf:viewShelf,checker:viewChecker};
 function render(anim){
   var v=$('#view');v.innerHTML=views[tab]();
   if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}else v.classList.remove('rise');
   mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','checker'].indexOf(tab)>-1);if(window.GNRemind&&S.remind)GNRemind.dueOnOpen(S.remind,S.uv&&S.uv.appliedAt)}
+var booted=false;
 function go(t,quiet){
   if(!views[t])t='home';
   if(t!==tab||!quiet){tab=t}
-  render(true);window.scrollTo(0,0)}
+  render(true);window.scrollTo(0,0);
+  if(booted){var v=$('#view');try{v.focus({preventScroll:true})}catch(e){}}}
 function onHash(){var h=location.hash.replace('#','');go(views[h]?h:'home',true)}
 
 /* ---------- theme / prefs ---------- */
@@ -654,6 +677,12 @@ function applyPrefs(){
 var deferredInstall=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredInstall=e;syncInstall();if(tab==='home')render()});
 window.addEventListener('appinstalled',function(){deferredInstall=null;standalone=true;syncInstall();if(tab==='home')render();toast('GN Care installed')});
+function nudgeInstall(){
+  if(S.installNudged||standalone||!(deferredInstall||isIOS))return;
+  S.installNudged=true;save();
+  var n=document.createElement('div');n.className='nudge';n.setAttribute('role','status');
+  n.innerHTML='<span>Install GN Care for one-tap access and reminders.</span><button class="btn sm" data-act="nudgeInstall">Install</button><button class="btn ghost sm" data-act="nudgeClose">Not now</button>';
+  document.body.appendChild(n)}
 function syncInstall(){var b=document.getElementById('install-top');if(b)b.hidden=!!standalone||!(deferredInstall||isIOS)}
 var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
@@ -744,7 +773,11 @@ var A={
    if(r.on&&window.GNRemind){GNRemind.requestAfterRoutine(r,function(p){if(p==='granted'){GNRemind.scheduleTriggers(r);GNRemind.registerSync();toast('Reminders on')}else{r.on=false;save();toast('Notifications were not allowed');}if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()});}
    else if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
  remindSpf:function(){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};S.remind.spf=!S.remind.spf;save();if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
- closeSettings:function(){$('#sheet').hidden=true},
+ closeSettings:function(){closeSheet()},
+ openMore:function(){openSheet('More',moreHTML())},
+ moreGo:function(v){closeSheet();A.nav(v)},
+ nudgeInstall:function(){A.nudgeClose();A.install()},
+ nudgeClose:function(){var n=document.querySelector('.nudge');if(n)n.remove()},
  install:function(){
    if(!deferredInstall){toast(isIOS?'Tap Share, then Add to Home Screen':'Use the browser menu, then Install app');return}
    deferredInstall.prompt();deferredInstall.userChoice.then(function(){deferredInstall=null;syncInstall();if(!$('#sheet').hidden)$('#sheet-body').innerHTML=settingsHTML();if(tab==='home')render()})},
@@ -755,14 +788,14 @@ var A={
    try{localStorage.removeItem(KEY)}catch(e){}S=defaults();picked=[];clearScanPhoto();scanMsg='';scanStep=1;scanNote='';scanBudget=1000;scanFlags=[];routineSet=false;resetArm=false;applyPrefs();$('#sheet').hidden=true;render(true);toast('Data cleared')},
  period:function(v){period=v;render(true)},
  goRoutine:function(v){period=v;A.nav('routine')},
- step:function(v){
+ step:function(v){buzz(10);
    var k=today(),d=S.done[k]||(S.done[k]={am:[],pm:[]});var arr=d[period]||(d[period]=[]);var i=arr.indexOf(v);
    var wasComplete=periodDone(k,period);
    if(i>-1)arr.splice(i,1);else arr.push(v);save();render();
    if(!wasComplete&&periodDone(k,period))toast((period==='am'?'Morning':'Night')+' ritual complete')},
  delStep:function(v){S.steps[period]=S.steps[period].filter(function(s){return s.id!==v});save();render()},
  resetDay:function(){delete S.done[today()];save();render();toast('Today reset')},
- water:function(v){var l=waterLog().slice();l.push(+v);S.water[today()]=l;save();render();if(waterTotal()>=S.goal&&waterTotal()-(+v)<S.goal)toast('Daily water goal reached')},
+ water:function(v){buzz(10);var l=waterLog().slice();l.push(+v);S.water[today()]=l;save();render();if(waterTotal()>=S.goal&&waterTotal()-(+v)<S.goal)toast('Daily water goal reached')},
  undoWater:function(){var l=waterLog().slice();l.pop();S.water[today()]=l;save();render()},
  uvApply:function(){S.uv.appliedAt=Date.now();save();updateUV();toast('Logged. Reapply in 2 hours');if(window.GNRemind&&S.remind&&S.remind.on)GNRemind.scheduleTriggers(S.remind)},
  checkin:function(v){S.checkins[today()]=+v;save();render()},
@@ -803,15 +836,16 @@ var A={
      return}
    if(scanStep===2){
      scanFlags=window.GNFaceScan?GNFaceScan.parseConcerns(scanNote):[];
-     if(!scanMetrics&&!scanFlags.length){toast('Add a selfie or write a short note first');return}
+     if(!scanMetrics&&!scanFlags.length){toast(scanNote.trim()?'We could not spot a skin type in your note. Try words like oily, dry, pimples, tan (teelu, khushk, mungurulu).':'Write a short note, or go back and add a selfie');return}
+     buzz(8);
      scanStep=3;render(true);return}
    if(scanStep===3){
      if(!applySkin(scanMetrics,scanFlags)){toast('Add a selfie or write a short note first');scanStep=2;render(true);return}
-     routineSet=false;scanStep=4;render(true)}},
+     routineSet=false;scanStep=4;render(true);setTimeout(nudgeInstall,2500)}},
  setScanRoutine:function(){
    if(!S.skin||!(window.GNFaceScan&&GNFaceScan.buildRoutine))return;
    var r=GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning);
-   S.steps={am:r.am,pm:r.pm};delete S.done[today()];save();routineSet=true;toast('Routine set');
+   S.steps={am:r.am,pm:r.pm};delete S.done[today()];save();routineSet=true;buzz([10,40,10]);toast('Routine set');
    maybeAskReminders();A.nav('routine')},
  tpre:function(v){var p=PRE[+v];T={label:p.n,total:p.s,left:p.s,end:null,running:false};render()},
  tToggle:function(){
@@ -826,7 +860,7 @@ document.addEventListener('click',function(e){
   var t=e.target.closest('[data-act]');
   if(t){var f=A[t.dataset.act];if(f)f(t.dataset.v,t,e);return}
   if(e.target.id==='sheet')A.closeSettings()});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')A.closeSettings()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')A.closeSettings();trapFocus(e)});
 document.addEventListener('submit',function(e){
   var f=e.target.dataset.form;if(!f)return;e.preventDefault();
   if(f==='step'){var i=$('#step-input'),v=i.value.trim();if(!v)return;S.steps[period].push({id:'c'+Date.now(),n:v});save();render();var n=$('#step-input');if(n)n.focus()}
@@ -861,7 +895,12 @@ window.addEventListener('hashchange',onHash);
 /* ---------- boot ---------- */
 (function(){var f=document.getElementById('gf');if(f)f.media='all'})();
 buildNav();applyPrefs();syncInstall();
-var h0=location.hash.replace('#','');tab=views[h0]?h0:'home';render(true);
+(function(){var lo=(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4)||(navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.connection&&navigator.connection.saveData);if(lo)document.documentElement.classList.add('lite')})();
+function netPill(){var p=$('#offline-pill');if(!p){p=document.createElement('div');p.id='offline-pill';p.className='offline-pill';p.setAttribute('role','status');p.textContent='Offline · saved data only';document.body.appendChild(p)}p.hidden=navigator.onLine!==false}
+window.addEventListener('online',netPill);window.addEventListener('offline',netPill);netPill();
+document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.parentNode&&t.parentNode.classList&&t.parentNode.classList.contains('p-img')){var w=t.parentNode;w.classList.add('ph');w.setAttribute('role','img');w.setAttribute('aria-label',t.alt||'Product');w.innerHTML='<span>'+esc((t.alt||'?').charAt(0))+'</span>'}},true);
+var h0=location.hash.replace('#','');tab=views[h0]?h0:'home';render(true);booted=true;
+if(S.visits=(S.visits||0)+1,save(),S.visits>=3)setTimeout(nudgeInstall,4000);
 setInterval(function(){tickTimer();if(tab==='home'&&$('#uv-next'))$('#uv-next').textContent=uvNextText()},500);
 try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',syncTheme)}catch(e){}
 new MutationObserver(syncTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});

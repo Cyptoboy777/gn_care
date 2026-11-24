@@ -311,9 +311,9 @@
 
   /* English plus a few common Hinglish and Tenglish words. No AI required. */
   var CONCERN_RULES = [
-    ['oily', /\b(oily|oiliness|greasy|shiny|shine)\b|\boil (by|at) noon\b|\boil (vasth|vast|ost)|teelu+|telu+|\bnune\b|chamak(ta|ti|the)?|\btel nikal/],
-    ['dry', /\b(dry|dryness|tight|tightness|flak(?:y|es)|peeling)\b|khushk|\bsukha\b|dry (ayipoth|ayipothun|avuth|avut)|tarvata dry|after wash.{0,20}dry|varisa/],
-    ['acne', /\b(pimples?|acne|breakouts?|zits?|mungurulu?|muhase)\b|\bdaane\b/],
+    ['oily', /\b(oily|oiliness|greasy|shiny|shine)\b|\boil (by|at) noon\b|\boil (vasth|vast|ost)|teelu+|telu+|chip ?chip(a|i)?|jiddu|\bnune\b|chamak(ta|ti|the)?|\btel nikal/],
+    ['dry', /\b(dry|dryness|tight|tightness|flak(?:y|es)|peeling)\b|khushk|\bsukha\b|rukh(a|i|ee)\b|dry (ayipoth|ayipothun|avuth|avut)|tarvata dry|after wash.{0,20}dry|varisa/],
+    ['acne', /\b(pimples?|acne|breakouts?|zits?|mungurulu?|mottimalu|mosimalu|muhase|muhaase)\b|\bdaane\b|\bdane\b/],
     ['pigment', /\b(pigment(?:ation)?|melasma|blemish(?:es)?|dark spots?|acne marks?|black (?:spots?|marks?|patches))\b|\bdaags?\b|\bdags?\b|nalla (daag|dag|spots?)/],
     ['sensitive', /\b(sensitive|sensitivity|fragrance|perfume|parfum|allerg(?:y|ic)|stings?|redness)\b|mandutund|mandipoth|sugandh|khushbu|perfume ki/],
     ['dull', /\b(dull|dullness|no glow|glow ledu|kammi? glow|mothaga|thandaga)\b/],
@@ -321,7 +321,7 @@
     ['pores', /\b(blackheads?|whiteheads?|open pores?|large pores?|big pores?|pores?)\b|nalla chukkalu|kaale daane/],
     ['lines', /\b(fine lines?|wrinkles?|lines on|ageing|aging|crow'?s feet)\b|mudathalu|jhurri/],
     ['texture', /\b(rough|bumpy|uneven texture|texture|bumps)\b|gharuku|khurdur/],
-    ['circles', /\b(dark circles?|under[- ]?eyes?|eye bags?)\b|kalla kinda|aankh ke neeche|ankhon ke neeche/]
+    ['circles', /\b(dark circles?|under[- ]?eyes?|eye bags?)\b|kalla kinda|kallu kinda|kaale ghere|aankh ke neeche|ankhon ke neeche/]
   ];
 
   function parseConcerns(text) {
