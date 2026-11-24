@@ -13,6 +13,23 @@
     "ACCHBQSXTUFKZYHA": "2026-11-24",
     "ACCHNNY9BERXHV2W": "2026-11-24"
   },
-  "drops": {},
+  "drops": {
+    "BKPH43GWBH7JUSZG": {
+      "at": "2026-11-25T04:09:51.435+05:30",
+      "price": 313
+    },
+    "LTBFAAA6M8CPTVRG": {
+      "at": "2026-11-25T04:09:51.435+05:30",
+      "price": 848
+    },
+    "BKPH5YYWSZTSRHYZ": {
+      "at": "2026-11-25T04:09:51.435+05:30",
+      "price": 252
+    },
+    "ACCGRGMV2BX932YK": {
+      "at": "2026-11-25T04:09:51.435+05:30",
+      "price": 1359
+    }
+  },
   "lastPosted": "2026-11-24"
 }
