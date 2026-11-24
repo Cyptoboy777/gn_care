@@ -11,7 +11,7 @@
   Affiliate links: join Amazon Associates India, then put your tracking ID in AFFILIATE_TAG below.
 */
 window.GN_CONFIG = {
-  SITE_URL: 'https://YOUR-DOMAIN.com',
+  SITE_URL: 'https://gn-care.vercel.app',
   ADSENSE_CLIENT: '',
   SLOTS: { app: '', guide: '' },
   AFFILIATE_TAG: '',          /* Amazon Associates India tracking ID, for example 'yourname-21'. Links earn nothing until this is set. */
