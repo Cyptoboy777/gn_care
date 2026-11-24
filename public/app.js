@@ -1016,7 +1016,9 @@ var A={
    render()},
  tReset:function(){T.running=false;T.end=null;T.left=T.total;render()},
  pick:function(v){var i=picked.indexOf(v);if(i>-1)picked.splice(i,1);else picked.push(v);render()},
- delItem:function(v){S.shelf=S.shelf.filter(function(i){return i.id!==v});save();render()}
+ delItem:function(v){S.shelf=S.shelf.filter(function(i){return i.id!==v});save();render()},
+ toTop:function(){var reduce=false;try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})}
 };
 document.addEventListener('click',function(e){
   var t=e.target.closest('[data-act]');
@@ -1071,5 +1073,14 @@ if(S.visits=(S.visits||0)+1,save(),S.visits>=3)setTimeout(nudgeInstall,4000);
 setInterval(function(){tickTimer();if(tab==='home'&&$('#uv-next'))$('#uv-next').textContent=uvNextText()},500);
 try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',syncTheme)}catch(e){}
 new MutationObserver(syncTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+(function(){
+  var btn=document.getElementById('to-top');
+  if(!btn)return;
+  var pending=false;
+  function sync(){pending=false;btn.hidden=!(window.scrollY>=400)}
+  function onScroll(){if(pending)return;pending=true;requestAnimationFrame(sync)}
+  window.addEventListener('scroll',onScroll,{passive:true});
+  sync();
+})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 })();

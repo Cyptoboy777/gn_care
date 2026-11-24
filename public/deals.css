@@ -24,3 +24,7 @@
 .store-deals-title{overflow-wrap:break-word;word-break:normal}
 .store-deals-card .btn{white-space:normal}
 
+@media (max-width:767px){
+  .store-deals-chips{position:static;top:auto;display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:thin;padding:4px 0 8px}
+  .store-deals-chips button{flex:0 0 auto;white-space:nowrap}
+}

@@ -107,6 +107,16 @@ main{padding-block:22px 120px;padding-left:max(16px,env(safe-area-inset-left,0px
 .dock button[aria-current="page"]{color:var(--acc);background:var(--acc-soft)}
 .dock span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 @media (min-width:860px){.side{display:flex}.top,.dock{display:none}main{padding-block:34px 60px;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+@media (max-width:767px){
+  .top{position:static;top:auto}
+}
+.to-top{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:28;
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--edge);background:var(--glass-2);color:var(--fg);
+  box-shadow:var(--shadow);display:grid;place-items:center;padding:0}
+.to-top .ico{width:22px;height:22px}
+.to-top:active{transform:scale(.94)}
+@media (min-width:860px){.to-top{bottom:max(24px,env(safe-area-inset-bottom,0px))}}
+
 
 /* type */
 .eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-2)}

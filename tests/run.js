@@ -483,8 +483,16 @@ async function t(name, fn) {
     assert.ok(app.indexOf("kitHtml=kitSummary") > -1 && app.indexOf('kitOtherOptions(r.items') > -1);
     assert.ok(app.indexOf('kitProductGrid(r.items,S.skin.type)') < 0, 'do not render the same kit items again as a card grid on scan results');
     assert.ok(/text-overflow:\s*ellipsis/.test(css) && /\.p-img\.ph\{[^}]*overflow:\s*hidden/.test(css));
-    assert.ok(index.indexOf('styles.css?v=26') > -1 && index.indexOf('app.js?v=26') > -1);
-    assert.ok(sw.indexOf("gn-care-v26") > -1 && sw.indexOf('styles.css?v=26') > -1);
+    assert.ok(index.indexOf('styles.css?v=27') > -1 && index.indexOf('app.js?v=27') > -1);
+    assert.ok(sw.indexOf("gn-care-v27") > -1 && sw.indexOf('styles.css?v=27') > -1);
+
+    const dealsCss = fs.readFileSync(path.join(root, 'public/deals.css'), 'utf8');
+    assert.ok(/@media \(max-width:\s*767px\)[\s\S]*?\.top\{[^}]*position:\s*static/.test(css), 'mobile header must scroll away in normal flow');
+    assert.ok(!/\.top\.is-hidden|translateY\(-100%\)/.test(css+app), 'no auto-hide header');
+    assert.ok(/@media \(max-width:\s*767px\)[\s\S]*?\.store-deals-chips\{[^}]*flex-wrap:\s*nowrap/.test(dealsCss) && /overflow-x:\s*auto/.test(dealsCss), 'deals chips are one scrollable row on mobile');
+    assert.ok(index.includes('aria-label="Back to top"') && index.includes('id="to-top"'));
+    assert.ok(/\.to-top\{[^}]*width:\s*44px/.test(css));
+    assert.ok(app.includes('scrollY>=400') && app.includes("behavior:reduce?'auto':'smooth'"));
 
     const adsTxt = fs.readFileSync(path.join(root, 'public/ads.txt'), 'utf8').trim();
     assert.equal(adsTxt, 'google.com, pub-6915700686027349, DIRECT, f08c47fec0942fa0');
@@ -984,7 +992,7 @@ async function t(name, fn) {
 
   await t('sw caches deals assets and prefers a fresh deals.json', async () => {
     const sw = require('fs').readFileSync(require('path').join(__dirname, '../public/sw.js'), 'utf8');
-    assert.ok(sw.includes("const VERSION = 'gn-care-v26'"));
+    assert.ok(sw.includes("const VERSION = 'gn-care-v27'"));
     assert.ok(sw.includes('/deals.js') && sw.includes('/deals.css') && sw.includes('/deals.json'));
     assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
   });
