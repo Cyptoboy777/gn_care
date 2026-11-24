@@ -411,6 +411,17 @@ function kitQuestion(r,type,sens,budget){
   var lines=['Skin type: '+type+(sens?', sensitive':'')+'. Budget: '+money(budget)+'.'];
   r.items.forEach(function(i){if(i.item)lines.push(i.cat+': '+i.item.brand+' '+i.item.name+'.')});
   return lines.join(' ')}
+/* Instant, rule-based kit explanation. No AI, no download, works offline. AI text replaces it only if it arrives. */
+function kitPlain(r,type,sens){
+  var L=[],t=String(type||'').toLowerCase(),cs=kitConcerns();
+  r.items.forEach(function(i){if(i.item)L.push('- '+i.cat+': '+i.item.brand+' '+i.item.name+'. '+GNPicks.whyThis(i.item,type,cs,'en'))});
+  var has=function(c){return r.items.some(function(i){return i.item&&i.cat===c})};
+  var am=['Cleanser','Moisturizer','Sunscreen'].filter(has),pm=['Cleanser','Serum','Moisturizer'].filter(has);
+  if(am.length)L.push('- Morning: '+am.join(', then ').toLowerCase()+'.');
+  if(pm.length)L.push('- Night: '+pm.join(', then ').toLowerCase()+'.');
+  GNPicks.avoidTips(type,cs,sens).slice(0,2).forEach(function(x){L.push('- '+x)});
+  L.push('- Patch test each new product on your inner arm for 24 hours first. General guidance for '+t+' skin, not medical advice.');
+  return L.join('\n')}
 function pickCard(it,type){
   if(it.have)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">You already have a '+it.cat.toLowerCase()+' on your shelf, so it is left out of this kit.</p></section>';
   if(!it.item)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">No match for '+esc(type.toLowerCase())+' skin yet. Add products in catalog.json.</p></section>';
@@ -443,10 +454,10 @@ function viewPicks(){
     var have=r.items.filter(function(i){return i.have}).map(function(i){return i.cat.toLowerCase()});
     var pct=k.budget>0?Math.min(100,r.total/k.budget*100):0;
     var msg=r.fits?('That leaves about '+money(Math.max(0,k.budget-r.total))+' of your budget.'):('The lowest kit for '+type.toLowerCase()+' skin is about '+money(r.min)+', above your '+money(k.budget)+' budget. Raise the budget or skip an item.');
-    var aiBox=PK.busy?busyHTML('Thinking…'):(PK.err?'<div class="res bad"><span class="tag">Notice</span><div><p>'+esc(PK.err)+'</p></div></div>':(PK.ai?'<div class="answer">'+fmtAns(PK.ai)+'</div>'+thumbs(PK.rated,'aiFbK'):''));
+    var aiBox=PK.ai?'<div class="answer">'+fmtAns(PK.ai)+'</div>'+thumbs(PK.rated,'aiFbK'):'<div class="answer">'+fmtAns(kitPlain(r,type,sens))+'</div>'+(PK.busy?'<p class="hint">Getting an AI explanation…</p>':(PK.err?'<p class="hint">AI is busy right now, so this is our standard explanation.</p>':''));
     var add=GNPicks.addOns(k.aud);
     body='<div class="grid">'+r.items.map(function(i){return pickCard(i,type)}).join('')+
-      '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain my kit with AI</button></div>'+
+      '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Your kit</h3><div class="row" style="align-items:baseline;gap:8px;margin-top:6px"><span class="big num" style="font-size:44px">'+money(r.total)+'</span><span class="hint">of '+money(k.budget)+'</span></div></div><button class="btn" data-act="kitAI"'+(PK.busy?' disabled':'')+'>'+ico('i-leaf')+'Explain with AI</button></div>'+
         '<div class="meter '+(r.fits?'':'over')+'"><i style="width:'+pct+'%"></i></div><p class="hint">'+msg+(have.length?' Left out because you already have a '+have.join(' and ')+' on your shelf.':'')+'</p>'+aiBox+'</section>'+
       (add.length?'<section class="tile"><h3 class="t">Add-ons for '+(k.aud==='women'?'women':'men')+'</h3><div class="list">'+add.map(function(p){return '<div class="li">'+productImg(p)+'<div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p),p.note].filter(Boolean).map(esc).join(' · ')+'</span>'+couponHtml(p)+'</div>'+buyBtn(p)+'</div>'}).join('')+'</div>'+(k.aud==='women'?'<p class="hint">Intimate washes are for external use only. See a doctor for itching, odour or discharge that does not go away.</p>':'')+'</section>':'')+
     '</div>';
@@ -539,6 +550,7 @@ function ratePrompt(){
 function serverAI(mode,q,done){
   postJSON('/api/ai',{mode:mode,q:q,ctx:aiCtx()}).then(function(j){done(j&&j.ok?{text:j.text}:{err:(j&&j.msg)||'Something went wrong. Try again later.'})})}
 function sendAI(mode,q,done){
+  if(!S.odOff){S.odOff=1;S.onDevice=false;save()}
   if(!(S.onDevice&&window.GNOnDevice&&GNOnDevice.supported())){serverAI(mode,q,done);return}
   OD.loading=!GNOnDevice.ready();OD.pct=0;OD.msg='Starting…';
   if(OD.loading&&(tab==='checker'||tab==='picks'))render();

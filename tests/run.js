@@ -64,7 +64,7 @@ async function t(name, fn) {
     assert.strictEqual(r.status, 200); assert.strictEqual(r.json.text, '- Use SPF 30 daily.');
     assert.ok(!JSON.stringify(r.json).includes('SECRETKEY123'));
     const last = fetchCalls[fetchCalls.length - 1];
-    assert.ok(last.url.includes('gemini-2.5-flash-lite:generateContent'));
+    assert.ok(last.url.includes('gemini-3.5-flash-lite:generateContent'));
     assert.strictEqual(last.init.headers['x-goog-api-key'], 'SECRETKEY123');
     assert.ok(last.init.body.includes('<user_input>How much sunscreen for face?</user_input>'));
     assert.ok(last.init.body.includes('Oily skin, sensitive'));

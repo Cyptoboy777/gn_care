@@ -106,7 +106,7 @@ const PROVIDERS = {
   },
   gemini: {
     ready: (env) => !!env.GEMINI_API_KEY,
-    model: (env) => env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
+    model: (env) => env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
     async call(env, system, user) {
       const j = await post(
         'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(this.model(env)) + ':generateContent',
@@ -114,7 +114,7 @@ const PROVIDERS = {
         {
           systemInstruction: { parts: [{ text: system }] },
           contents: [{ role: 'user', parts: [{ text: user }] }],
-          generationConfig: { maxOutputTokens: 500, temperature: 0.4 }
+          generationConfig: { maxOutputTokens: 500, temperature: 0.4, thinkingConfig: { thinkingLevel: 'minimal' } }
         }
       );
       const parts = (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts) || [];
