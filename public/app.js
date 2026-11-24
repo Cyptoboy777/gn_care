@@ -563,10 +563,13 @@ function ratePrompt(){
   if(!S.firstSeen||Date.now()-S.firstSeen<2*86400000)return '';
   if(S.fbSnooze&&Date.now()<S.fbSnooze)return '';
   return '<section class="tile"><div class="row sp wrap"><div><h3 class="t">Enjoying GN Care?</h3><p class="hint" style="margin-top:6px">Tap a star to rate it. It takes ten seconds.</p></div><div class="stars-row" role="group" aria-label="Rate GN Care">'+[1,2,3,4,5].map(function(n){return '<button class="star" data-act="rateNow" data-v="'+n+'" aria-label="'+n+' star'+(n>1?'s':'')+'">'+ico('i-star')+'</button>'}).join('')+'</div><button class="btn ghost sm" data-act="snooze">Not now</button></div></section>'}
+var AIOK=null;
+function aiReady(){if(AIOK)return AIOK;AIOK=fetch('/api/health').then(function(r){return r.json()}).then(function(j){var ok=!!(j&&j.ai&&j.ai.ready);if(!ok)setTimeout(function(){AIOK=null},60000);return ok},function(){AIOK=null;return false});return AIOK}
 function serverAI(mode,q,done){
   var fin=false,end=function(x){if(!fin){fin=true;done(x)}};
-  setTimeout(function(){end({err:'The AI took too long. Showing our standard answer.'})},12000);
-  postJSON('/api/ai',{mode:mode,q:q,ctx:aiCtx()}).then(function(j){end(j&&j.ok&&j.text?{text:j.text}:{err:(j&&j.msg)||'Something went wrong. Try again later.'})},function(){end({err:'Something went wrong. Try again later.'})})}
+  setTimeout(function(){end({err:'The AI took too long. Try again later.'})},12000);
+  aiReady().then(function(ok){if(!ok)return end({err:'AI answers are not available right now. Try again later.'});
+  postJSON('/api/ai',{mode:mode,q:q,ctx:aiCtx()}).then(function(j){end(j&&j.ok&&j.text?{text:j.text}:{err:(j&&j.msg)||'Something went wrong. Try again later.'})},function(){end({err:'Something went wrong. Try again later.'})})})}
 function sendAI(mode,q,done){
   if(!S.odOff){S.odOff=1;S.onDevice=false;save()}
   if(!(S.onDevice&&window.GNOnDevice&&GNOnDevice.supported())){serverAI(mode,q,done);return}
