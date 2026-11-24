@@ -855,7 +855,8 @@ function remindRow(){
   return head+
     '<div class="set rem-times"><label class="f">Morning<input class="input" id="rem-am" type="time" value="'+esc(r.am)+'"></label><label class="f">Night<input class="input" id="rem-pm" type="time" value="'+esc(r.pm)+'"></label></div>'+
     t('spf','Sunscreen reapply','About two hours after you log sunscreen, in daytime only.')+
-    t('water','Water breaks','Every '+r.waterEvery+' hours between 9 am and 9 pm, only until you reach your goal.')+
+    t('water','Water breaks','A gentle hydration nudge during the day, only while you are below your goal.')+
+    (r.water?'<div class="set"><label class="f" for="rem-water-every">Remind me every<select class="input" id="rem-water-every">'+[1,2,3,4].map(function(hours){return '<option value="'+hours+'"'+(+r.waterEvery===hours?' selected':'')+'>'+hours+' hour'+(hours===1?'':'s')+'</option>'}).join('')+'</select></label></div>':'')+
     t('scan','Weekly progress check','A nudge to rescan or take a progress photo in the same light.')+
     (r.scan?'<div class="set"><label class="f">Check-in day<select class="input" id="rem-day">'+DAYS.map(function(d,i){return '<option value="'+i+'"'+(+r.scanDay===i?' selected':'')+'>'+d+'</option>'}).join('')+'</select></label></div>':'')+
     t('repurchase','Repurchase alerts','When a shelf product is within 14 days of its use-by period after opening.')+
@@ -1081,6 +1082,7 @@ document.addEventListener('input',function(e){
   var remIds={'rem-am':'am','rem-pm':'pm','rem-qf':'quietFrom','rem-qt':'quietTo','rem-day':'scanDay'};
   if(remIds[e.target.id]&&e.target.value!==''){var r=rem();r[remIds[e.target.id]]=e.target.id==='rem-day'?+e.target.value:e.target.value;save()}});
 document.addEventListener('change',function(e){
+  if(e.target.id==='rem-water-every'){rem().waterEvery=Math.max(1,Math.min(4,+e.target.value||2));save();remCheck(true)}
   if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='photo-in'){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){

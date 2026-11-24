@@ -30,7 +30,7 @@
     function shownToday(tag) { return shown[tag] && day(shown[tag]) === today; }
     function add(tag, title, body, url, actions) { out.push({ tag: tag, title: title, body: body, url: url, actions: actions || [] }); }
     var nm = now.getHours() * 60 + now.getMinutes();
-    [['am', 'Morning routine', 'Your AM steps are waiting. Cleanser, moisturizer, sunscreen.'], ['pm', 'Night routine', 'Time for your PM steps before bed.']].forEach(function (r) {
+    [['am', 'Morning routine', 'A gentle fresh start for you. Your morning routine is ready when you are.'], ['pm', 'Night routine', 'Take a calm moment for yourself. Your evening routine is ready whenever you are.']].forEach(function (r) {
       var tag = 'gn-' + r[0], at = mins(cfg[r[0]]);
       if (at === null || (fresh && st[r[0] + 'Done']) || done[tag] === today || snoozed(tag)) return;
       if (snoozeDue(tag) || (nm >= at && nm - at <= 180 && !shownToday(tag))) add(tag, 'GN Care · ' + r[1], r[2], '/#routine', ACT_ROUTINE);
@@ -43,7 +43,7 @@
     if (cfg.water && st.goal > 0 && waterToday < st.goal && !snoozed('gn-water')) {
       var every = Math.max(1, Math.min(6, Number(cfg.waterEvery) || 2)) * H, hr = now.getHours();
       if (hr >= 9 && hr < 21 && (snoozeDue('gn-water') || (t - (shown['gn-water'] || 0) >= every && t - (st.lastWaterAt || 0) >= every)))
-        add('gn-water', 'GN Care · Water break', 'You are at ' + waterToday + ' of ' + st.goal + ' ml today.', '/#home', [{ action: 'done', title: '+250 ml' }, { action: 'snooze', title: 'Snooze 30 min' }]);
+        add('gn-water', 'GN Care · A little water break?', 'If you are thirsty, take a few sips. You have logged ' + waterToday + ' of ' + st.goal + ' ml today—small sips count.', '/#home', [{ action: 'done', title: '+250 ml' }, { action: 'snooze', title: 'Snooze 30 min' }]);
     }
     if (cfg.scan && now.getDay() === Number(cfg.scanDay) && now.getHours() >= 10) {
       var last = st.lastScanAt || st.firstSeen || t;
