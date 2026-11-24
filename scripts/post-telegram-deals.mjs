@@ -43,7 +43,7 @@ g.GN_PRODUCTS = catalog.products;
 g.GN_DEALS = catalog.deals || [];
 
 const token = (process.env.TELEGRAM_BOT_TOKEN || '').trim();
-const channel = (process.env.TELEGRAM_CHANNEL || '').trim();
+const channel = (process.env.TELEGRAM_CHANNEL || process.env.TELEGRAM_CHAT_ID || '').trim();
 const dry = process.argv.includes('--dry-run');
 
 function die(msg) { console.error(msg); process.exit(1); }
@@ -100,7 +100,20 @@ const res = await fetch(api, {
   }),
 });
 const data = await res.json().catch(() => ({}));
-if (!res.ok || !data.ok) {
+if (res.status === 429 || (data.error_code === 429)) {
+  const wait = Number((data.parameters && data.parameters.retry_after) || 30);
+  console.error('Telegram rate-limited. Waiting', wait, 'seconds (retry_after), then posting once more.');
+  await new Promise((r) => setTimeout(r, Math.min(120, Math.max(1, wait)) * 1000));
+  const res2 = await fetch(api, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: channel, text, disable_web_page_preview: true }),
+  });
+  const data2 = await res2.json().catch(() => ({}));
+  if (!res2.ok || !data2.ok) die('Telegram API error after retry: ' + (data2.description || res2.status));
+  console.log('Posted to', channel, 'message_id', data2.result && data2.result.message_id);
+} else if (!res.ok || !data.ok) {
   die('Telegram API error: ' + (data.description || res.status));
+} else {
+  console.log('Posted to', channel, 'message_id', data.result && data.result.message_id);
 }
-console.log('Posted to', channel, 'message_id', data.result && data.result.message_id);

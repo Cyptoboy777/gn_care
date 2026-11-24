@@ -20,5 +20,5 @@ window.GN_CONFIG = {
   FLIPKART_AFFID: 'thisisnarenda', /* Flipkart affiliate id, added as affid= on Flipkart search links */
   AUTO_ADS: false,            /* true = Google places ads automatically and SLOTS are ignored */
   OWN_CONSENT_BANNER: true,   /* set false if you use Google's own Privacy & messaging banner */
-  TELEGRAM_URL: ''            /* public channel URL, e.g. https://t.me/yourchannel — hide the Shop button while empty */
+  TELEGRAM_URL: 'https://t.me/Gncarestore'  /* public channel; Shop shows Join our Telegram deals */
 };
