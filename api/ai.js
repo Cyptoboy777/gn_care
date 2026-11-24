@@ -21,7 +21,7 @@ const EEA = new Set([
 
 const RULES =
   'You are GN Care Coach, a friendly skin care and personal hygiene assistant for adults in India. ' +
-  'Give practical, general guidance. You are not a doctor and must not diagnose. ' +
+  'Use the stored skin profile when it is provided so the advice fits that person. Give practical, general guidance. You are not a doctor and must not diagnose. ' +
   'For rashes, severe or painful acne, infections, allergic reactions, pregnancy, children or prescription medicines, tell the person to see a doctor or dermatologist. ' +
   'Never recommend specific brands or give medicine doses. ' +
   'Only answer questions about skin, hair, oral and body hygiene; politely decline anything else. ' +
@@ -150,13 +150,15 @@ function cleanCtx(c) {
   const types = ['Oily', 'Dry', 'Combination', 'Normal'];
   if (types.indexOf(c.type) < 0) return null;
   const sun = Number(c.sun);
-  return { type: c.type, sensitive: !!c.sensitive, sun: sun >= 0 && sun <= 2 ? Math.floor(sun) : 0 };
+  const allow = ['oily', 'dry', 'acne', 'pigment', 'sensitive', 'dull', 'tan', 'circles'];
+  const concerns = (Array.isArray(c.concerns) ? c.concerns : []).filter((x) => allow.indexOf(x) > -1).slice(0, 8);
+  return { type: c.type, sensitive: !!c.sensitive, sun: sun >= 0 && sun <= 2 ? Math.floor(sun) : 0, concerns };
 }
 
 function userMessage(mode, q, ctx) {
   const lines = [];
   if (ctx) {
-    lines.push('Skin profile: ' + ctx.type + ' skin' + (ctx.sensitive ? ', sensitive' : '') + ', sun exposure ' + ['low', 'moderate', 'high'][ctx.sun] + '.');
+    lines.push('Skin profile: ' + ctx.type + ' skin' + (ctx.sensitive ? ', sensitive' : '') + ', sun exposure ' + ['low', 'moderate', 'high'][ctx.sun] + (ctx.concerns && ctx.concerns.length ? ', concerns: ' + ctx.concerns.join(', ') : '') + '.');
   }
   lines.push(mode === 'decode' ? 'Ingredient list:' : mode === 'picks' ? 'Skin profile and products:' : 'Question:');
   lines.push('<user_input>' + q.replace(/<\/?user_input>/gi, '') + '</user_input>');

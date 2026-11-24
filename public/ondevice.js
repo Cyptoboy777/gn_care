@@ -7,12 +7,12 @@
   'use strict';
   var VERSION = '0.2.84';
   var LIB_URL = 'https://esm.run/@mlc-ai/web-llm@' + VERSION;
-  /* Preferred models in order. Qwen2.5 1.5B is Apache-2.0. Check each model's license before you ship. */
-  var PREFER = ['Qwen2.5-1.5B-Instruct-q4f16_1-MLC', 'Llama-3.2-1B-Instruct-q4f16_1-MLC', 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC'];
+  /* Preferred models in order. Default is the smaller Qwen2.5 0.5B so more phones can run it. Apache-2.0. */
+  var PREFER = ['Qwen2.5-0.5B-Instruct-q4f16_1-MLC', 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', 'Llama-3.2-1B-Instruct-q4f16_1-MLC'];
 
   var RULES =
     'You are GN Care Coach, a friendly skin care and personal hygiene assistant for adults in India. ' +
-    'Give practical, general guidance. You are not a doctor and must not diagnose. ' +
+    'Use the stored skin profile when it is provided so advice fits that person. Give practical, general guidance. You are not a doctor and must not diagnose. ' +
     'For rashes, severe or painful acne, infections, allergic reactions, pregnancy, children or prescription medicines, tell the person to see a doctor or dermatologist. ' +
     'Never recommend specific brands or give medicine doses. ' +
     'Only answer questions about skin, hair, oral and body hygiene; politely decline anything else. ' +
@@ -70,7 +70,7 @@
     if (!engine) return Promise.reject(new Error('notloaded'));
     q = String(q || '').replace(/<\/?user_input>/gi, '').replace(/\s+/g, ' ').trim().slice(0, mode === 'decode' ? 1500 : mode === 'picks' ? 900 : 500);
     var lines = [];
-    if (ctx) lines.push('Skin profile: ' + ctx.type + ' skin' + (ctx.sensitive ? ', sensitive' : '') + ', sun exposure ' + ['low', 'moderate', 'high'][ctx.sun] + '.');
+    if (ctx) lines.push('Skin profile: ' + ctx.type + ' skin' + (ctx.sensitive ? ', sensitive' : '') + ', sun exposure ' + ['low', 'moderate', 'high'][ctx.sun] + (ctx.concerns && ctx.concerns.length ? ', concerns: ' + ctx.concerns.join(', ') : '') + '.');
     lines.push(mode === 'decode' ? 'Ingredient list:' : mode === 'picks' ? 'Skin profile and products:' : 'Question:');
     lines.push('<user_input>' + q + '</user_input>');
     return engine.chat.completions.create({

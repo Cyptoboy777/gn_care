@@ -119,7 +119,7 @@ Visitors can rate from Settings > Rate, and the Home screen asks once after two 
 
 ## 9. Shop tab (affiliate products)
 
-The Shop tab builds a cleanser, moisturizer and sunscreen kit from the skin type and budget, with add-ons for women and men. The catalog is `public/products.js`. Edit it to add or re-price products. Prices there are estimates from 2026 reviews, not live prices.
+The Shop tab builds a cleanser, moisturizer and sunscreen kit from the skin type and budget, with add-ons for women and men. The catalog is `public/catalog.json` (loaded by `public/products.js`). Edit the JSON file to add, re-price or flag deal items. Prices are estimates from 2026 reviews, not live store prices. Shop also shows a curated Today's best deals section with typical MRP vs typical price, labelled as approximate.
 
 1. Amazon Associates India tracking ID goes in `AFFILIATE_TAG` in `public/config.js` (now `gncare-21`). Flipkart affid goes in `FLIPKART_AFFID` (now `thisisnarenda`).
 2. Shop and kit cards show Amazon and Flipkart buttons. Until those IDs are set, the search links still work but earn nothing.
@@ -150,7 +150,7 @@ Face Scan is four short steps: an optional selfie, an optional note, a budget, t
 npm test
 ```
 
-Runs 88 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
+Runs 90 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metrics, concern parser, routine builder and budget kit mapping, using mocks, so it costs nothing.
 
 ## Other income options
 
@@ -169,3 +169,14 @@ Open the address it prints. The service worker only works on `localhost` or HTTP
 
 - Visitor data is stored in each browser only. There is no server or database.
 - When you change app files, increase `VERSION` in `sw.js` so installed copies update.
+
+
+## Hosting, scale and a custom domain
+
+The app is a static PWA plus three small `/api` routes, so pages and assets can be served from a CDN. API use stays low: the Coach has a 24-hour answer cache, per-IP and site-wide caps, and on-device WebLLM (Qwen2.5 0.5B by default) for visitors who turn it on.
+
+**Vercel Hobby is not licensed for commercial use.** If GN Care starts earning from ads or affiliates, move the production site to a commercial-friendly free host. A Cloudflare Pages adapter already lives in `functions/` and `wrangler.toml`. Upstash Redis (free tier) is recommended for durable rate limits once traffic grows; without it, limits are only in memory on each instance.
+
+Notifications are local (Notification API and, where supported, Notification Triggers or periodic background sync). Web Push with VAPID was not added: it needs a stored subscription and a server, and is not required for AM/PM reminders.
+
+After you buy a custom domain, add it in Vercel or Cloudflare, run `./set-domain.sh`, and only then apply for AdSense and paste your publisher ID into `ADSENSE_CLIENT` in `public/config.js`.
