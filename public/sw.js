@@ -1,11 +1,11 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
-const VERSION = 'gn-care-v22';
+const VERSION = 'gn-care-v23';
 try { importScripts('/remind.js'); } catch (e) { /* reminders are optional */ }
 const SHELL = [
-  '/', '/index.html', '/offline.html', '/styles.css', '/app.js', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/picks.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
+  '/', '/index.html', '/offline.html', '/styles.css', '/deals.css', '/app.js', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/deals.json', '/picks.js', '/deals.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
   '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'
 ];
-const NETWORK_FIRST = ['/config.js', '/ads.js', '/products.js', '/catalog.json', '/consent.js'];
+const NETWORK_FIRST = ['/config.js', '/ads.js', '/products.js', '/catalog.json', '/deals.json', '/consent.js'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

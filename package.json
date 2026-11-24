@@ -8,6 +8,8 @@
     "refresh-catalog": "node scripts/refresh-catalog.mjs",
     "telegram-deals": "node scripts/post-telegram-deals.mjs --dry-run",
     "gen-content": "node scripts/gen-content.mjs",
-    "sync-flipkart": "node scripts/sync-flipkart.mjs"
+    "sync-flipkart": "node scripts/sync-flipkart.mjs",
+    "sync-deals": "node scripts/sync-deals.mjs",
+    "telegram-store-deals": "node scripts/post-telegram-store-deals.mjs --dry-run"
   }
 }

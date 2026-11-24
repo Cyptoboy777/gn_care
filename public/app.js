@@ -30,6 +30,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 /* ---------- helpers ---------- */
 var TABS=[
   {id:'home',n:'Home',i:'i-home'},{id:'routine',n:'Routine',i:'i-check'},{id:'scan',n:'Face Scan',i:'i-scan'},{id:'picks',n:'Shop',i:'i-tag'},
+  {id:'deals',n:'Deals',i:'i-tag'},
   {id:'timer',n:'Timer',i:'i-timer'},{id:'shelf',n:'Shelf & ₹',i:'i-bag'},{id:'checker',n:'Coach',i:'i-flask'}];
 var tab='home',period=new Date().getHours()<15?'am':'pm';
 var toastT;
@@ -749,7 +750,7 @@ function buildNav(){
     '<button data-act="openMore" id="dock-more" aria-haspopup="dialog">'+ico('i-more')+'<span>More</span></button>';
   $('#nav-side').innerHTML=side;$('#nav-dock').innerHTML=dock}
 var MORE=['timer','shelf','checker'];
-var TITLES={home:'Home',routine:'Routine',scan:'Face scan',picks:'Shop',timer:'Ritual timer',shelf:'Shelf and budget',checker:'Coach and checker'};
+var TITLES={home:'Home',routine:'Routine',scan:'Face scan',picks:'Shop',deals:'Deals',timer:'Ritual timer',shelf:'Shelf and budget',checker:'Coach and checker'};
 function moreHTML(){
   return '<div class="more-list">'+TABS.filter(function(t){return MORE.indexOf(t.id)>-1}).map(function(t){return '<button class="more-item" data-act="moreGo" data-v="'+t.id+'"'+(t.id===tab?' aria-current="page"':'')+'>'+ico(t.i)+'<span>'+esc(t.n)+'</span></button>'}).join('')+
     '<button class="more-item" data-act="openSettings">'+ico('i-gear')+'<span>Settings</span></button></div>'+
@@ -759,11 +760,12 @@ function mark(){
   var dm=$('#dock-more');if(dm){if(MORE.indexOf(tab)>-1)dm.setAttribute('aria-current','page');else dm.removeAttribute('aria-current')}
   document.title=(TITLES[tab]||'Home')+' · GN Care';
   $('#side-skin').textContent=S.skin?S.skin.type+(S.skin.sensitive?' · sensitive':''):'Not scanned yet'}
-var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,timer:viewTimer,shelf:viewShelf,checker:viewChecker};
+function viewDeals(){return window.GNDeals?GNDeals.view():'<div class="head"><h2 class="page-h">Deals</h2><p class="hint">Deals will appear here after the next Flipkart sync.</p></div>'}
+var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,deals:viewDeals,timer:viewTimer,shelf:viewShelf,checker:viewChecker};
 function render(anim){
   var v=$('#view');v.innerHTML=views[tab]();
   if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}else v.classList.remove('rise');
-  mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','checker'].indexOf(tab)>-1);remCheck()}
+  mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','deals','checker'].indexOf(tab)>-1);remCheck()}
 var booted=false;
 function go(t,quiet){
   if(!views[t])t='home';

@@ -806,5 +806,82 @@ async function t(name, fn) {
     const s = K.promptContext({ type: 'Combination', concerns: ['acne', 'circles'] });
     assert.ok(s.includes('Benzoyl peroxide') && s.includes('Red flags') && s.length < 2500);
   });
+
+  console.log('deals');
+  const DL = require('../scripts/deals-lib.js');
+  const match = require('../scripts/flipkart-match.js');
+  const GD = require('../public/deals.js');
+  const helpers = { withAffid: match.withAffid, isFlipkartImageHost: match.isFlipkartImageHost };
+
+  await t('discount is computed only from real price and MRP', async () => {
+    assert.strictEqual(DL.discountOf(300, 500), 40);
+    assert.strictEqual(DL.discountOf(100, 100), null);
+    assert.strictEqual(DL.discountOf(0, 500), null);
+    assert.strictEqual(DL.discountOf(200, null), null);
+    assert.strictEqual(DL.pickPrice(199, 249), 199);
+    assert.strictEqual(DL.pickPrice(null, 249), 249);
+    assert.strictEqual(DL.pickPrice(undefined, undefined), null);
+  });
+
+  await t('items without a real price or Flipkart URL are dropped', async () => {
+    const at = '2026-11-24T10:00:00+05:30';
+    const ok = DL.toDealItem({
+      productId: 'ABC123', title: 'Test Serum 30 ml', brand: 'Acme',
+      price: 299, mrp: 499, productUrl: 'https://www.flipkart.com/x/p/itm?pid=ABC123',
+      image: 'https://rukminim2.flixcart.com/image/400/400/x.jpeg', inStock: true
+    }, 'beauty', at, 'thisisnarenda', helpers);
+    assert.ok(ok && ok.price === 299 && ok.discount === 40 && ok.url.includes('affid=thisisnarenda'));
+    assert.strictEqual(DL.toDealItem({ productId: 'X', title: 'No price', productUrl: 'https://www.flipkart.com/x/p/itm' }, 'beauty', at, 'thisisnarenda', helpers), null);
+    assert.strictEqual(DL.toDealItem({ productId: 'X', title: 'Bad url', price: 10, productUrl: 'https://evil.example/x' }, 'beauty', at, 'thisisnarenda', helpers), null);
+    const kept = DL.selectCategoryItems([ok, { id: 'Z', title: 'Nope', price: null }], 20);
+    assert.strictEqual(kept.length, 1);
+    assert.strictEqual(kept[0].id, 'ABC123');
+  });
+
+  await t('telegram picker skips recently posted ids and keeps the highest real discounts', async () => {
+    const deals = {
+      fetchedAt: '2026-11-24T08:00:00+05:30',
+      categories: [{ id: 'laptops', label: 'Laptops', items: [
+        { id: 'A', title: 'Old deal', price: 100, mrp: 200, discount: 50, url: 'https://www.flipkart.com/a', inStock: true },
+        { id: 'B', title: 'Best new', price: 200, mrp: 500, discount: 60, url: 'https://www.flipkart.com/b', inStock: true },
+        { id: 'C', title: 'No discount', price: 200, mrp: 200, discount: null, url: 'https://www.flipkart.com/c', inStock: true }
+      ] }]
+    };
+    const posted = { ids: { A: '2026-11-23' }, lastPosted: '2026-11-23' };
+    const picks = DL.pickTelegramDeals(deals, posted, '2026-11-24', 5);
+    assert.deepStrictEqual(picks.map((p) => p.id), ['B']);
+    const marked = DL.markPosted(posted, picks, '2026-11-24');
+    assert.strictEqual(marked.ids.B, '2026-11-24');
+    assert.strictEqual(DL.pickTelegramDeals(deals, marked, '2026-11-24', 5).length, 0);
+  });
+
+  await t('deals view is honest: escaped text, dated prices, Myntra EarnKaro links, no fake ratings', async () => {
+    GD.applyData({
+      fetchedAt: '2026-11-24T08:00:00+05:30',
+      categories: [{ id: 'beauty', label: 'Beauty', items: [
+        { id: 'P1', brand: 'CeraVe', title: 'Cleanser <script>alert(1)</script>', price: 330, mrp: 399, discount: 17, url: 'https://www.flipkart.com/x?affid=thisisnarenda', image: 'https://rukminim2.flixcart.com/image/400/400/x.jpeg', fetchedAt: '2026-11-24T08:00:00+05:30', inStock: true }
+      ] }]
+    });
+    GD.setCat('beauty');
+    const html = GD.view();
+    assert.ok(html.includes('Price as of'));
+    assert.ok(html.includes('Buy on Flipkart'));
+    assert.ok(html.includes('rel="sponsored nofollow noopener"'));
+    assert.ok(html.includes('https://myntr.it/zHNk6zz') && html.includes('https://myntr.it/afrMHGG'));
+    assert.ok(html.includes('Shop Myntra fashion') && html.includes('Myntra deals under ₹399'));
+    assert.ok(html.includes('EarnKaro'));
+    assert.ok(!html.includes('<script>alert'));
+    assert.ok(html.includes('Cleanser &lt;script&gt;alert(1)&lt;/script&gt;'));
+    assert.ok(!/\d+(\.\d+)?\s*★|★\s*\d|user rating|coupon code/i.test(html));
+    assert.ok(html.includes('₹330') || html.includes('₹330'.normalize()) || /₹\s*330/.test(html));
+  });
+
+  await t('sw caches deals assets and prefers a fresh deals.json', async () => {
+    const sw = require('fs').readFileSync(require('path').join(__dirname, '../public/sw.js'), 'utf8');
+    assert.ok(sw.includes("const VERSION = 'gn-care-v23'"));
+    assert.ok(sw.includes('/deals.js') && sw.includes('/deals.css') && sw.includes('/deals.json'));
+    assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
+  });
+
   console.log('\n' + passed + ' checks passed' + (process.exitCode ? ', some FAILED' : ''));
 })();

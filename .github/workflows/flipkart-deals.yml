@@ -1,0 +1,42 @@
+# Daily Flipkart deals refresh + Telegram post of the top new discounts.
+# Requires repository secret FLIPKART_AFFILIATE_TOKEN. Telegram posting also
+# needs TELEGRAM_BOT_TOKEN. Set ENABLE_FLIPKART_DEALS=true to run.
+# The post step exits cleanly if the Telegram token is missing.
+name: Flipkart deals sync
+
+on:
+  schedule:
+    - cron: '30 2 * * *'  # daily 08:00 IST
+  workflow_dispatch:
+
+jobs:
+  sync:
+    if: ${{ vars.ENABLE_FLIPKART_DEALS == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Sync Flipkart deals
+        env:
+          FLIPKART_AFFILIATE_TOKEN: ${{ secrets.FLIPKART_AFFILIATE_TOKEN }}
+        run: node scripts/sync-deals.mjs
+      - name: Test
+        run: node tests/run.js
+      - name: Post top deals to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ vars.TELEGRAM_CHANNEL }}
+        run: node scripts/post-telegram-store-deals.mjs
+      - name: Commit if changed
+        run: |
+          git config user.name "gn-care-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/deals.json scripts/telegram-deals-posted.json
+          if git diff --cached --quiet; then echo "No deals changes"; exit 0; fi
+          git commit -m "Flipkart deals sync $(date -u +%F)"
+          git pull --rebase origin main
+          git push
