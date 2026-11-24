@@ -82,8 +82,82 @@
     if (/^[A-Za-z0-9_]{3,40}$/.test(affid || '')) u += '&affid=' + encodeURIComponent(affid);
     return u;
   }
+  function amazonDealsURL(tag) {
+    var u = 'https://www.amazon.in/gp/goldbox';
+    if (/^[A-Za-z0-9-]{3,40}$/.test(tag || '')) u += '?tag=' + encodeURIComponent(tag);
+    return u;
+  }
+  function flipkartOffersURL(affid) {
+    var u = 'https://www.flipkart.com/offers-store';
+    if (/^[A-Za-z0-9_]{3,40}$/.test(affid || '')) u += '?affid=' + encodeURIComponent(affid);
+    return u;
+  }
+  function dealDiscount(p) {
+    if (!p || p.price == null || p.mrp == null || p.mrp <= p.price) return null;
+    return Math.round((1 - p.price / p.mrp) * 100);
+  }
+  function deals(ids) {
+    var map = {};
+    products().forEach(function (p) { map[p.id] = p; });
+    var list = (ids && ids.length ? ids : (root.GN_DEALS || [])).map(function (id) { return map[id]; }).filter(Boolean);
+    return list.filter(function (p) { return dealDiscount(p) != null; });
+  }
+  function treatments(type, concerns) {
+    concerns = concerns || [];
+    return products().filter(function (p) {
+      if (p.cat !== 'Serum' && p.cat !== 'Treatment') return false;
+      if (type && p.skin && p.skin.length && p.skin.indexOf(type) < 0) return false;
+      return true;
+    }).sort(function (a, b) {
+      var score = function (p) {
+        var n = ((p.actives || []).join(' ') + ' ' + (p.name || '')).toLowerCase();
+        var s = 0;
+        if (concerns.indexOf('acne') > -1 && /bha|salicylic/.test(n)) s += 3;
+        if (concerns.indexOf('pigment') > -1 && /niacinamide|vitc|vitamin c/.test(n)) s += 3;
+        if (concerns.indexOf('dull') > -1 && /vitc|vitamin c/.test(n)) s += 3;
+        if ((type === 'Dry' || concerns.indexOf('dry') > -1 || concerns.indexOf('sensitive') > -1) && /ceramide/.test(n)) s += 3;
+        if (type === 'Oily' && /niacinamide|bha|gel/.test(n)) s += 1;
+        return s;
+      };
+      return score(b) - score(a) || effPrice(a) - effPrice(b);
+    });
+  }
+  function whyThis(p, type, concerns) {
+    concerns = concerns || [];
+    var name = ((p.brand || '') + ' ' + (p.name || '') + ' ' + (p.note || '') + ' ' + (p.actives || []).join(' ')).toLowerCase();
+    var bits = [];
+    if (p.skin && type && p.skin.indexOf(type) > -1) bits.push('Chosen because it is listed for ' + type.toLowerCase() + ' skin.');
+    if (p.sens) bits.push('Marked sensitive-friendly, so it is a gentler place to start.');
+    if (/niacinamide/.test(name) && (type === 'Oily' || concerns.indexOf('acne') > -1 || concerns.indexOf('pigment') > -1))
+      bits.push('Niacinamide is a common, budget-friendly choice for oil control and uneven tone.');
+    if (/salicylic|\bbha\b/.test(name) && (type === 'Oily' || type === 'Combination' || concerns.indexOf('acne') > -1))
+      bits.push('Salicylic acid can help keep pores clearer. Start slowly and patch test.');
+    if (/vitamin c|vitc|ascorb/.test(name) && (concerns.indexOf('dull') > -1 || concerns.indexOf('pigment') > -1 || concerns.indexOf('tan') > -1 || !concerns.length))
+      bits.push('Vitamin C is often used for a brighter look. Use in the morning and follow with sunscreen.');
+    if (/ceramide/.test(name) && (type === 'Dry' || concerns.indexOf('dry') > -1 || concerns.indexOf('sensitive') > -1 || p.sens))
+      bits.push('Ceramides help support a dry or easily irritated barrier.');
+    if (/hyaluronic|hydro boost/.test(name) && type === 'Dry')
+      bits.push('A hydrating formula that suits tight, dry skin when sealed with a cream.');
+    if (/gel|oil-free|oil free|matt/.test(name) && (type === 'Oily' || type === 'Combination'))
+      bits.push('A lighter gel or oil-free texture is usually more comfortable on oilier areas.');
+    if (/cream|balm|nourishing/.test(name) && type === 'Dry')
+      bits.push('A richer cream texture helps when skin feels tight or flaky.');
+    if (p.cat === 'Sunscreen') bits.push('Daily sunscreen is the one step every skin type should keep.');
+    if (!bits.length) bits.push('A straightforward ' + String(p.cat || 'product').toLowerCase() + ' that can fit a ' + String(type || 'your').toLowerCase() + ' routine. Patch test first.');
+    return bits.slice(0, 2).join(' ');
+  }
+  function avoidTips(type, concerns, sensitive) {
+    var tips = [];
+    concerns = concerns || [];
+    if (type === 'Oily' || type === 'Combination') tips.push('Go easy on heavy oils and thick occlusive creams on the T-zone.');
+    if (type === 'Dry') tips.push('Avoid strong foaming cleansers and daily high-strength acids, which can leave skin tighter.');
+    if (sensitive || concerns.indexOf('sensitive') > -1) tips.push('Skip fragrance and essential oils where you can, and patch test new actives.');
+    if (concerns.indexOf('acne') > -1) tips.push('Do not stack several exfoliating acids on the same night.');
+    if (!tips.length) tips.push('Add only one new active at a time, and wear sunscreen in the day.');
+    return tips.slice(0, 3);
+  }
 
-  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, effPrice: effPrice };
+  var api = { CORE: CORE, candidates: candidates, buildKit: buildKit, addOns: addOns, buyURL: buyURL, flipkartURL: flipkartURL, amazonDealsURL: amazonDealsURL, flipkartOffersURL: flipkartOffersURL, effPrice: effPrice, dealDiscount: dealDiscount, deals: deals, treatments: treatments, whyThis: whyThis, avoidTips: avoidTips };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GNPicks = api;
 })(typeof window !== 'undefined' ? window : this);

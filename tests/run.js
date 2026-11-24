@@ -313,6 +313,35 @@ async function t(name, fn) {
     assert.ok(P.flipkartURL({ brand: "L'Oreal", name: 'A & B' }, '').indexOf('%26') > -1);
   });
 
+  await t('deal links carry affiliate ids and discount is computed from MRP', async () => {
+    const u = P.amazonDealsURL('gncare-21');
+    assert.ok(u.startsWith('https://www.amazon.in/gp/goldbox'));
+    assert.ok(u.indexOf('tag=gncare-21') > -1);
+    assert.ok(!/tag=/.test(P.amazonDealsURL('')));
+    const f = P.flipkartOffersURL('thisisnarenda');
+    assert.ok(f.indexOf('affid=thisisnarenda') > -1);
+    assert.strictEqual(P.dealDiscount({ price: 399, mrp: 599 }), 33);
+    assert.strictEqual(P.dealDiscount({ price: 400, mrp: 400 }), null);
+    assert.strictEqual(P.dealDiscount({ price: 100 }), null);
+    const deals = P.deals();
+    assert.ok(deals.length >= 4);
+    assert.ok(deals.every((d) => P.dealDiscount(d) > 0));
+  });
+
+  await t('why-this and avoid tips follow skin type and key ingredients', async () => {
+    const niac = global.GN_PRODUCTS.find((x) => x.id === 't1');
+    const serum = global.GN_PRODUCTS.filter((x) => x.cat === 'Serum');
+    assert.ok(serum.length >= 4);
+    const why = P.whyThis(niac, 'Oily', ['acne']);
+    assert.ok(/niacinamide/i.test(why));
+    const tips = P.avoidTips('Dry', ['sensitive'], true);
+    assert.ok(tips.length >= 1);
+    assert.ok(tips.some((s) => /fragrance|foaming|acid/i.test(s)));
+    const tr = P.treatments('Oily', ['acne']);
+    assert.ok(tr.length >= 1);
+    assert.ok(tr[0].cat === 'Serum');
+  });
+
 
   console.log('facescan.js');
   const F = require('../public/facescan.js');

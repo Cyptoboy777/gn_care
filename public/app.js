@@ -23,7 +23,8 @@ var defaults=function(){return {
     {id:'s3',n:'Ceramide moisturizer',c:'Moisturizer',p:620,o:'2026-08-30',m:12,sample:true},
     {id:'s4',n:'SPF 50 gel sunscreen',c:'Sunscreen',p:550,o:'2026-06-15',m:6,sample:true}
   ],
-  skin:null,uv:{index:6,appliedAt:null},firstSeen:Date.now(),rated:null,fbSnooze:0,aiProfile:true,onDevice:false
+  skin:null,uv:{index:6,appliedAt:null},firstSeen:Date.now(),rated:null,fbSnooze:0,aiProfile:true,onDevice:false,
+  remind:{asked:false,on:false,am:'08:00',pm:'21:00',spf:true}
 }};
 var S=defaults();
 try{var raw=localStorage.getItem(KEY);if(raw){var L=JSON.parse(raw);for(var k in L){S[k]=L[k]}}}catch(e){}
@@ -114,7 +115,7 @@ function viewHome(){
     '<div class="meter '+(run>S.budget?'over':'')+'"><i style="width:'+Math.min(100,S.budget?run/S.budget*100:0)+'%"></i></div>'+
     (alerts.length?'<div class="list">'+alerts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.it.n)+'</b></div><span class="chip '+a.s.c+'">'+a.s.t+'</span></div>'}).join('')+'</div>':'<p class="hint">Nothing is expiring in the next 30 days.</p>')+
     '<button class="btn ghost sm" data-act="nav" data-v="shelf" style="align-self:flex-start">Open shelf</button></section>'+
-  ratePrompt()+'</div>'}
+  (installHome())+ratePrompt()+'</div>'}
 
 function viewRoutine(){
   var d=dayDone(today()),steps=S.steps[period],done=d[period]||[];
@@ -184,7 +185,7 @@ function faceMap(){
       '<ellipse class="z '+z.ch+'" cx="100" cy="213" rx="30" ry="16"/>'+
       '<g class="outline" style="opacity:.4"><path d="M78 112h14M108 112h14M88 176c8 6 16 6 24 0" stroke-linecap="round"/></g>';
   }
-  return '<div class="face">'+(photo?'<img src="'+photo+'" alt="Your photo"'+(scanMirror?' class="mirror"':'')+'>':'')+
+  return '<div class="face">'+(photo?'<img src="'+esc(photo)+'" alt="Your photo"'+(scanMirror?' class="mirror"':'')+'>':'')+
     '<svg class="map" viewBox="0 0 200 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+inner+'</svg>'+
     msg+(scanning?'<span class="laser"></span>':'')+'</div>'}
 function viewScan(){
@@ -226,7 +227,10 @@ function viewScan(){
   if(S.skin&&window.GNPicks){
     var r=kitBuild();
     var msg=scanBudget>0?(r.fits?('About '+money(r.total)+' of your '+money(scanBudget)+' budget.'):('The lowest kit is about '+money(r.min)+', above your '+money(scanBudget)+' budget. Go back and raise the budget, or still use these picks.')):'About '+money(r.total)+', no budget cap.';
-    kitHtml='<section class="tile"><h3 class="t">Your kit</h3><p class="hint">'+esc(msg)+' '+affDisc()+'</p></section>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('');
+    var avoidScan=(window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(S.skin.type,S.skin.flags||[],S.skin.sensitive||S.skin.sensitiveLeaning).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
+    var trScan=(window.GNPicks&&GNPicks.treatments)?GNPicks.treatments(S.skin.type,S.skin.flags||[]).slice(0,3):[];
+    var treatScan=trScan.length?'<section class="tile"><h3 class="t">Serums that may suit you</h3><div class="list">'+trScan.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+priceTxt(p)+'</span><p class="hint why-this">'+esc(GNPicks.whyThis(p,S.skin.type,S.skin.flags||[]))+'</p></div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>':'';
+    kitHtml='<section class="tile"><h3 class="t">Your kit</h3><p class="hint">'+esc(msg)+' '+affDisc()+'</p></section>'+r.items.map(function(it){return pickCard(it,S.skin.type)}).join('')+avoidScan+treatScan;
   }
   var routine=S.skin&&window.GNFaceScan?GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning):{am:[],pm:[]};
   var col=function(title,list){return '<div><h3 class="t">'+title+'</h3><ul class="checks">'+list.map(function(s){return '<li>'+esc(s.n)+'</li>'}).join('')+'</ul></div>'};
@@ -326,6 +330,18 @@ function affTag(){return (window.GN_CONFIG&&GN_CONFIG.AFFILIATE_TAG)||''}
 function fkAff(){return (window.GN_CONFIG&&GN_CONFIG.FLIPKART_AFFID)||''}
 function priceTxt(p){return p.price!=null?'about '+money(p.price):'price varies'}
 function affDisc(){return 'As an Amazon Associate and Flipkart affiliate, GN Care earns from qualifying purchases.'}
+function kitConcerns(){return (S.skin&&S.skin.flags)||[]}
+function dealsHtml(){
+  if(!(window.GNPicks&&GNPicks.deals))return '';
+  var list=GNPicks.deals().slice(0,6);
+  if(!list.length)return '';
+  var amz=esc(GNPicks.amazonDealsURL(affTag()));
+  var fk=esc(GNPicks.flipkartOffersURL(fkAff()));
+  return '<section class="tile deals"><h3 class="t">Today\'s best deals</h3><p class="hint">Curated from our catalog using typical MRP vs typical price. This is an <b>approx. price, check store for today\'s deal</b>. We do not scrape live prices.</p><div class="list">'+list.map(function(p){var d=GNPicks.dealDiscount(p);return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span><s class="mrp">'+money(p.mrp)+'</s> '+priceTxt(p)+(d!=null?' <span class="chip good">'+d+'% off typ.</span>':'')+'</span></div>'+buyBtn(p)+'</div>'}).join('')+'</div><div class="btn-grid" style="margin-top:10px"><a class="btn sm" href="'+amz+'" target="_blank" rel="sponsored nofollow noopener">Amazon deals</a><a class="btn ghost sm" href="'+fk+'" target="_blank" rel="sponsored nofollow noopener">Flipkart offers</a></div></section>'}
+function installHome(){
+  if(standalone)return '';
+  if(deferredInstall)return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">Add the app to your home screen for a faster, full-screen experience and reminders.</p><button class="btn sm" data-act="install">Install app</button></section>';
+  return '<section class="tile s7"><h3 class="t">Install GN Care</h3><p class="hint">'+(isIOS?'On iPhone, tap Share, then Add to Home Screen.':'Use your browser menu and choose Install app or Add to Home screen.')+'</p></section>'}
 function buyBtn(p){
   return '<div class="btn-grid" style="justify-content:flex-start">'+
     '<a class="btn sm" href="'+esc(GNPicks.buyURL(p,affTag()))+'" target="_blank" rel="sponsored nofollow noopener">Amazon</a>'+
@@ -338,13 +354,14 @@ function kitQuestion(r,type,sens,budget){
   return lines.join(' ')}
 function pickCard(it,type){
   if(it.have)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">You already have a '+it.cat.toLowerCase()+' on your shelf, so it is left out of this kit.</p></section>';
-  if(!it.item)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">No match for '+esc(type.toLowerCase())+' skin yet. Add products in products.js.</p></section>';
+  if(!it.item)return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3><p class="hint">No match for '+esc(type.toLowerCase())+' skin yet. Add products in catalog.json.</p></section>';
   var p=it.item;
   var alts=it.alts.filter(function(a){return a.id!==p.id}).slice(0,3);
   return '<section class="tile s4"><h3 class="t">'+it.cat+'</h3>'+
     '<div><span class="eyebrow">'+esc(p.brand)+'</span><h4 style="font-size:17px;font-weight:700;line-height:1.25;margin-top:2px;overflow-wrap:anywhere">'+esc(p.name)+'</h4><p class="hint">'+[p.size,p.spf].filter(Boolean).map(esc).join(' · ')+'</p></div>'+
     '<div class="row wrap" style="gap:6px"><span class="chip">'+priceTxt(p)+'</span><span class="chip good">Fits '+esc(type.toLowerCase())+'</span>'+(p.sens?'<span class="chip good">Sensitive-friendly</span>':'')+'</div>'+
     (p.priceNote?'<p class="hint">'+esc(p.priceNote)+'</p>':'')+
+    (window.GNPicks&&GNPicks.whyThis?'<p class="hint why-this"><b>Why this suits you.</b> '+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p>':'')+
     (it.noSens?'<p class="hint">No sensitive-skin option in our list for '+esc(type.toLowerCase())+' skin. Patch test first.</p>':'')+
     buyBtn(p)+
     (alts.length?'<div class="list" style="gap:6px"><span class="hint">Other options</span>'+alts.map(function(a){return '<div class="li"><div class="grow"><b>'+esc(a.brand+' '+a.name)+'</b><span>'+priceTxt(a)+'</span></div><button class="btn ghost sm" data-act="kSwap" data-v="'+a.id+'" data-c="'+it.cat+'" aria-label="Use '+esc(a.brand+' '+a.name)+'">Use</button></div>'}).join('')+'</div>':'')+
@@ -375,8 +392,14 @@ function viewPicks(){
     '</div>';
   }
   var src=Object.keys(window.GN_SOURCES||{}).map(function(s){return GN_SOURCES[s]}).join('; ');
+  var avoid=(type&&window.GNPicks&&GNPicks.avoidTips)?'<section class="tile"><h3 class="t">What to avoid</h3><ul class="checks">'+GNPicks.avoidTips(type,kitConcerns(),sens).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></section>':'';
+  var treatHtml='';
+  if(type&&window.GNPicks&&GNPicks.treatments){
+    var tr=GNPicks.treatments(type,kitConcerns()).slice(0,4);
+    if(tr.length)treatHtml='<section class="tile"><h3 class="t">Serums and treatments for you</h3><p class="hint">Optional extras. They are not part of the core kit total.</p><div class="list">'+tr.map(function(p){return '<div class="li"><div class="grow"><b>'+esc(p.brand+' '+p.name)+'</b><span>'+[p.size,priceTxt(p)].filter(Boolean).join(' · ')+'</span><p class="hint why-this">'+esc(GNPicks.whyThis(p,type,kitConcerns()))+'</p></div>'+buyBtn(p)+'</div>'}).join('')+'</div></section>';
+  }
   var disc='<section class="tile" style="margin-top:14px"><h3 class="t">How this works</h3><p class="hint">Links go to Amazon.in and Flipkart search. If you buy through them, GN Care may earn a small commission at no extra cost to you. '+affDisc()+' Prices are estimates from published 2026 reviews ('+esc(src)+'). They are not live store prices, so check the price before you buy. Picks match your skin type and budget. They are general suggestions, not medical advice. See a dermatologist for skin conditions.</p></section>';
-  return head+ctl+(body?'<div style="height:14px"></div>'+body:'')+disc}
+  return head+dealsHtml()+ctl+(body?'<div style="height:14px"></div>'+body+avoid+treatHtml:'')+disc}
 
 /* ---------- coach, label decoder, ratings ---------- */
 var LAB={bad:'Avoid',warn:'Separate',good:'Pairs well'};
@@ -401,7 +424,7 @@ function postJSON(url,body){
   return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){
     return r.json().then(function(j){j.status=r.status;return j},function(){return {ok:false,msg:'The service is not available here yet.'}})
   },function(){return {ok:false,msg:'No connection. The label scan and Checker still work offline.'}})}
-function aiCtx(){return (S.skin&&S.aiProfile!==false)?{type:S.skin.type,sensitive:!!S.skin.sensitive,sun:S.skin.sun}:null}
+function aiCtx(){return (S.skin&&S.aiProfile!==false)?{type:S.skin.type,sensitive:!!S.skin.sensitive,sun:S.skin.sun,concerns:(S.skin.flags||[]).slice(0,8)}:null}
 function thumbs(on,act){
   if(on)return '<p class="hint">Thanks for the feedback.</p>';
   return '<div class="row wrap" style="gap:8px"><span class="hint">Was this helpful?</span><button class="btn ghost sm" data-act="'+act+'" data-v="5">Yes</button><button class="btn ghost sm" data-act="'+act+'" data-v="1">No</button></div>'}
@@ -432,7 +455,7 @@ function coachTiles(){
     '<p class="ai-note">For ages 18 and over. '+(S.onDevice&&window.GNOnDevice&&GNOnDevice.supported()?'On-device mode keeps your question on your phone. ':'Your question is sent to our AI provider, so do not type your name, contact details or medical history. ')+'General information only, not medical advice.</p></section>'}
 function odRow(){
   if(!(window.GNOnDevice&&GNOnDevice.supported()))return '';
-  return '<div class="row sp" style="align-items:flex-start;gap:14px"><div style="min-width:0"><span style="font-size:13px;font-weight:600;display:block">Run AI on my device</span><span class="hint">Free and private. Downloads a model of roughly 1 GB the first time you ask. Needs a recent phone or computer.</span></div>'+tgl(!!S.onDevice,'onDevice','x','Run AI on my device',true)+'</div>'}
+  return '<div class="row sp" style="align-items:flex-start;gap:14px"><div style="min-width:0"><span style="font-size:13px;font-weight:600;display:block">Run AI on my device</span><span class="hint">Free and private. Downloads a small Qwen2.5 0.5B model the first time you ask (a larger 1.5B model is the fallback). Needs a recent phone or computer with WebGPU.</span></div>'+tgl(!!S.onDevice,'onDevice','x','Run AI on my device',true)+'</div>'}
 function fbHTML(){
   if(FB.done)return '<div class="tip"><b>Thank you.</b> Your feedback was sent.</div>'+(FB.stars>=4?'<div class="btn-grid" style="margin-top:10px"><button class="btn" data-act="share">Share GN Care</button></div>':'')+'<div class="btn-grid" style="margin-top:10px"><button class="btn ghost" data-act="closeSettings">Close</button></div>';
   var kinds=[['app','The app'],['ai','AI coach'],['bug','A problem'],['idea','An idea']];
@@ -493,7 +516,7 @@ var views={home:viewHome,routine:viewRoutine,scan:viewScan,picks:viewPicks,timer
 function render(anim){
   var v=$('#view');v.innerHTML=views[tab]();
   if(anim){v.classList.remove('rise');void v.offsetWidth;v.classList.add('rise')}
-  mark();tickTimer();if(window.GNAds)GNAds.show(['home','shelf','checker'].indexOf(tab)>-1)}
+  mark();tickTimer();if(window.GNAds)GNAds.show(['home','picks','checker'].indexOf(tab)>-1);if(window.GNRemind&&S.remind)GNRemind.dueOnOpen(S.remind,S.uv&&S.uv.appliedAt)}
 function go(t,quiet){
   if(!views[t])t='home';
   if(t!==tab||!quiet){tab=t}
@@ -519,14 +542,29 @@ function installRow(){
   if(standalone)return '';
   if(deferredInstall)return '<div class="set"><div><b>Install app</b><span>Add GN Care to your home screen.</span></div><button class="btn sm" data-act="install">Install</button></div>';
   return '<div class="set"><div><b>Install app</b><span>'+(isIOS?'Tap Share, then Add to Home Screen.':'Use your browser menu and choose Install app or Add to Home screen.')+'</span></div></div>'}
+function remindRow(){
+  var r=S.remind||(S.remind={asked:false,on:false,am:'08:00',pm:'21:00',spf:true});
+  var support=window.GNRemind&&GNRemind.supported();
+  return '<div class="set" style="flex-wrap:wrap"><div><b>Routine reminders</b><span>'+(support?'Local notifications for AM, PM and sunscreen reapply. We ask only after you set a routine. This does not use a paid push service.':'This browser does not support notifications.')+'</span></div>'+(support?tgl(!!r.on,'remindOn','x','Routine reminders',true):'')+'</div>'+
+    (r.on&&support?'<div class="set"><label class="f">Morning<input class="input" id="rem-am" type="time" value="'+esc(r.am)+'"></label><label class="f">Night<input class="input" id="rem-pm" type="time" value="'+esc(r.pm)+'"></label></div><div class="set"><div><b>Sunscreen reapply</b><span>Remind me about two hours after I log sunscreen.</span></div>'+tgl(!!r.spf,'remindSpf','x','Sunscreen reapply',true)+'</div>':'');
+}
 function adRow(){
-  var r=(window.GNAds&&GNAds.enabled())?'<div class="set"><div><b>Ad preferences</b><span>Switch between personalised and non-personalised ads.</span></div><button class="btn ghost sm" data-act="adPrefs">Change</button></div>':'';
-  return r+'<div class="legal" style="padding:14px 0 6px"><a href="/guides/">Guides</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/about.html">About</a></div>'}
+  var r='<div class="set"><div><b>Cookies and ads</b><span>Change Accept, Reject or Customise anytime. See the <a href="/privacy">Privacy Policy</a>.</span></div><button class="btn ghost sm" data-act="adPrefs">Change</button></div>';
+  return remindRow()+r+'<div class="legal" style="padding:14px 0 6px"><a href="/guides/">Guides</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/about">About</a></div>'}
 function settingsHTML(){
   var row=function(k,t,d){return '<div class="set"><div><b>'+t+'</b><span>'+d+'</span></div>'+tgl(!!S[k],'pref',k,t,false)+'</div>'};
   return row('ambient','Ambient background','Soft drifting color behind the app.')+row('motion','Animations','Springs, waves and page transitions.')+row('sound','Timer sound','A short chime when a ritual timer ends.')+
     feedbackRow()+installRow()+adRow()+'<div class="set" style="border:0"><div><b>Reset all data</b><span>Clears routines, shelf and history on this device.</span></div><button class="btn ghost sm" data-act="resetAll" id="reset-btn">Reset</button></div>'}
 
+function maybeAskReminders(){
+  S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};
+  if(S.remind.asked||!(window.GNRemind&&GNRemind.supported()))return;
+  S.remind.asked=true;save();
+  GNRemind.requestAfterRoutine(S.remind,function(p){
+    if(p==='granted'){S.remind.on=true;save();GNRemind.scheduleTriggers(S.remind);GNRemind.registerSync();toast('Reminders are on. You can change times in Settings.')}
+    else toast('You can turn reminders on later in Settings');
+  });
+}
 /* ---------- actions ---------- */
 function updateUV(){
   var i=S.uv.index,c=uvCat(i);
@@ -573,6 +611,10 @@ var A={
  fkind:function(v){FB.kind=v;refreshFB()},
  share:function(){var u=location.origin;if(navigator.share){navigator.share({title:'GN Care',text:'Free skin care routine tracker',url:u}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){toast('Link copied')},function(){toast(u)})}else{toast(u)}},
 
+ remindOn:function(){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};var r=S.remind;r.on=!r.on;r.asked=true;save();
+   if(r.on&&window.GNRemind){GNRemind.requestAfterRoutine(r,function(p){if(p==='granted'){GNRemind.scheduleTriggers(r);GNRemind.registerSync();toast('Reminders on')}else{r.on=false;save();toast('Notifications were not allowed');}if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()});}
+   else if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
+ remindSpf:function(){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};S.remind.spf=!S.remind.spf;save();if($('#sheet-body'))$('#sheet-body').innerHTML=settingsHTML()},
  closeSettings:function(){$('#sheet').hidden=true},
  install:function(){if(!deferredInstall)return;deferredInstall.prompt();deferredInstall.userChoice.then(function(){deferredInstall=null;$('#sheet-body').innerHTML=settingsHTML()})},
  adPrefs:function(){$('#sheet').hidden=true;if(window.GNAds)GNAds.reopen()},
@@ -591,7 +633,7 @@ var A={
  resetDay:function(){delete S.done[today()];save();render();toast('Today reset')},
  water:function(v){var l=waterLog().slice();l.push(+v);S.water[today()]=l;save();render();if(waterTotal()>=S.goal&&waterTotal()-(+v)<S.goal)toast('Daily water goal reached')},
  undoWater:function(){var l=waterLog().slice();l.pop();S.water[today()]=l;save();render()},
- uvApply:function(){S.uv.appliedAt=Date.now();save();updateUV();toast('Logged. Reapply in 2 hours')},
+ uvApply:function(){S.uv.appliedAt=Date.now();save();updateUV();toast('Logged. Reapply in 2 hours');if(window.GNRemind&&S.remind&&S.remind.on)GNRemind.scheduleTriggers(S.remind)},
  checkin:function(v){S.checkins[today()]=+v;save();render()},
  photo:function(){var i=$('#photo-in');if(i)i.click()},
  savePhoto:function(){
@@ -638,7 +680,8 @@ var A={
  setScanRoutine:function(){
    if(!S.skin||!(window.GNFaceScan&&GNFaceScan.buildRoutine))return;
    var r=GNFaceScan.buildRoutine(S.skin.type,S.skin.flags,S.skin.sensitive||S.skin.sensitiveLeaning);
-   S.steps={am:r.am,pm:r.pm};delete S.done[today()];save();routineSet=true;toast('Routine set');A.nav('routine')},
+   S.steps={am:r.am,pm:r.pm};delete S.done[today()];save();routineSet=true;toast('Routine set');
+   maybeAskReminders();A.nav('routine')},
  tpre:function(v){var p=PRE[+v];T={label:p.n,total:p.s,left:p.s,end:null,running:false};render()},
  tToggle:function(){
    if(T.running){T.left=Math.max(0,Math.ceil((T.end-Date.now())/1000));T.running=false;T.end=null}
@@ -672,7 +715,8 @@ document.addEventListener('input',function(e){
   if(e.target.id==='coach-in')CO.q=e.target.value;
   if(e.target.id==='fb-msg')FB.msg=e.target.value;
   if(e.target.id==='scan-note')scanNote=e.target.value;
-  if(e.target.id==='uv-range'){S.uv.index=+e.target.value;save();updateUV()}});
+  if(e.target.id==='uv-range'){S.uv.index=+e.target.value;save();updateUV()}
+  if(e.target.id==='rem-am'||e.target.id==='rem-pm'){S.remind=S.remind||{asked:false,on:false,am:'08:00',pm:'21:00',spf:true};if(e.target.id==='rem-am')S.remind.am=e.target.value||'08:00';else S.remind.pm=e.target.value||'21:00';save();if(window.GNRemind)GNRemind.scheduleTriggers(S.remind)}});
 document.addEventListener('change',function(e){
   if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
@@ -680,6 +724,7 @@ document.addEventListener('change',function(e){
       var next=function(url){photo=url;scanErr='';scanMetrics=null;scanLandmarks=null;scanImageSize=null;scanNoFace=false;scanMirror=false;render()};
       if(window.GNFaceScan&&GNFaceScan.resizeDataUrl)GNFaceScan.resizeDataUrl(r.result,1280,0.85).then(next,function(){next(r.result)});
       else next(r.result)};r.readAsDataURL(f)}});
+document.addEventListener('gn-catalog',function(){if(tab==='picks'||tab==='scan')render()});
 window.addEventListener('hashchange',onHash);
 
 /* ---------- boot ---------- */

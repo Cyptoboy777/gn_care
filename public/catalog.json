@@ -1,0 +1,708 @@
+{
+  "updated": "2026-11-24",
+  "note": "Prices are approximate typical India prices from published 2026 reviews and brand listings, not live store prices. MRP is the typical printed list price when known. Check the store for today's deal.",
+  "sources": {
+    "esquire": "Esquire India, best face washes, moisturisers and sunscreens 2026",
+    "nykaa": "Nykaa Beauty Book, top moisturisers 2026 and sunscreens under ₹1000",
+    "blog": "Skin Routine Every Day, best face sunscreens under ₹800",
+    "purplle": "Purplle Magazine, best intimate washes for women",
+    "ndtv": "NDTV Shopping, beard oils under ₹500",
+    "derma": "Typical India retail listings for The Derma Co, Minimalist and similar serums, 2026. Prices are approximate.",
+    "brand": "Brand or retailer list prices seen in 2026 Indian listings. Prices are approximate and not live store prices."
+  },
+  "deals": [
+    "c2",
+    "m1",
+    "s1",
+    "s8",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "i1"
+  ],
+  "products": [
+    {
+      "id": "c1",
+      "cat": "Cleanser",
+      "brand": "CeraVe",
+      "name": "Hydrating Cleanser",
+      "size": "88 ml",
+      "price": 359,
+      "skin": [
+        "Dry",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "ceramide"
+      ]
+    },
+    {
+      "id": "c2",
+      "cat": "Cleanser",
+      "brand": "Cetaphil",
+      "name": "Gentle Skin Cleanser",
+      "size": "118 ml",
+      "price": 459,
+      "skin": [
+        "Dry",
+        "Normal"
+      ],
+      "sens": true,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 549
+    },
+    {
+      "id": "c3",
+      "cat": "Cleanser",
+      "brand": "Minimalist",
+      "name": "B12 + Oat Extract 6.5% Gentle Cleanser",
+      "size": "120 ml",
+      "price": 299,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 399,
+      "actives": [
+        "oat"
+      ]
+    },
+    {
+      "id": "c4",
+      "cat": "Cleanser",
+      "brand": "L'Oreal Paris",
+      "name": "Revitalift Hyaluronic Acid Oil Control Replumping Cleansing Gel",
+      "size": "120 ml",
+      "price": 399,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "ha"
+      ]
+    },
+    {
+      "id": "c5",
+      "cat": "Cleanser",
+      "brand": "Bioderma",
+      "name": "Sebium Gel Moussant Acne Defence Cleanser",
+      "size": "100 ml",
+      "price": 899,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "c6",
+      "cat": "Cleanser",
+      "brand": "La Roche-Posay",
+      "name": "Effaclar Purifying Anti-Acne Gel Face Wash",
+      "size": "200 ml",
+      "price": 1400,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "c7",
+      "cat": "Cleanser",
+      "brand": "Neutrogena",
+      "name": "Hydro Boost Cleanser Water Gel",
+      "size": "145 ml",
+      "price": 1155,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "c8",
+      "cat": "Cleanser",
+      "brand": "Formularx",
+      "name": "Barrier Comfort Gentle Ceramide Cleanser",
+      "size": "175 ml",
+      "price": 699,
+      "skin": [
+        "Dry"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "ceramide"
+      ]
+    },
+    {
+      "id": "m1",
+      "cat": "Moisturizer",
+      "brand": "Minimalist",
+      "name": "10% Vitamin B5 Moisturizer",
+      "size": "50 g",
+      "price": 349,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 449,
+      "actives": [
+        "panthenol"
+      ]
+    },
+    {
+      "id": "m2",
+      "cat": "Moisturizer",
+      "brand": "Hyphen",
+      "name": "Barrier Repair Moisturizer",
+      "size": "50 ml",
+      "price": 449,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "m3",
+      "cat": "Moisturizer",
+      "brand": "The Formularx",
+      "name": "Hydraveil Ceramide Water Cream",
+      "size": "50 g",
+      "price": 699,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "ceramide"
+      ]
+    },
+    {
+      "id": "m4",
+      "cat": "Moisturizer",
+      "brand": "Dot & Key",
+      "name": "Cica Calming Oil Free Moisturizer",
+      "size": "60 g",
+      "price": 495,
+      "skin": [
+        "Oily",
+        "Combination",
+        "Normal"
+      ],
+      "sens": true,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 595,
+      "actives": [
+        "cica"
+      ]
+    },
+    {
+      "id": "m5",
+      "cat": "Moisturizer",
+      "brand": "The Deconstruct",
+      "name": "Acne Control Moisturizer",
+      "size": "50 g",
+      "price": 399,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": true,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "bha"
+      ]
+    },
+    {
+      "id": "m6",
+      "cat": "Moisturizer",
+      "brand": "Sebamed",
+      "name": "Clear Face Gel",
+      "size": "50 ml",
+      "price": 649,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": true,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "m7",
+      "cat": "Moisturizer",
+      "brand": "Bioderma",
+      "name": "Atoderm Creme Ultra-Nourishing Moisturising Cream",
+      "size": "200 ml",
+      "price": 799,
+      "skin": [
+        "Dry"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "lipid"
+      ]
+    },
+    {
+      "id": "m8",
+      "cat": "Moisturizer",
+      "brand": "La Roche-Posay",
+      "name": "Cicaplast Baume B5+",
+      "size": "40 ml",
+      "price": 1150,
+      "skin": [
+        "Dry"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "panthenol"
+      ]
+    },
+    {
+      "id": "m9",
+      "cat": "Moisturizer",
+      "brand": "Cetaphil",
+      "name": "Moisturising Cream",
+      "size": "",
+      "price": 499,
+      "skin": [
+        "Dry",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "nykaa",
+      "mrp": 599,
+      "actives": [
+        "ceramide"
+      ]
+    },
+    {
+      "id": "m10",
+      "cat": "Moisturizer",
+      "brand": "CeraVe",
+      "name": "Moisturizer Cream",
+      "size": "77 ml",
+      "price": 1200,
+      "skin": [
+        "Dry",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "actives": [
+        "ceramide"
+      ]
+    },
+    {
+      "id": "m11",
+      "cat": "Moisturizer",
+      "brand": "Plum",
+      "name": "Green Tea Mattifying Moisturiser",
+      "size": "",
+      "price": 395,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "nykaa",
+      "mrp": 499,
+      "actives": [
+        "green tea"
+      ]
+    },
+    {
+      "id": "m12",
+      "cat": "Moisturizer",
+      "brand": "Neutrogena",
+      "name": "Hydro Boost Water Gel",
+      "size": "",
+      "price": 799,
+      "skin": [
+        "Normal",
+        "Combination",
+        "Oily"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "nykaa",
+      "actives": [
+        "ha"
+      ]
+    },
+    {
+      "id": "s1",
+      "cat": "Sunscreen",
+      "brand": "Foxtale",
+      "name": "SPF 50 Glow Sunscreen with Vitamin C & Niacinamide",
+      "size": "50 ml",
+      "spf": "SPF 50",
+      "price": 375,
+      "skin": [
+        "Dry",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 499,
+      "actives": [
+        "vitc",
+        "niacinamide"
+      ]
+    },
+    {
+      "id": "s2",
+      "cat": "Sunscreen",
+      "brand": "Lakme",
+      "name": "Sun Expert Dry Matte Fluid",
+      "size": "50 ml",
+      "spf": "",
+      "price": 499,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 649
+    },
+    {
+      "id": "s3",
+      "cat": "Sunscreen",
+      "brand": "Eucerin",
+      "name": "Hydro Protect Ultra-Light Sunscreen Fluid",
+      "size": "50 ml",
+      "spf": "SPF 50+",
+      "price": 990,
+      "skin": [
+        "Oily",
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "s4",
+      "cat": "Sunscreen",
+      "brand": "La Roche-Posay",
+      "name": "Anthelios Invisible Fluid UVMune 400",
+      "size": "50 ml",
+      "spf": "SPF 50",
+      "price": 1400,
+      "skin": [
+        "Oily",
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "s5",
+      "cat": "Sunscreen",
+      "brand": "Asaya",
+      "name": "Spot Light Sunscreen",
+      "size": "50 g",
+      "spf": "SPF 50 PA++++",
+      "price": 499,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "s6",
+      "cat": "Sunscreen",
+      "brand": "Pond's",
+      "name": "Biome Miracle UV Invisigel Moisturiser",
+      "size": "50 g",
+      "spf": "",
+      "price": 399,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire",
+      "mrp": 499
+    },
+    {
+      "id": "s7",
+      "cat": "Sunscreen",
+      "brand": "Bioderma",
+      "name": "Photoderm XDefense Ultra-Fluid Invisible Sunscreen",
+      "size": "40 g",
+      "spf": "SPF 50+ PA++++",
+      "price": 2199,
+      "skin": [
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "esquire"
+    },
+    {
+      "id": "s8",
+      "cat": "Sunscreen",
+      "brand": "Minimalist",
+      "name": "SPF 50 PA++++ Sunscreen",
+      "size": "",
+      "spf": "SPF 50 PA++++",
+      "price": 399,
+      "priceNote": "Listed as under ₹400",
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "src": "blog",
+      "mrp": 499,
+      "actives": [
+        "filters"
+      ]
+    },
+    {
+      "id": "s9",
+      "cat": "Sunscreen",
+      "brand": "Cetaphil",
+      "name": "SUN Light Gel",
+      "size": "",
+      "spf": "SPF 50+",
+      "price": null,
+      "skin": [
+        "Dry",
+        "Normal",
+        "Combination",
+        "Oily"
+      ],
+      "sens": true,
+      "aud": "any",
+      "src": "nykaa"
+    },
+    {
+      "id": "s10",
+      "cat": "Sunscreen",
+      "brand": "La Shield",
+      "name": "Sensitive Protect Sunscreen",
+      "size": "",
+      "spf": "SPF 50+",
+      "price": null,
+      "skin": [
+        "Dry",
+        "Normal",
+        "Combination",
+        "Oily"
+      ],
+      "sens": true,
+      "aud": "any",
+      "src": "blog"
+    },
+    {
+      "id": "i1",
+      "cat": "Intimate wash",
+      "brand": "VWash",
+      "name": "Plus Expert Intimate Hygiene",
+      "size": "100 ml",
+      "price": 180,
+      "skin": [],
+      "sens": false,
+      "aud": "women",
+      "note": "Lactic acid, pH about 3.5, free of parabens and SLS",
+      "src": "purplle",
+      "mrp": 225
+    },
+    {
+      "id": "i2",
+      "cat": "Intimate wash",
+      "brand": "Sanfe",
+      "name": "Natural Intimate Wash, Lavender and Chamomile",
+      "size": "100 ml",
+      "price": 199,
+      "skin": [],
+      "sens": false,
+      "aud": "women",
+      "note": "Dermatologically tested, free of sulfates and parabens",
+      "src": "purplle"
+    },
+    {
+      "id": "i3",
+      "cat": "Intimate wash",
+      "brand": "Good Vibes",
+      "name": "Intimate Care Hygiene Wash, Aloe Vera",
+      "size": "100 ml",
+      "price": 225,
+      "skin": [],
+      "sens": false,
+      "aud": "women",
+      "note": "Free of parabens and sulfates, supports natural pH",
+      "src": "purplle"
+    },
+    {
+      "id": "b1",
+      "cat": "Beard oil",
+      "brand": "Beardo",
+      "name": "Godfather Lite Beard Oil",
+      "size": "",
+      "price": 273,
+      "skin": [],
+      "sens": false,
+      "aud": "men",
+      "note": "Conditions and softens the beard",
+      "src": "ndtv"
+    },
+    {
+      "id": "t1",
+      "cat": "Serum",
+      "brand": "Minimalist",
+      "name": "10% Niacinamide Face Serum",
+      "size": "30 ml",
+      "price": 399,
+      "mrp": 599,
+      "skin": [
+        "Oily",
+        "Combination",
+        "Normal"
+      ],
+      "sens": false,
+      "aud": "any",
+      "actives": [
+        "niacinamide"
+      ],
+      "src": "derma",
+      "note": "A popular India-made niacinamide serum"
+    },
+    {
+      "id": "t2",
+      "cat": "Serum",
+      "brand": "The Derma Co",
+      "name": "2% Salicylic Acid Serum",
+      "size": "30 ml",
+      "price": 449,
+      "mrp": 699,
+      "skin": [
+        "Oily",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "actives": [
+        "bha"
+      ],
+      "src": "derma",
+      "note": "BHA treatment for congested, oilier skin"
+    },
+    {
+      "id": "t3",
+      "cat": "Serum",
+      "brand": "Minimalist",
+      "name": "16% Vitamin C Face Serum",
+      "size": "30 ml",
+      "price": 569,
+      "mrp": 799,
+      "skin": [
+        "Dry",
+        "Normal",
+        "Combination"
+      ],
+      "sens": false,
+      "aud": "any",
+      "actives": [
+        "vitc"
+      ],
+      "src": "derma",
+      "note": "Morning antioxidant serum; always follow with sunscreen"
+    },
+    {
+      "id": "t4",
+      "cat": "Serum",
+      "brand": "The Derma Co",
+      "name": "5% Ceramide Moisturising Serum",
+      "size": "30 ml",
+      "price": 499,
+      "mrp": 699,
+      "skin": [
+        "Dry",
+        "Normal"
+      ],
+      "sens": true,
+      "aud": "any",
+      "actives": [
+        "ceramide"
+      ],
+      "src": "derma",
+      "note": "Barrier-supporting ceramide serum"
+    },
+    {
+      "id": "t5",
+      "cat": "Serum",
+      "brand": "Dot & Key",
+      "name": "Cica + 2% Salicylic Acid Serum",
+      "size": "30 ml",
+      "price": 495,
+      "mrp": 695,
+      "skin": [
+        "Oily",
+        "Combination",
+        "Normal"
+      ],
+      "sens": true,
+      "aud": "any",
+      "actives": [
+        "bha",
+        "cica"
+      ],
+      "src": "derma",
+      "note": "A milder BHA option often used on breakout-prone skin"
+    }
+  ]
+}
