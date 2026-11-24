@@ -7,7 +7,7 @@ A static installable web app (PWA) with ad slots, legal pages and content guides
 | File | Purpose |
 |---|---|
 | `index.html`, `styles.css`, `app.js` | The app |
-| `label.js`, `ondevice.js` | On-device label scan and on-device AI |
+| `label.js`, `ondevice.js`, `facescan.js` | On-device label scan, on-device AI coach, and on-device face scan |
 | `api/` | Server functions: AI coach and feedback |
 | `config.js` | Your AdSense publisher ID and ad unit IDs |
 | `ads.js` | Ad loading and the consent banner |
@@ -140,13 +140,17 @@ The `functions/` folder and `wrangler.toml` let the same code run on Cloudflare 
 - **AdSense approval** needs a custom domain and enough original content, as above.
 - **Privacy and Terms** pages are templates. Have them checked.
 
+## Face Scan
+
+The Face Scan tab always uses the five-question quiz. If you add a selfie, [MediaPipe Face Landmarker](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker/web_js) loads from a CDN the first time you map your skin, runs only in the browser, and never uploads the photo. It estimates shine, redness, evenness and under-eye darkness in the T-zone, cheeks and chin, then combines those scores with the quiz. This is a cosmetic estimate, not a medical diagnosis, and lighting affects the result. If the model cannot load, no face is found, or the photo is too dark or too bright, the app asks you to retake and falls back to the quiz. The photo stays in the session unless you tap Save photo on this device.
+
 ## Tests
 
 ```bash
 npm test
 ```
 
-Runs 42 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint and the label scanner, using mocks, so it costs nothing.
+Runs 73 checks on the AI endpoint (providers, fallback, limits, caching, region rule, origin check, prompt injection, errors), the feedback endpoint, the label scanner, the shop kit builder, and the face-scan metric and skin-type mapping functions, using mocks, so it costs nothing.
 
 ## Other income options
 

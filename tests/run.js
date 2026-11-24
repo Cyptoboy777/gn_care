@@ -304,5 +304,120 @@ async function t(name, fn) {
     assert.ok(P.buyURL({ brand: "L'Oreal", name: 'A & B' }, '').indexOf('%26') > -1);
   });
 
+
+  console.log('facescan.js');
+  const F = require('../public/facescan.js');
+  const Q = [
+    {q:'midday',o:[['Tight or flaky',{dry:2}],['Comfortable',{}],['Shiny on forehead and nose',{tz:2}],['Shiny all over',{oil:2}]]},
+    {q:'pores',o:[['Small, hard to see',{dry:1}],['Visible on nose and chin',{tz:1}],['Large across cheeks and nose',{oil:1}]]},
+    {q:'new product',o:[['Skin rarely reacts',{}],['It sometimes stings or reddens',{sens:1}],['It often reacts',{sens:2}]]},
+    {q:'breakouts',o:[['Rarely',{}],['Around chin and jaw',{}],['On forehead and nose',{tz:1}],['Across the face',{oil:1}]]},
+    {q:'sun',o:[['Under 30 minutes',{sun:0}],['1 to 2 hours',{sun:1}],['Mostly outdoors',{sun:2}]]}
+  ];
+  const px = (r, g, b, n) => Array.from({ length: n }, () => ({ r, g, b }));
+  const skin = (n) => px(190, 145, 125, n);
+  const oily = (n) => skin(n).concat(px(250, 248, 244, Math.round(n * 0.35)));
+  const dryish = (n) => px(168, 130, 115, n);
+  const red = (n) => px(210, 90, 90, n);
+  const dark = (n) => px(20, 16, 14, n);
+  const bright = (n) => px(250, 250, 250, n);
+  const under = (n) => px(120, 90, 80, n);
+
+  await t('quiz-only comfortable answers map to Normal', async () => {
+    const r = F.combine(F.quizTally([1, 0, 0, 0, 0], Q), null);
+    assert.strictEqual(r.type, 'Normal');
+    assert.strictEqual(r.source, 'quiz');
+    assert.strictEqual(r.sensitive, false);
+    assert.deepStrictEqual(r.zones, F.zonesFromType('Normal'));
+  });
+  await t('quiz shiny-all-over maps to Oily', async () => {
+    assert.strictEqual(F.combine(F.quizTally([3, 2, 0, 3, 0], Q), null).type, 'Oily');
+  });
+  await t('quiz tight-and-small-pores maps to Dry', async () => {
+    assert.strictEqual(F.combine(F.quizTally([0, 0, 0, 0, 0], Q), null).type, 'Dry');
+  });
+  await t('quiz T-zone shine maps to Combination', async () => {
+    assert.strictEqual(F.combine(F.quizTally([2, 1, 0, 2, 0], Q), null).type, 'Combination');
+  });
+  await t('typeFromTally thresholds stay the same as the old quiz', async () => {
+    assert.strictEqual(F.typeFromTally({ dry: 0, oil: 3, tz: 0, sens: 0, sun: 0 }), 'Oily');
+    assert.strictEqual(F.typeFromTally({ dry: 3, oil: 0, tz: 0, sens: 0, sun: 0 }), 'Dry');
+    assert.strictEqual(F.typeFromTally({ dry: 1, oil: 0, tz: 2, sens: 0, sun: 0 }), 'Combination');
+    assert.strictEqual(F.typeFromTally({ dry: 0, oil: 0, tz: 0, sens: 0, sun: 0 }), 'Normal');
+    assert.strictEqual(F.typeFromTally({ dry: 1, oil: 1, tz: 0, sens: 0, sun: 0 }), 'Combination');
+  });
+  await t('high all-over shine with a mild quiz leans Oily', async () => {
+    const m = F.buildMetrics({ forehead: oily(400), nose: oily(200), cheekL: oily(300), cheekR: oily(300), chin: oily(200), underEyeL: skin(80), underEyeR: skin(80) });
+    assert.strictEqual(m.ok, true);
+    const r = F.combine(F.quizTally([1, 0, 0, 0, 0], Q), m);
+    assert.strictEqual(r.type, 'Oily');
+    assert.strictEqual(r.source, 'quiz+photo');
+    assert.ok(r.metrics.shine >= 50);
+  });
+  await t('shinier T-zone than cheeks leans Combination', async () => {
+    const m = F.buildMetrics({ forehead: oily(400), nose: oily(200), cheekL: dryish(400), cheekR: dryish(400), chin: oily(150), underEyeL: skin(80), underEyeR: skin(80) });
+    const r = F.combine(F.quizTally([1, 0, 0, 0, 0], Q), m);
+    assert.strictEqual(r.type, 'Combination');
+    assert.strictEqual(r.zones.f, 'oil');
+    assert.ok(r.zones.c === 'dry' || r.zones.c === 'bal');
+  });
+  await t('low shine with a mild quiz leans Dry', async () => {
+    const m = F.buildMetrics({ forehead: dryish(400), nose: dryish(200), cheekL: dryish(300), cheekR: dryish(300), chin: dryish(200), underEyeL: dryish(80), underEyeR: dryish(80) });
+    const r = F.combine(F.quizTally([1, 0, 0, 0, 0], Q), m);
+    assert.strictEqual(r.type, 'Dry');
+    assert.ok(r.metrics.shine <= 40);
+  });
+  await t('lighting rejects a too-dark sample and a blown-out sample', async () => {
+    const d = F.lightingQuality(F.summarize(dark(400)));
+    const b = F.lightingQuality(F.summarize(bright(400)));
+    const ok = F.lightingQuality(F.summarize(skin(400)));
+    assert.strictEqual(d.ok, false); assert.strictEqual(d.reason, 'dark');
+    assert.strictEqual(b.ok, false); assert.strictEqual(b.reason, 'bright');
+    assert.strictEqual(ok.ok, true);
+  });
+  await t('lighting reports noface when too few pixels are present', async () => {
+    const r = F.lightingQuality(F.summarize(skin(20)));
+    assert.strictEqual(r.ok, false); assert.strictEqual(r.reason, 'noface');
+  });
+  await t('shine, redness, evenness and dark-circle scores sit on 0–100 and move the right way', async () => {
+    const matte = F.summarize(skin(300));
+    const shiny = F.summarize(oily(300));
+    const even = F.summarize(skin(300));
+    const uneven = F.summarize(skin(150).concat(px(80, 60, 50, 150)));
+    const calm = F.summarize(px(150, 140, 130, 300));
+    const flushed = F.summarize(red(300));
+    const cheek = F.summarize(skin(200));
+    const circle = F.summarize(under(200));
+    const scores = [F.shineScore(shiny), F.rednessScore(flushed), F.evennessScore(even), F.darkCircleScore(circle, cheek)];
+    scores.forEach((s) => { assert.ok(s >= 0 && s <= 100, String(s)); });
+    assert.ok(F.shineScore(shiny) > F.shineScore(matte));
+    assert.ok(F.rednessScore(flushed) > F.rednessScore(calm));
+    assert.ok(F.evennessScore(even) > F.evennessScore(uneven));
+    assert.ok(F.darkCircleScore(circle, cheek) > F.darkCircleScore(cheek, circle));
+  });
+  await t('quiz reaction answers mark sensitive; high redness can only lean sensitive', async () => {
+    const sens = F.combine(F.quizTally([1, 0, 2, 0, 0], Q), null);
+    assert.strictEqual(sens.sensitive, true);
+    assert.strictEqual(sens.sensitiveLeaning, false);
+    const flushed = F.buildMetrics({ forehead: red(300), nose: red(150), cheekL: red(250), cheekR: red(250), chin: red(150), underEyeL: red(80), underEyeR: red(80) });
+    const lean = F.combine(F.quizTally([1, 0, 0, 0, 0], Q), flushed);
+    assert.ok(flushed.redness >= 70);
+    assert.strictEqual(lean.sensitive, false);
+    assert.strictEqual(lean.sensitiveLeaning, true);
+  });
+  await t('a failed photo metric does not change the quiz type', async () => {
+    const quiz = F.quizTally([1, 0, 0, 0, 0], Q);
+    const failed = { ok: false, lighting: { ok: false, reason: 'dark' }, shine: 90, redness: 90, evenness: 10, darkCircles: 10, regions: { tzone: { shine: 90 }, cheeks: { shine: 90 }, chin: { shine: 90 } } };
+    const r = F.combine(quiz, failed);
+    assert.strictEqual(r.source, 'quiz');
+    assert.strictEqual(r.type, F.combine(quiz, null).type);
+    assert.strictEqual(r.metrics, null);
+  });
+  await t('combine never emits diagnosis-like labels', async () => {
+    const r = F.combine(F.quizTally([3, 2, 2, 3, 2], Q), null);
+    const blob = JSON.stringify(r).toLowerCase();
+    ['acne', 'melasma', 'rosacea', 'eczema', 'psoriasis', 'disease', 'diagnosis', 'attractive', 'ethnicity', 'gender', 'age'].forEach((w) => assert.ok(!blob.includes(w), w));
+  });
+
   console.log('\n' + passed + ' checks passed' + (process.exitCode ? ', some FAILED' : ''));
 })();

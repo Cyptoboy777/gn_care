@@ -96,7 +96,7 @@ function viewHome(){
   var alerts=S.shelf.map(function(it){return {it:it,s:shelfStatus(it)}}).filter(function(a){return a.s.c==='bad'||a.s.c==='warn'}).slice(0,3);
   var run=monthlyCost();
   var prof=S.skin?('<div class="result-t">'+esc(S.skin.type)+'</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'<span class="chip">Sun exposure: '+['low','moderate','high'][S.skin.sun]+'</span></div><p class="hint">Scanned '+esc(S.skin.at)+'</p><button class="btn ghost sm" data-act="nav" data-v="scan" style="align-self:flex-start">Re-scan</button> <button class="btn sm" data-act="nav" data-v="picks" style="align-self:flex-start">See picks for my skin</button>')
-    :('<p style="font-size:14px">Answer five quick questions and get a face map with your skin type and a routine focus.</p><button class="btn sm" data-act="nav" data-v="scan" style="align-self:flex-start">'+ico('i-scan')+'Start face scan</button>');
+    :('<p style="font-size:14px">Answer five quick questions, and optionally add a selfie for an on-device cosmetic estimate, then get a face map and a routine focus.</p><button class="btn sm" data-act="nav" data-v="scan" style="align-self:flex-start">'+ico('i-scan')+'Start face scan</button>');
   return '<div class="head"><p class="eyebrow">'+date+'</p><h2 class="page-h">'+greet+', <em>glow</em> on.</h2></div>'+
   '<div class="grid">'+
   '<section class="tile tile-hero s7"><h3 class="t">'+ico('i-leaf')+'Today\'s ritual</h3><div class="hero-row">'+ring(p.pct,136,Math.round(p.pct*100)+'%','done')+
@@ -139,18 +139,25 @@ var Q=[
  {q:'Breakouts usually show up…',o:[['Rarely',{}],['Around chin and jaw',{}],['On forehead and nose',{tz:1}],['Across the face',{oil:1}]]},
  {q:'A normal day in the sun is…',o:[['Under 30 minutes',{sun:0}],['1 to 2 hours',{sun:1}],['Mostly outdoors',{sun:2}]]}];
 var ans=S.skin&&S.skin.answers?S.skin.answers.slice():[null,null,null,null,null];
-var scanning=false,photo=null;
-function analyse(){
-  var t={dry:0,oil:0,tz:0,sens:0,sun:0};
-  ans.forEach(function(a,i){var w=Q[i].o[a][1];for(var k in w)t[k]+=w[k]});
-  var type;
-  if(t.oil>=3)type='Oily';else if(t.dry>=3)type='Dry';
-  else if(t.tz>=2||(t.tz>=1&&(t.dry>=1||t.oil>=1)))type='Combination';
-  else if(t.dry+t.oil+t.tz<=1)type='Normal';
-  else type=t.dry>=2?'Dry':t.oil>=2?'Oily':'Combination';
-  S.skin={type:type,sensitive:t.sens>=2,sun:Math.min(2,t.sun),answers:ans.slice(),at:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'})};
+var scanning=false,scanMsg='',scanErr='',photo=S.savedPhoto||null;
+function applySkin(photoMetrics){
+  var FS=window.GNFaceScan;
+  var t=FS?FS.quizTally(ans,Q):{dry:0,oil:0,tz:0,sens:0,sun:0};
+  if(!FS){ans.forEach(function(a,i){if(a==null)return;var w=Q[i].o[a][1];for(var k in w)t[k]+=w[k]})}
+  var r=FS?FS.combine(t,photoMetrics||null):{type:'Normal',sensitive:t.sens>=2,sensitiveLeaning:false,sun:Math.min(2,t.sun||0),source:'quiz',zones:null,metrics:null};
+  if(!FS){
+    if(t.oil>=3)r.type='Oily';else if(t.dry>=3)r.type='Dry';
+    else if(t.tz>=2||(t.tz>=1&&(t.dry>=1||t.oil>=1)))r.type='Combination';
+    else if(t.dry+t.oil+t.tz<=1)r.type='Normal';
+    else r.type=t.dry>=2?'Dry':t.oil>=2?'Oily':'Combination';
+  }
+  S.skin={type:r.type,sensitive:!!r.sensitive,sensitiveLeaning:!!r.sensitiveLeaning,sun:r.sun,answers:ans.slice(),at:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'}),source:r.source||'quiz',metrics:r.metrics||null,zones:r.zones||null};
   save()}
+function analyse(){applySkin(null)}
 function zones(type){
+  if(S.skin&&S.skin.zones)return S.skin.zones;
+  var FS=window.GNFaceScan;
+  if(FS)return FS.zonesFromType(type);
   if(type==='Oily')return {f:'oil',n:'oil',c:'oil',ch:'oil'};
   if(type==='Dry')return {f:'dry',n:'dry',c:'dry',ch:'dry'};
   if(type==='Combination')return {f:'oil',n:'oil',c:'dry',ch:'oil'};
@@ -173,12 +180,26 @@ function viewScan(){
     (scanning?'<span class="laser"></span>':'')+'</div>';
   var legend='<div class="legend"><span><i style="background:var(--z-oil)"></i>Oily</span><span><i style="background:var(--z-dry)"></i>Dry</span><span><i style="background:var(--z-bal)"></i>Balanced</span></div>';
   var quiz=Q.map(function(q,qi){return '<div class="q"><h4>'+(qi+1)+'. '+q.q+'</h4><div class="opts">'+q.o.map(function(o,oi){return '<button data-act="ans" data-q="'+qi+'" data-v="'+oi+'" aria-pressed="'+(ans[qi]===oi)+'">'+o[0]+'</button>'}).join('')+'</div></div>'}).join('');
-  var res=S.skin&&!scanning?('<section class="tile tile-hero"><h3 class="t">Your result</h3><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'</div><ul class="checks">'+RECS[S.skin.type].map(function(r){return '<li>'+r+'</li>'}).join('')+
-    (S.skin.sensitive?'<li>Patch test new products on the jaw for 3 days and avoid heavy fragrance.</li>':'')+(S.skin.sun>=1?'<li>Your sun exposure is '+(S.skin.sun===2?'high':'moderate')+'. Reapply SPF every 2 hours outdoors.</li>':'')+'</ul><button class="btn" data-act="nav" data-v="picks" style="align-self:flex-start">See products for my skin</button></section>'):'';
-  return '<div class="head"><p class="eyebrow">Guided analysis</p><h2 class="page-h">Face <em>scan</em></h2><p class="sub">Answer five questions to map your skin. Add a photo if you like. It stays on this device and is only used as the backdrop for your map.</p></div>'+
-  '<div class="scan-grid"><div style="display:flex;flex-direction:column;gap:12px">'+face+legend+
-    '<input type="file" id="photo-in" accept="image/*" capture="user" hidden><button class="btn ghost sm" data-act="photo" style="align-self:center">'+ico('i-camera')+(photo?'Change photo':'Add a photo')+'</button></div>'+
-  '<div style="display:flex;flex-direction:column;gap:14px"><section class="tile" style="gap:18px">'+quiz+'<button class="btn" data-act="analyse" '+(all&&!scanning?'':'disabled')+' style="align-self:flex-start">'+ico('i-scan')+(scanning?'Mapping your skin…':(S.skin?'Update my skin map':'Map my skin'))+'</button></section>'+res+'</div></div>'}
+  var m=S.skin&&S.skin.metrics;
+  var chips=(S.skin&&!scanning?(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':(S.skin.sensitiveLeaning?'<span class="chip warn">Sensitive-leaning</span>':''))+(S.skin.source==='quiz+photo'?'<span class="chip">On-device photo</span>':'<span class="chip">Quiz</span>'):'');
+  var meters=m&&!scanning?('<div class="metrics" aria-label="Cosmetic estimates">'+
+    '<div><b>'+m.shine+'</b><span>Shine</span></div><div><b>'+m.redness+'</b><span>Redness</span></div><div><b>'+m.evenness+'</b><span>Evenness</span></div><div><b>'+m.darkCircles+'</b><span>Under-eye darkness</span></div></div>'):'';
+  var res=S.skin&&!scanning?('<section class="tile tile-hero"><h3 class="t">Your result</h3><div class="result-t">'+esc(S.skin.type)+' skin</div><div class="row wrap" style="gap:6px">'+chips+'</div>'+meters+
+    '<p class="hint">This is a cosmetic estimate, not a medical diagnosis. Lighting affects results.</p>'+
+    '<ul class="checks">'+RECS[S.skin.type].map(function(r){return '<li>'+r+'</li>'}).join('')+
+    (S.skin.sensitive||S.skin.sensitiveLeaning?'<li>Patch test new products on the jaw for 3 days and avoid heavy fragrance.</li>':'')+(S.skin.sun>=1?'<li>Your sun exposure is '+(S.skin.sun===2?'high':'moderate')+'. Reapply SPF every 2 hours outdoors.</li>':'')+'</ul><button class="btn" data-act="nav" data-v="picks" style="align-self:flex-start">See products for my skin</button></section>'):'';
+  var notice=scanErr?'<div class="res bad"><span class="tag">Retake</span><div><p>'+esc(scanErr)+'</p></div></div>':'';
+  var photoBtns='<input type="file" id="photo-in" accept="image/*" capture="user" hidden>'+
+    '<div class="btn-grid" style="justify-content:center">'+
+    '<button class="btn ghost sm" data-act="photo">'+ico('i-camera')+(photo?'Change photo':'Add a selfie')+'</button>'+
+    (photo&&!S.savedPhoto?'<button class="btn ghost sm" data-act="savePhoto">Save photo on this device</button>':'')+
+    (S.savedPhoto?'<button class="btn ghost sm" data-act="clearPhoto">Remove saved photo</button>':'')+
+    (photo&&!S.savedPhoto?'<button class="btn ghost sm" data-act="clearSessionPhoto">Remove photo</button>':'')+
+    '</div>'+
+    '<p class="hint consent-note">A selfie is optional. If you add one, it is processed only in this browser to estimate shine, redness, evenness and under-eye darkness. It is never uploaded. It stays in this session unless you tap Save photo on this device.</p>';
+  return '<div class="head"><p class="eyebrow">Guided analysis</p><h2 class="page-h">Face <em>scan</em></h2><p class="sub">Answer five questions, then optionally add a selfie for an on-device cosmetic estimate. The photo never leaves this device.</p></div>'+
+  '<div class="scan-grid"><div style="display:flex;flex-direction:column;gap:12px">'+face+legend+photoBtns+'</div>'+
+  '<div style="display:flex;flex-direction:column;gap:14px"><section class="tile" style="gap:18px">'+quiz+'<button class="btn" data-act="analyse" '+(all&&!scanning?'':'disabled')+' style="align-self:flex-start">'+ico('i-scan')+(scanning?(esc(scanMsg)||'Mapping your skin…'):(S.skin?'Update my skin map':'Map my skin'))+'</button></section>'+notice+res+'</div></div>'}
 
 /* timer */
 var PRE=[{n:'Cleanser massage',s:60,d:'1 min'},{n:'Face mask',s:600,d:'10 min'},{n:'Sheet mask',s:900,d:'15 min'},{n:'Hair oil',s:1800,d:'30 min'},{n:'Toner pat',s:30,d:'30 sec'},{n:'Eye patches',s:600,d:'10 min'}];
@@ -515,7 +536,7 @@ var A={
  pref:function(k,t){S[k]=!S[k];t.setAttribute('aria-checked',String(S[k]));save();applyPrefs()},
  resetAll:function(v,t){
    if(!resetArm){resetArm=true;t.textContent='Tap again to erase';clearTimeout(resetT);resetT=setTimeout(function(){resetArm=false;t.textContent='Reset'},3500);return}
-   try{localStorage.removeItem(KEY)}catch(e){}S=defaults();ans=[null,null,null,null,null];picked=[];resetArm=false;applyPrefs();$('#sheet').hidden=true;render(true);toast('Data cleared')},
+   try{localStorage.removeItem(KEY)}catch(e){}S=defaults();ans=[null,null,null,null,null];picked=[];photo=null;scanErr='';scanMsg='';resetArm=false;applyPrefs();$('#sheet').hidden=true;render(true);toast('Data cleared')},
  period:function(v){period=v;render(true)},
  goRoutine:function(v){period=v;A.nav('routine')},
  step:function(v){
@@ -531,7 +552,22 @@ var A={
  checkin:function(v){S.checkins[today()]=+v;save();render()},
  ans:function(v,t){ans[+t.dataset.q]=+v;render()},
  photo:function(){var i=$('#photo-in');if(i)i.click()},
- analyse:function(){scanning=true;render();setTimeout(function(){analyse();scanning=false;render();toast('Skin map ready')},1800)},
+ savePhoto:function(){
+   if(!photo)return;
+   var done=function(url){S.savedPhoto=url;photo=url;save();render();toast('Photo saved on this device only')};
+   if(window.GNFaceScan&&GNFaceScan.resizeDataUrl)GNFaceScan.resizeDataUrl(photo,640,0.72).then(done,function(){done(photo)});
+   else done(photo)},
+ clearPhoto:function(){delete S.savedPhoto;photo=null;scanErr='';save();render();toast('Saved photo removed')},
+ clearSessionPhoto:function(){photo=null;scanErr='';render()},
+ analyse:function(){
+   if(scanning||!ans.every(function(a){return a!==null}))return;
+   scanErr='';scanMsg=photo?'Reading your photo on this device…':'Mapping your skin…';scanning=true;render();
+   var finish=function(metrics,toastMsg){applySkin(metrics||null);scanning=false;scanMsg='';render();toast(toastMsg||'Skin map ready')};
+   if(!photo||!(window.GNFaceScan&&GNFaceScan.analyze)){setTimeout(function(){finish(null,'Skin map ready')},400);return}
+   GNFaceScan.analyze(photo,function(msg){scanMsg=msg||scanMsg;var b=document.querySelector('#view .btn[data-act="analyse"]');if(b){var nodes=b.childNodes;if(nodes.length)nodes[nodes.length-1].textContent=scanMsg}}).then(function(r){
+     if(r&&r.ok){scanErr='';finish(r.metrics,'Skin map ready')}
+     else{scanErr=(r&&r.message)||'The photo could not be used. The map below uses your quiz answers. You can retake the photo.';finish(null,'Using your quiz answers')}
+   },function(){scanErr='The on-device face model could not load. The map below uses your quiz answers only.';finish(null,'Using your quiz answers')})},
  tpre:function(v){var p=PRE[+v];T={label:p.n,total:p.s,left:p.s,end:null,running:false};render()},
  tToggle:function(){
    if(T.running){T.left=Math.max(0,Math.ceil((T.end-Date.now())/1000));T.running=false;T.end=null}
@@ -568,7 +604,10 @@ document.addEventListener('input',function(e){
 document.addEventListener('change',function(e){
   if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
-  if(e.target.id==='photo-in'){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){photo=r.result;render()};r.readAsDataURL(f)}});
+  if(e.target.id==='photo-in'){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){
+      var next=function(url){photo=url;scanErr='';render()};
+      if(window.GNFaceScan&&GNFaceScan.resizeDataUrl)GNFaceScan.resizeDataUrl(r.result,1280,0.85).then(next,function(){next(r.result)});
+      else next(r.result)};r.readAsDataURL(f)}});
 window.addEventListener('hashchange',onHash);
 
 /* ---------- boot ---------- */
