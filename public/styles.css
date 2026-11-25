@@ -136,8 +136,16 @@ h3.t .ico{width:16px;height:16px;color:var(--acc)}
 @media (min-width:980px){.s7{grid-column:span 7}.s5{grid-column:span 5}.s4{grid-column:span 4}.s8{grid-column:span 8}.s6{grid-column:span 6}}
 .tile-hero{background:linear-gradient(150deg,var(--glass),var(--acc-soft))}
 .profile-setup{background:linear-gradient(145deg,var(--glass-2),var(--acc-soft))}
-.profile-title{font-family:var(--serif);font-size:clamp(25px,3vw,32px);font-weight:600;line-height:1.1}
+.profile-summary{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;list-style:none}
+.profile-summary::-webkit-details-marker{display:none}
+.profile-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.profile-title{display:block;font-family:var(--serif);font-size:clamp(25px,3vw,32px);font-weight:600;line-height:1.1}
 .profile-title em{color:var(--acc);font-style:italic}
+.profile-toggle{flex:none;color:var(--acc);font-size:12px;font-weight:600;white-space:nowrap}
+.profile-toggle::after{content:"Set preferences"}
+.profile-setup[open] .profile-toggle::after{content:"Hide"}
+.profile-setup[open]>.profile-form{margin-top:2px}
+@media(max-width:359px){.profile-summary{align-items:flex-start}.profile-toggle{white-space:normal;text-align:right}}
 .profile-setup .eyebrow{margin-bottom:2px}
 .profile-form{display:grid;grid-template-columns:1fr;gap:12px;align-items:end}
 .profile-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -420,7 +428,20 @@ textarea.input{min-height:96px;resize:vertical;line-height:1.5;font-family:inher
 a.btn{text-decoration:none}
 .btn{white-space:normal}
 .scan-kit>.tile{width:100%;min-width:0;max-width:100%;position:static;grid-column:unset}
-@media (max-width:420px){.install-top{padding:7px 10px}.install-top .lbl{display:none}}
+@media (max-width:420px){
+  .install-top{padding:7px 10px}.install-top .lbl{display:none}
+  main{padding-top:14px}
+  .head{margin-bottom:14px}
+  .tile-hero{padding:16px}
+  .tile-hero .ring{display:none}
+  .tile-hero .hero-row{display:block}
+  .hero-copy{min-width:0;gap:8px}
+  .hero-copy .btn-grid{order:-1}
+  .hero-copy .btn-grid .btn:first-child{width:100%}
+  .hero-copy .btn-grid .btn:nth-child(2){display:none}
+  .hero-copy .up-next{padding:8px 10px;gap:3px}
+  .hero-copy .stat-line{order:1}
+}
 
 /* ---------- v19: audit fixes (tap targets, More sheet, nudge, offline, lite mode) ---------- */
 .spring::before{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:44px;transform:translateY(-50%)}

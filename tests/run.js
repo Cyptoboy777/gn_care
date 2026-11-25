@@ -483,8 +483,10 @@ async function t(name, fn) {
     assert.ok(app.indexOf("kitHtml=kitSummary") > -1 && app.indexOf('kitOtherOptions(r.items') > -1);
     assert.ok(app.indexOf('kitProductGrid(r.items,S.skin.type)') < 0, 'do not render the same kit items again as a card grid on scan results');
     assert.ok(/text-overflow:\s*ellipsis/.test(css) && /\.p-img\.ph\{[^}]*overflow:\s*hidden/.test(css));
-    assert.ok(index.indexOf('styles.css?v=31') > -1 && index.indexOf('app.js?v=31') > -1);
-    assert.ok(sw.indexOf("gn-care-v32") > -1 && sw.indexOf('styles.css?v=31') > -1);
+assert.ok(index.indexOf('styles.css?v=33') > -1 && index.indexOf('app.js?v=32') > -1);
+  assert.ok(sw.indexOf("gn-care-v34") > -1 && sw.indexOf('styles.css?v=33') > -1 && sw.indexOf('app.js?v=32') > -1);
+    assert.ok(app.indexOf("Today\\'s ritual") < app.indexOf("</section>'+profileSetup()+"), 'daily ritual should appear before optional profile setup');
+    assert.ok(app.includes("var MORE=['deals','timer','shelf','checker']"), 'deals should move into the mobile More menu');
 
     const dealsCss = fs.readFileSync(path.join(root, 'public/deals.css'), 'utf8');
     assert.ok(/@media \(max-width:\s*767px\)[\s\S]*?\.top\{[^}]*position:\s*static/.test(css), 'mobile header must scroll away in normal flow');
@@ -1000,7 +1002,7 @@ async function t(name, fn) {
 
   await t('sw caches deals assets and prefers a fresh deals.json', async () => {
     const sw = require('fs').readFileSync(require('path').join(__dirname, '../public/sw.js'), 'utf8');
-    assert.ok(sw.includes("const VERSION = 'gn-care-v32'"));
+    assert.ok(sw.includes("const VERSION = 'gn-care-v34'"));
     assert.ok(sw.includes('/deals.js') && sw.includes('/deals.css') && sw.includes('/deals.json'));
     assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
   });
