@@ -1,8 +1,8 @@
 /* GN Care service worker: offline app shell. Bump VERSION when you change shell files. */
-const VERSION = 'gn-care-v27';
+const VERSION = 'gn-care-v32';
 try { importScripts('/remind.js'); } catch (e) { /* reminders are optional */ }
 const SHELL = [
-  '/', '/index.html', '/offline.html', '/styles.css?v=27', '/deals.css?v=27', '/app.js?v=27', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/deals.json', '/picks.js?v=27', '/deals.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
+  '/', '/index.html', '/offline.html', '/styles.css?v=31', '/deals.css?v=31', '/app.js?v=31', '/config.js', '/consent.js', '/ads.js', '/label.js', '/products.js', '/catalog.json', '/deals.json', '/picks.js?v=31', '/deals.js', '/skin-knowledge.js', '/ondevice.js', '/facescan.js', '/remind.js',
   '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'
 ];
 const NETWORK_FIRST = ['/config.js', '/ads.js', '/products.js', '/catalog.json', '/deals.json', '/consent.js'];

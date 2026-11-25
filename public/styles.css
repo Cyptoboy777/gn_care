@@ -135,6 +135,15 @@ h3.t .ico{width:16px;height:16px;color:var(--acc)}
 @media (min-width:640px){.s6{grid-column:span 6}.s4{grid-column:span 6}}
 @media (min-width:980px){.s7{grid-column:span 7}.s5{grid-column:span 5}.s4{grid-column:span 4}.s8{grid-column:span 8}.s6{grid-column:span 6}}
 .tile-hero{background:linear-gradient(150deg,var(--glass),var(--acc-soft))}
+.profile-setup{background:linear-gradient(145deg,var(--glass-2),var(--acc-soft))}
+.profile-title{font-family:var(--serif);font-size:clamp(25px,3vw,32px);font-weight:600;line-height:1.1}
+.profile-title em{color:var(--acc);font-style:italic}
+.profile-setup .eyebrow{margin-bottom:2px}
+.profile-form{display:grid;grid-template-columns:1fr;gap:12px;align-items:end}
+.profile-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.up-next{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:12px 14px;border-radius:16px;background:var(--glass);border:1px solid var(--edge)}
+.up-next>b{font-size:15px}
+@media(min-width:700px){.profile-form{grid-template-columns:repeat(3,minmax(0,1fr))}.profile-actions{grid-column:1/-1}}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:14px;border:0;background:var(--btn);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 8px 18px -8px rgba(92,63,79,.6);transition:transform .15s,box-shadow .2s}
 .btn:hover{box-shadow:0 12px 22px -8px rgba(92,63,79,.7)}

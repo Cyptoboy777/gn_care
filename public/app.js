@@ -81,8 +81,29 @@ function glassSVG(level){
 function tgl(on,act,v,label,sm,extra){return '<button type="button" role="switch" aria-checked="'+on+'" aria-label="'+esc(label)+'" class="spring'+(sm?' sm':'')+'" data-act="'+act+'" data-v="'+esc(v)+'" '+(extra||'')+'><span class="thumb"></span></button>'}
 
 /* ---------- views ---------- */
+var PROFILE_CONCERNS=[
+  {id:'acne',label:'Breakouts'},
+  {id:'dry',label:'Dryness'},
+  {id:'pigment',label:'Dark spots'},
+  {id:'sensitive',label:'Sensitivity'},
+  {id:'dull',label:'Dullness'},
+  {id:'none',label:'No main concern'}
+];
+function profileSetup(){
+  var saved=S.profile||{},type=saved.type||(S.skin&&S.skin.type)||'',concern=saved.concern||((S.skin&&S.skin.flags||[]).filter(function(id){return PROFILE_CONCERNS.some(function(c){return c.id===id&&id!=='none'})})[0])||'none',budget=+saved.budget||S.budget||1500;
+  var budgetOptions=[500,1000,1500,2500,5000],budgetChoice=budgetOptions.filter(function(n){return n>=budget})[0]||5000;
+  if(saved.completedAt&&!saved.editing)return '';
+  return '<section class="tile profile-setup" aria-labelledby="profile-setup-title"><div><p class="eyebrow">A more personal start</p><h3 class="profile-title" id="profile-setup-title">Make your routine <em>yours</em></h3><p class="hint">Tell us a little about your skin. This stays on this device, and you can update it anytime.</p></div>'+
+    '<form class="profile-form" data-form="profile">'+
+    '<label class="f">Skin type<select class="input" id="profile-type" required><option value="" disabled'+(!type?' selected':'')+'>Choose one</option>'+['Oily','Dry','Combination','Normal'].map(function(v){return '<option value="'+v+'"'+(type===v?' selected':'')+'>'+v+'</option>'}).join('')+'<option value="unsure"'+(type==='unsure'?' selected':'')+'>Not sure yet</option></select></label>'+
+    '<label class="f">Main concern<select class="input" id="profile-concern" required>'+PROFILE_CONCERNS.map(function(c){return '<option value="'+c.id+'"'+(concern===c.id?' selected':'')+'>'+c.label+'</option>'}).join('')+'</select></label>'+
+    '<label class="f">Monthly budget<select class="input" id="profile-budget" required>'+budgetOptions.map(function(n){return '<option value="'+n+'"'+(budgetChoice===n?' selected':'')+'>Up to ₹'+inr.format(n)+'</option>'}).join('')+'</select></label>'+
+    '<div class="profile-actions"><button class="btn" type="submit">'+(saved.editing?'Save preferences':'Personalize my app')+'</button><button class="btn ghost sm" type="button" data-act="profileLater">'+(saved.editing?'Cancel':'Maybe later')+'</button></div></form></section>'}
 function viewHome(){
   var p=prog(),st=streak(),tot=waterTotal(),goal=S.goal,h=new Date().getHours();
+  var activePeriod=h<15?'am':'pm',activeSteps=S.steps[activePeriod],activeDone=dayDone(today())[activePeriod]||[];
+  var nextStep=activeSteps.filter(function(step){return activeDone.indexOf(step.id)<0})[0];
+  var activeLabel=activePeriod==='am'?'morning':'night';
   var greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   var date=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
   var wk=lastDays(7).map(function(x){
@@ -95,13 +116,14 @@ function viewHome(){
   var anyCheck=lastDays(7).some(function(x){return S.checkins[x.k]});
   var alerts=S.shelf.map(function(it){return {it:it,s:shelfStatus(it)}}).filter(function(a){return a.s.c==='bad'||a.s.c==='warn'}).slice(0,3);
   var run=monthlyCost();
-  var prof=S.skin?('<div class="result-t">'+esc(S.skin.type)+'</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'<span class="chip">Sun exposure: '+['low','moderate','high'][S.skin.sun]+'</span>'+(S.skin.flags||[]).map(function(f){var n=window.GNFaceScan&&GNFaceScan.CONCERN_LABELS[f];return n?'<span class="chip">'+esc(n)+'</span>':''}).join('')+'</div><p class="hint">Scanned '+esc(S.skin.at)+'</p><button class="btn ghost sm" data-act="nav" data-v="scan" style="align-self:flex-start">Re-scan</button> <button class="btn sm" data-act="nav" data-v="picks" style="align-self:flex-start">See picks for my skin</button>')
-    :('<p style="font-size:14px">A selfie or a short note, your budget, then a kit and a routine you can set in one tap.</p><button class="btn sm" data-act="nav" data-v="scan" style="align-self:flex-start">'+ico('i-scan')+'Start face scan</button>');
+  var prof=S.skin?('<div class="result-t">'+esc(S.skin.type)+'</div><div class="row wrap" style="gap:6px">'+(S.skin.sensitive?'<span class="chip warn">Sensitive</span>':'')+'<span class="chip">Sun exposure: '+['low','moderate','high'][S.skin.sun]+'</span>'+(S.skin.flags||[]).map(function(f){var n=window.GNFaceScan&&GNFaceScan.CONCERN_LABELS[f];return n?'<span class="chip">'+esc(n)+'</span>':''}).join('')+'</div><p class="hint">'+(S.skin.source==='self-reported'?'Self-reported · ':'Scanned · ')+esc(S.skin.at)+'</p><button class="btn ghost sm" data-act="nav" data-v="scan" style="align-self:flex-start">'+(S.skin.source==='self-reported'?'Refine with face scan':'Re-scan')+'</button> <button class="btn sm" data-act="nav" data-v="picks" style="align-self:flex-start">See picks for my skin</button> <button class="btn ghost sm" data-act="profileEdit" style="align-self:flex-start">Update preferences</button>')
+    :('<p style="font-size:14px">A selfie or a short note, your budget, then a kit and a routine you can set in one tap.</p><button class="btn sm" data-act="nav" data-v="scan" style="align-self:flex-start">'+ico('i-scan')+'Start face scan</button> <button class="btn ghost sm" data-act="profileEdit" style="align-self:flex-start">Set preferences</button>');
   return '<div class="head"><p class="eyebrow">'+date+'</p><h2 class="page-h">'+greet+', <em>glow</em> on.</h2></div>'+
-  '<div class="grid">'+
+  '<div class="grid">'+profileSetup()+
   '<section class="tile tile-hero s7"><h3 class="t">'+ico('i-leaf')+'Today\'s ritual</h3><div class="hero-row">'+ring(p.pct,136,Math.round(p.pct*100)+'%','done')+
     '<div class="hero-copy"><div class="stat-line"><div><b class="num">'+p.am.done+'/'+p.am.total+'</b><span>Morning</span></div><div><b class="num">'+p.pm.done+'/'+p.pm.total+'</b><span>Night</span></div></div>'+
-    '<div class="btn-grid"><button class="btn" data-act="goRoutine" data-v="am">'+ico('i-sun')+'Morning</button><button class="btn ghost" data-act="goRoutine" data-v="pm">'+ico('i-moon')+'Night</button></div></div></div></section>'+
+    '<div class="up-next" aria-live="polite"><span class="chip">Up next · '+activeLabel+'</span><b>'+(nextStep?esc(nextStep.n):'Your '+activeLabel+' routine is complete')+'</b><span class="hint">'+(nextStep?'Pick up where you left off. One step at a time.':'Lovely work. Come back for your next routine.')+'</span></div>'+
+    '<div class="btn-grid"><button class="btn" data-act="goRoutine" data-v="'+activePeriod+'">'+ico(activePeriod==='am'?'i-sun':'i-moon')+'Continue '+activeLabel+'</button><button class="btn ghost" data-act="goRoutine" data-v="'+(activePeriod==='am'?'pm':'am')+'">'+ico(activePeriod==='am'?'i-moon':'i-sun')+'View '+(activePeriod==='am'?'night':'morning')+'</button></div></div></div></section>'+
   '<section class="tile s5"><h3 class="t">Streak</h3><div class="row" style="align-items:flex-end;gap:10px"><span class="big num">'+st+'</span><span class="hint" style="padding-bottom:6px">day'+(st===1?'':'s')+' in a row<br>finish one full routine a day</span></div><div class="week">'+wk+'</div></section>'+
   '<section class="tile s4"><h3 class="t">'+ico('i-drop')+'Hydration</h3><div class="glass-wrap">'+glassSVG(tot/goal)+'<div style="min-width:0"><div class="row" style="align-items:baseline;gap:6px"><span class="big num" style="font-size:38px">'+inr.format(tot)+'</span><span class="hint">of '+inr.format(goal)+' ml</span></div></div></div>'+
     '<div class="btn-grid"><button class="btn sm" data-act="water" data-v="250">+250</button><button class="btn sm" data-act="water" data-v="500">+500</button><button class="btn ghost sm" data-act="undoWater" aria-label="Undo last glass">'+ico('i-undo')+'</button></div></section>'+
@@ -833,7 +855,8 @@ function remindRow(){
   return head+
     '<div class="set rem-times"><label class="f">Morning<input class="input" id="rem-am" type="time" value="'+esc(r.am)+'"></label><label class="f">Night<input class="input" id="rem-pm" type="time" value="'+esc(r.pm)+'"></label></div>'+
     t('spf','Sunscreen reapply','About two hours after you log sunscreen, in daytime only.')+
-    t('water','Water breaks','Every '+r.waterEvery+' hours between 9 am and 9 pm, only until you reach your goal.')+
+    t('water','Water breaks','A gentle hydration nudge during the day, only while you are below your goal.')+
+    (r.water?'<div class="set"><label class="f" for="rem-water-every">Remind me every<select class="input" id="rem-water-every">'+[1,2,3,4].map(function(hours){return '<option value="'+hours+'"'+(+r.waterEvery===hours?' selected':'')+'>'+hours+' hour'+(hours===1?'':'s')+'</option>'}).join('')+'</select></label></div>':'')+
     t('scan','Weekly progress check','A nudge to rescan or take a progress photo in the same light.')+
     (r.scan?'<div class="set"><label class="f">Check-in day<select class="input" id="rem-day">'+DAYS.map(function(d,i){return '<option value="'+i+'"'+(+r.scanDay===i?' selected':'')+'>'+d+'</option>'}).join('')+'</select></label></div>':'')+
     t('repurchase','Repurchase alerts','When a shelf product is within 14 days of its use-by period after opening.')+
@@ -940,7 +963,9 @@ var A={
    deferredInstall.prompt();deferredInstall.userChoice.then(function(){deferredInstall=null;syncInstall();if(!$('#sheet').hidden)$('#sheet-body').innerHTML=settingsHTML();if(tab==='home')render()})},
  adPrefs:function(){$('#sheet').hidden=true;if(window.GNAds)GNAds.reopen()},
  pref:function(k,t){S[k]=!S[k];t.setAttribute('aria-checked',String(S[k]));save();applyPrefs()},
- resetAll:function(v,t){
+  profileLater:function(){if(S.profile&&S.profile.editing){S.profile.editing=false;save();render();toast('Preferences unchanged')}else{S.profile={dismissed:true,completedAt:Date.now()};save();render();toast('You can personalize this anytime')}},
+  profileEdit:function(){S.profile=Object.assign({},S.profile||{},{editing:true});save();render(true);window.scrollTo(0,0)},
+  resetAll:function(v,t){
    if(!resetArm){resetArm=true;t.textContent='Tap again to erase';clearTimeout(resetT);resetT=setTimeout(function(){resetArm=false;t.textContent='Reset'},3500);return}
    try{localStorage.removeItem(KEY)}catch(e){}S=defaults();picked=[];clearScanPhoto();scanMsg='';scanStep=1;scanNote='';scanBudget=1000;scanFlags=[];routineSet=false;resetArm=false;applyPrefs();$('#sheet').hidden=true;render(true);toast('Data cleared')},
  period:function(v){period=v;render(true)},
@@ -1027,6 +1052,14 @@ document.addEventListener('click',function(e){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')A.closeSettings();trapFocus(e)});
 document.addEventListener('submit',function(e){
   var f=e.target.dataset.form;if(!f)return;e.preventDefault();
+  if(f==='profile'){
+    var type=$('#profile-type').value,concern=$('#profile-concern').value,budget=+$('#profile-budget').value;
+    var flags=concern==='none'?[]:[concern],date=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+    S.profile={type:type,concern:concern,budget:budget,completedAt:Date.now()};S.budget=budget;
+    if(type!=='unsure')S.skin={type:type,sensitive:concern==='sensitive',sensitiveLeaning:false,sun:0,flags:flags,note:'',at:date,source:'self-reported',metrics:null,zones:null};
+    else if(S.skin&&S.skin.source==='self-reported')S.skin=null;
+    save();render(true);toast(type==='unsure'?'Preferences saved':'Your skin profile is ready');return
+  }
   if(f==='step'){var i=$('#step-input'),v=i.value.trim();if(!v)return;S.steps[period].push({id:'c'+Date.now(),n:v});save();render();var n=$('#step-input');if(n)n.focus()}
   if(f==='item'){
     var n=$('#item-name').value.trim(),p=+$('#item-price').value;if(!n||isNaN(p))return;
@@ -1049,6 +1082,7 @@ document.addEventListener('input',function(e){
   var remIds={'rem-am':'am','rem-pm':'pm','rem-qf':'quietFrom','rem-qt':'quietTo','rem-day':'scanDay'};
   if(remIds[e.target.id]&&e.target.value!==''){var r=rem();r[remIds[e.target.id]]=e.target.id==='rem-day'?+e.target.value:e.target.value;save()}});
 document.addEventListener('change',function(e){
+  if(e.target.id==='rem-water-every'){rem().waterEvery=Math.max(1,Math.min(4,+e.target.value||2));save();remCheck(true)}
   if(e.target.id==='kit-budget'){kit().budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='budget-input'){S.budget=Math.max(0,+e.target.value||0);save();render()}
   if(e.target.id==='photo-in'){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){
