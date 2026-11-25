@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-25T04:08:54.775+05:30",
+  "fetchedAt": "2026-11-25T14:26:35.574+05:30",
   "source": "Flipkart Affiliate API",
   "disclaimer": "Prices are Flipkart listings as of the fetched date. Check the store at checkout. No ratings or coupons are invented.",
   "offersResolved": 0,
@@ -9,30 +9,30 @@
       "label": "Men's clothing",
       "items": [
         {
-          "id": "SHTGGY3HN3SQQ2JG",
+          "id": "SHTHZZHUQNJFZGZA",
+          "title": "CANTABIL Men Solid Casual White Shirt",
+          "brand": "CANTABIL",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/j/f/m/38-mshc00791b-white-cantabil-original-imahzzhtgz2fzzrg.jpeg?q=90",
+          "price": 559,
+          "mrp": 2499,
+          "discount": 78,
+          "url": "https://www.flipkart.com/cantabil-men-solid-casual-white-shirt/p/itm692993971f3b0?pid=SHTHZZHUQNJFZGZA&affid=thisisnarenda",
+          "inStock": true,
+          "category": "men-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "SHTGGY3HNQDCPNGN",
           "title": "HIGHLANDER Men Solid Casual White Shirt",
           "brand": "HIGHLANDER",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/e/5/1/-original-imahq5t5hqbsf69x.jpeg?q=90",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/e/u/2/-original-imah7uu6bhembfhj.jpeg?q=90",
           "price": 436,
           "mrp": 1999,
           "discount": 78,
-          "url": "https://www.flipkart.com/highlander-men-solid-casual-white-shirt/p/itmeb80f4c4151e8?pid=SHTGGY3HN3SQQ2JG&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/highlander-men-solid-casual-white-shirt/p/itmeb80f4c4151e8?pid=SHTGGY3HNQDCPNGN&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "TSHGT7YUKZNKUNHD",
-          "title": "SYM Solid Men Round Neck Multicolor T-Shirt",
-          "brand": "SYM",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/t-shirt/w/m/k/m-100-r-rockin-tees-original-imahkhtjayuy9ggr.jpeg?q=90",
-          "price": 350,
-          "mrp": 1599,
-          "discount": 78,
-          "url": "https://www.flipkart.com/sym-solid-men-round-neck-multicolor-t-shirt/p/itm3bb8c72767ab1?pid=TSHGT7YUKZNKUNHD&affid=thisisnarenda",
-          "inStock": true,
-          "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "SHTHMYZSEUE8VWQR",
@@ -45,20 +45,7 @@
           "url": "https://www.flipkart.com/metronaut-men-solid-casual-white-shirt/p/itme148e5a7d0102?pid=SHTHMYZSEUE8VWQR&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "SHTHMYZS6TVJNT4B",
-          "title": "METRONAUT Men Solid Casual Purple Shirt",
-          "brand": "METRONAUT",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/q/i/g/s-metro-palin01-casual-shirt-metronaut-original-imahmyzsubaepwkv.jpeg?q=90",
-          "price": 323,
-          "mrp": 1499,
-          "discount": 78,
-          "url": "https://www.flipkart.com/metronaut-men-solid-casual-purple-shirt/p/itm3d17e929a7893?pid=SHTHMYZS6TVJNT4B&affid=thisisnarenda",
-          "inStock": true,
-          "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "SHTHMYZSWGP46SGA",
@@ -71,7 +58,20 @@
           "url": "https://www.flipkart.com/metronaut-men-solid-casual-dark-blue-shirt/p/itm596ef9ed25a3a?pid=SHTHMYZSWGP46SGA&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "TSHGT7YVB3PDG2KS",
+          "title": "SYM Solid Men Round Neck Multicolor T-Shirt",
+          "brand": "SYM",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/t-shirt/w/m/k/m-100-r-rockin-tees-original-imahkhtjayuy9ggr.jpeg?q=90",
+          "price": 370,
+          "mrp": 1599,
+          "discount": 77,
+          "url": "https://www.flipkart.com/sym-solid-men-round-neck-multicolor-t-shirt/p/itm3bb8c72767ab1?pid=TSHGT7YVB3PDG2KS&affid=thisisnarenda",
+          "inStock": true,
+          "category": "men-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "JEAHQWC85GPK5X3R",
@@ -84,33 +84,33 @@
           "url": "https://www.flipkart.com/killer-straight-fit-men-dark-blue-jeans/p/itmcbbb2e087d3f5?pid=JEAHQWC85GPK5X3R&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "TSHHSGBZGHMZ6BBJ",
+          "id": "TSHHSGBZZHZCEM5X",
           "title": "Austivo Striped Men Polo Neck Reversible Navy Blue T-Shirt",
           "brand": "Austivo",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/t-shirt/k/k/n/3xl-g5978-austivo-original-imahsgbz9yuyufcz.jpeg?q=90",
           "price": 499,
           "mrp": 1799,
           "discount": 72,
-          "url": "https://www.flipkart.com/austivo-striped-men-polo-neck-reversible-navy-blue-t-shirt/p/itme7eda2b4d3f09?pid=TSHHSGBZGHMZ6BBJ&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/austivo-striped-men-polo-neck-reversible-navy-blue-t-shirt/p/itme7eda2b4d3f09?pid=TSHHSGBZZHZCEM5X&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "TSHHHWBHQGHPEUG5",
-          "title": "SSA Printed Men Polo Neck Yellow T-Shirt",
-          "brand": "SSA",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/t-shirt/1/o/p/m-art22-csk-2026-dhoni7-chennai-yellow-ssa-resized-original-imahhwjrvvgbfbmy.jpeg?q=90",
-          "price": 253,
-          "mrp": 899,
+          "id": "TROFGPJWAHPHH97B",
+          "title": "AD & AV Regular Fit Men Black Trousers",
+          "brand": "AD & AV",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/trouser/g/v/0/36-t-130-trouser-baleno-black-aa-ad-av-resized-original-imahyhgvhsndzhjy.jpeg?q=90",
+          "price": 439,
+          "mrp": 1545,
           "discount": 72,
-          "url": "https://www.flipkart.com/ssa-printed-men-polo-neck-yellow-t-shirt/p/itm3ca3dff490afa?pid=TSHHHWBHQGHPEUG5&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/ad-av-regular-fit-men-black-trousers/p/itmfgpmyczzn5hyz?pid=TROFGPJWAHPHH97B&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TSHH4D2F6DSMYRYX",
@@ -123,7 +123,7 @@
           "url": "https://www.flipkart.com/puma-solid-men-polo-neck-black-t-shirt/p/itm8ac888d7eafa2?pid=TSHH4D2F6DSMYRYX&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TSHH4D2FHDPUSNGF",
@@ -136,7 +136,7 @@
           "url": "https://www.flipkart.com/puma-solid-men-polo-neck-white-t-shirt/p/itm7250ad5444da3?pid=TSHH4D2FHDPUSNGF&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TSHH4D2FM7RHFGZA",
@@ -149,59 +149,72 @@
           "url": "https://www.flipkart.com/puma-solid-men-polo-neck-pink-t-shirt/p/itm78d7324d5ae6b?pid=TSHH4D2FM7RHFGZA&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "TROH2HNWBHVPEFHP",
-          "title": "Raymond Slim Fit Men Grey Trousers",
-          "brand": "Raymond",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/trouser/l/n/8/-original-imahqfqkyayhehmh.jpeg?q=90",
-          "price": 698,
-          "mrp": 2299,
-          "discount": 70,
-          "url": "https://www.flipkart.com/raymond-slim-fit-men-grey-trousers/p/itm6d4a38bbd6b57?pid=TROH2HNWBHVPEFHP&affid=thisisnarenda",
-          "inStock": true,
-          "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "TSHHRU3YYYUHYKHH",
-          "title": "7 Heavens Printed Men Round Neck Black T-Shirt",
-          "brand": "7 Heavens",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/t-shirt/4/i/c/s-boxy-spider-full-black-7-heavens-original-imahru3ywgcvuhhd.jpeg?q=90",
-          "price": 298,
-          "mrp": 999,
-          "discount": 70,
-          "url": "https://www.flipkart.com/7-heavens-printed-men-round-neck-black-t-shirt/p/itm8616c9224de2d?pid=TSHHRU3YYYUHYKHH&affid=thisisnarenda",
-          "inStock": true,
-          "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "SHTHHY3GWEJY7B8G",
-          "title": "METRONAUT Men Solid Casual White Shirt",
+          "id": "SHTHHY3GXQSBPSRV",
+          "title": "METRONAUT Men Solid Casual Black Shirt",
           "brand": "METRONAUT",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/b/z/6/xl-01-formal-shirts-metronaut-original-imahhy3fmnw7wcan.jpeg?q=90",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/0/t/i/s-01-formal-shirts-metronaut-original-imahhy3aszhy6nc8.jpeg?q=90",
           "price": 304,
           "mrp": 999,
           "discount": 70,
-          "url": "https://www.flipkart.com/metronaut-men-solid-casual-white-shirt/p/itmc81780e52759f?pid=SHTHHY3GWEJY7B8G&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/metronaut-men-solid-casual-black-shirt/p/itm3080fcf375293?pid=SHTHHY3GXQSBPSRV&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "SHTHHY3GNE84TU9U",
+          "id": "SHTHH2HYY2DHC8TN",
           "title": "METRONAUT Men Solid Casual Blue Shirt",
           "brand": "METRONAUT",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/k/c/4/s-01-formal-shirts-metronaut-original-imahrfzamm6vcphh.jpeg?q=90",
           "price": 304,
           "mrp": 999,
           "discount": 70,
-          "url": "https://www.flipkart.com/metronaut-men-solid-casual-blue-shirt/p/itm4b8a9dbec06c6?pid=SHTHHY3GNE84TU9U&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/metronaut-men-solid-casual-blue-shirt/p/itm4b8a9dbec06c6?pid=SHTHH2HYY2DHC8TN&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "SHTHH2H2RCGGZPXU",
+          "title": "METRONAUT Men Solid Casual White Shirt",
+          "brand": "METRONAUT",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shirt/b/z/6/xl-01-formal-shirts-metronaut-original-imahhy3fmnw7wcan.jpeg?q=90",
+          "price": 304,
+          "mrp": 999,
+          "discount": 70,
+          "url": "https://www.flipkart.com/metronaut-men-solid-casual-white-shirt/p/itmc81780e52759f?pid=SHTHH2H2RCGGZPXU&affid=thisisnarenda",
+          "inStock": true,
+          "category": "men-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "JEAHM9VXNNNQFGHW",
+          "title": "Pepe Jeans Relaxed Fit Men Blue Jeans",
+          "brand": "Pepe Jeans",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/a/9/d/30-pm2085600j671000-pepe-jeans-original-imahm9vwewgpyxyd.jpeg?q=90",
+          "price": 1005,
+          "mrp": 3199,
+          "discount": 69,
+          "url": "https://www.flipkart.com/pepe-jeans-relaxed-fit-men-blue/p/itm9f183cb73ceea?pid=JEAHM9VXNNNQFGHW&affid=thisisnarenda",
+          "inStock": true,
+          "category": "men-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "TROHJ37RHAYZAMJK",
+          "title": "COMBRAIDED Slim Fit Men Black, Grey Trousers",
+          "brand": "COMBRAIDED",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shopsy-trouser/q/m/6/32-shop-combo-2tr-casual-trousers-combraided-original-imahk9fg5f3uuzfr.jpeg?q=90",
+          "price": 470,
+          "mrp": 1499,
+          "discount": 69,
+          "url": "https://www.flipkart.com/combraided-slim-fit-men-black-grey-trousers/p/itmc78db87e4a7b9?pid=TROHJ37RHAYZAMJK&affid=thisisnarenda",
+          "inStock": true,
+          "category": "men-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TROGMKA9GZMJ5QUG",
@@ -214,59 +227,46 @@
           "url": "https://www.flipkart.com/pesado-slim-fit-men-black-trousers/p/itm90ae32ac542d5?pid=TROGMKA9GZMJ5QUG&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "JEAHPCRX6CCA9FHW",
-          "title": "KILLER Slim Men Grey Jeans",
-          "brand": "KILLER",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/1/b/y/32-kjo-91627-slm-slmft-lg-killer-original-imahqzppvgktejgq.jpeg?q=90",
-          "price": 1170,
-          "mrp": 3699,
-          "discount": 68,
-          "url": "https://www.flipkart.com/killer-slim-men-grey-jeans/p/itm7131244fbfa18?pid=JEAHPCRX6CCA9FHW&affid=thisisnarenda",
-          "inStock": true,
-          "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "JEAHGW5BUYNFBWHE",
-          "title": "LEVI'S Straight Fit Men Dark Blue Jeans",
-          "brand": "LEVI'S",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/v/k/b/32-005rc-0087-levi-s-resized-original-imahkny5tgzqkvr8.jpeg?q=90",
-          "price": 1034,
-          "mrp": 3099,
+          "id": "JEAHMARYFRKQPHHV",
+          "title": "RARE RABBIT Slim Men Black Jeans",
+          "brand": "RARE RABBIT",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/e/d/t/-original-imahq5ubqbgm82hk.jpeg?q=90",
+          "price": 930,
+          "mrp": 2799,
           "discount": 67,
-          "url": "https://www.flipkart.com/levi-s-straight-fit-men-dark-blue-jeans/p/itm439a9bcf34fcb?pid=JEAHGW5BUYNFBWHE&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/rare-rabbit-slim-men-black-jeans/p/itm46f2f2bb7b50e?pid=JEAHMARYFRKQPHHV&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "JEAHKZFTNWHUSAGH",
-          "title": "Pepe Jeans Relaxed Fit Men Blue Jeans",
+          "id": "JEAHKZX7NWJGWNSS",
+          "title": "Pepe Jeans Relaxed Fit Men Black Jeans",
           "brand": "Pepe Jeans",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/1/y/p/-original-imahq2udc8ztyqsb.jpeg?q=90",
-          "price": 999,
-          "mrp": 2999,
-          "discount": 67,
-          "url": "https://www.flipkart.com/pepe-jeans-relaxed-fit-men-blue/p/itm81871cce7393f?pid=JEAHKZFTNWHUSAGH&affid=thisisnarenda",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/x/i/6/36-pm2085549q011000-pepe-jeans-original-imahkzx7vzrqhyqs.jpeg?q=90",
+          "price": 991,
+          "mrp": 2799,
+          "discount": 65,
+          "url": "https://www.flipkart.com/pepe-jeans-relaxed-fit-men-black/p/itmb7a4f48f31e43?pid=JEAHKZX7NWJGWNSS&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "TROHNVEGYYTHKVPK",
-          "title": "COMBRAIDED Slim Fit Men Black, Grey Trousers",
-          "brand": "COMBRAIDED",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shopsy-trouser/q/m/6/32-shop-combo-2tr-casual-trousers-combraided-original-imahk9fg5f3uuzfr.jpeg?q=90",
-          "price": 495,
-          "mrp": 1499,
-          "discount": 67,
-          "url": "https://www.flipkart.com/combraided-slim-fit-men-black-grey-trousers/p/itmc78db87e4a7b9?pid=TROHNVEGYYTHKVPK&affid=thisisnarenda",
+          "id": "TROH2HNW3YKZE55C",
+          "title": "Raymond Slim Fit Men Black Trousers",
+          "brand": "Raymond",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/trouser/c/v/a/32-rmts05519-k8-raymond-original-imah47twvczvzh6h.jpeg?q=90",
+          "price": 829,
+          "mrp": 2299,
+          "discount": 64,
+          "url": "https://www.flipkart.com/raymond-slim-fit-men-black-trousers/p/itm11af3649f523f?pid=TROH2HNW3YKZE55C&affid=thisisnarenda",
           "inStock": true,
           "category": "men-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         }
       ]
     },
@@ -285,33 +285,20 @@
           "url": "https://www.flipkart.com/jr-jezreel-casual-embroidered-women-red-top/p/itm9e16736a25683?pid=TOPHQFR63UPVR4GZ&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "TOPH5QP8ZQ6GPJ3C",
-          "title": "PERFETTE WOLLO Casual Solid Women Black Top",
-          "brand": "PERFETTE WOLLO",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/top/h/2/1/l-1-flakit-hoc-resized-original-imahhn7fxfz54yhj.jpeg?q=90",
-          "price": 245,
+          "id": "TOPHQEJDGRYQSYZD",
+          "title": "JR JEZREEL Casual Embroidered Women Purple Top",
+          "brand": "JR JEZREEL",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/top/u/a/g/s-1-v-neck-purple1-top-s-jr-jezreel-original-imahqejcjhkxsdqr.jpeg?q=90",
+          "price": 202,
           "mrp": 1999,
-          "discount": 88,
-          "url": "https://www.flipkart.com/perfette-wollo-casual-solid-women-black-top/p/itm452991072b460?pid=TOPH5QP8ZQ6GPJ3C&affid=thisisnarenda",
+          "discount": 90,
+          "url": "https://www.flipkart.com/jr-jezreel-casual-embroidered-women-purple-top/p/itm4dfbe00fa3534?pid=TOPHQEJDGRYQSYZD&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "TOPHFMK9QGFPTBC8",
-          "title": "TUSI Casual Solid Women Black Top",
-          "brand": "TUSI",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shopsy-t-shirt/t/n/i/l-349-kushi-flyer-resized-original-imah2bxux2stbgz5.jpeg?q=90",
-          "price": 189,
-          "mrp": 1599,
-          "discount": 88,
-          "url": "https://www.flipkart.com/tusi-casual-solid-women-black-top/p/itm35e3bc7343ca6?pid=TOPHFMK9QGFPTBC8&affid=thisisnarenda",
-          "inStock": true,
-          "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TOPHQYRJCHEZ9HHB",
@@ -324,33 +311,33 @@
           "url": "https://www.flipkart.com/kotty-casual-self-design-women-black-top/p/itm19a1a0112762d?pid=TOPHQYRJCHEZ9HHB&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "JEAHRZDZGH8YBXND",
+          "id": "JEAHRZEE4GF5QMFZ",
           "title": "KOTTY Flared Women Grey Jeans",
           "brand": "KOTTY",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/c/6/z/26-ks1-kttladiesjeans2479-kotty-original-imahrzdy2bxsjjw3.jpeg?q=90",
           "price": 391,
           "mrp": 2499,
           "discount": 84,
-          "url": "https://www.flipkart.com/kotty-flared-women-grey-jeans/p/itmc5c40e0cb1501?pid=JEAHRZDZGH8YBXND&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/kotty-flared-women-grey-jeans/p/itmc5c40e0cb1501?pid=JEAHRZEE4GF5QMFZ&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "JEAHRZ7QNZHARQRQ",
+          "id": "JEAHRZ7QSKXG56KQ",
           "title": "KOTTY Wide Leg Women Black Jeans",
           "brand": "KOTTY",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/w/e/o/28-ks4-kttladiesjeans1003-kotty-original-imahrz7p6cuzbzam.jpeg?q=90",
           "price": 398,
           "mrp": 2499,
           "discount": 84,
-          "url": "https://www.flipkart.com/kotty-wide-leg-women-black-jeans/p/itm0fba821ef635c?pid=JEAHRZ7QNZHARQRQ&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/kotty-wide-leg-women-black-jeans/p/itm0fba821ef635c?pid=JEAHRZ7QSKXG56KQ&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "JEAHRPCFFZYT3GXS",
@@ -363,20 +350,7 @@
           "url": "https://www.flipkart.com/kotty-wide-leg-women-blue-jeans/p/itme4437b75ce9b4?pid=JEAHRPCFFZYT3GXS&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "JEAHRZ9GUN6AEFNR",
-          "title": "KOTTY Loose Fit Women Light Blue Jeans",
-          "brand": "KOTTY",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/g/s/t/28-ks18-kttladiesjeans823-kotty-original-imahrz7pjwpm2hzq.jpeg?q=90",
-          "price": 398,
-          "mrp": 2499,
-          "discount": 84,
-          "url": "https://www.flipkart.com/kotty-loose-fit-women-light-blue-jeans/p/itm3869c998d891a?pid=JEAHRZ9GUN6AEFNR&affid=thisisnarenda",
-          "inStock": true,
-          "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "JEAHRZ7QBP4GYURN",
@@ -389,7 +363,7 @@
           "url": "https://www.flipkart.com/kotty-loose-fit-women-light-blue-jeans/p/itmb2219215cb595?pid=JEAHRZ7QBP4GYURN&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TOPHJ5S3DDXEENMY",
@@ -402,20 +376,33 @@
           "url": "https://www.flipkart.com/kotty-casual-self-design-women-black-top/p/itme34ce7e005f7f?pid=TOPHJ5S3DDXEENMY&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "JEAHNG2ZEABMPPAZ",
+          "id": "JEAHPF5DFFYUHYNQ",
+          "title": "Curvy CLOSET Wide Leg Women Blue Jeans",
+          "brand": "Curvy CLOSET",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/k/u/v/34-ccladiesjeans38-curvy-closet-original-imahpf4xagga4c8b.jpeg?q=90",
+          "price": 776,
+          "mrp": 3999,
+          "discount": 81,
+          "url": "https://www.flipkart.com/curvy-closet-wide-leg-women-blue-jeans/p/itma4c03e288a099?pid=JEAHPF5DFFYUHYNQ&affid=thisisnarenda",
+          "inStock": true,
+          "category": "women-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "JEAHNG2ZZMZK4WQU",
           "title": "Koetler Straight Fit Women White Jeans",
           "brand": "Koetler",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/q/f/f/32-fl-wyt-wmn-bag-24q-koetler-original-imahng2ztfyf54fh.jpeg?q=90",
           "price": 464,
           "mrp": 2499,
           "discount": 81,
-          "url": "https://www.flipkart.com/koetler-straight-fit-women-white-jeans/p/itm636ef217e2456?pid=JEAHNG2ZEABMPPAZ&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/koetler-straight-fit-women-white-jeans/p/itm636ef217e2456?pid=JEAHNG2ZZMZK4WQU&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "JEAHKUN74AMMYFQD",
@@ -428,33 +415,20 @@
           "url": "https://www.flipkart.com/kotty-regular-women-black-jeans/p/itm9e02d015cac8e?pid=JEAHKUN74AMMYFQD&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "JEAHPF4YAJNBZXAH",
-          "title": "Curvy CLOSET Wide Leg Women Blue Jeans",
-          "brand": "Curvy CLOSET",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/jean/k/u/v/34-ccladiesjeans38-curvy-closet-original-imahpf4xagga4c8b.jpeg?q=90",
-          "price": 780,
-          "mrp": 3999,
-          "discount": 80,
-          "url": "https://www.flipkart.com/curvy-closet-wide-leg-women-blue-jeans/p/itma4c03e288a099?pid=JEAHPF4YAJNBZXAH&affid=thisisnarenda",
+          "id": "KTAHN7C2PTFAKMZD",
+          "title": "maruti fab Women Printed Straight Kurta(Blue)",
+          "brand": "maruti fab",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/shopsy-kurta/f/l/t/xxl-elegant-khadi-cotton-block-printed-kurti-for-women-modli-20-resized-original-imahnykdwwrshm3h.jpeg?q=90",
+          "price": 304,
+          "mrp": 1599,
+          "discount": 81,
+          "url": "https://www.flipkart.com/maruti-fab-women-printed-straight-kurta/p/itmb83472609dde1?pid=KTAHN7C2PTFAKMZD&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "DREHQCBXMXFUHVX9",
-          "title": "AAYU Women Fit and Flare Purple Maxi/Full Length Dress",
-          "brand": "AAYU",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/dress/v/k/f/s-new-158-wine-aayu-original-imahqcbxga9kfsfa.jpeg?q=90",
-          "price": 600,
-          "mrp": 2999,
-          "discount": 80,
-          "url": "https://www.flipkart.com/aayu-women-fit-flare-purple-maxi-full-length-dress/p/itm4f4e3ffe2ff1b?pid=DREHQCBXMXFUHVX9&affid=thisisnarenda",
-          "inStock": true,
-          "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "KTAHQH6MDCK9NFMM",
@@ -467,7 +441,46 @@
           "url": "https://www.flipkart.com/jodaa-women-printed-anarkali-kurta/p/itmd585d44384963?pid=KTAHQH6MDCK9NFMM&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "KTAHQXCNUMVRRAEQ",
+          "title": "JODAA Women Printed Anarkali Kurta(Maroon)",
+          "brand": "JODAA",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/kurta/x/m/4/m-gownblack-jodaa-original-imahqxcnv9bpkzpp.jpeg?q=90",
+          "price": 419,
+          "mrp": 1999,
+          "discount": 79,
+          "url": "https://www.flipkart.com/jodaa-women-printed-anarkali-kurta/p/itm03710c63a7ee2?pid=KTAHQXCNUMVRRAEQ&affid=thisisnarenda",
+          "inStock": true,
+          "category": "women-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "TOPHKQ4PCGSYYEZ2",
+          "title": "Tanushk Casual Self Design Women Black Top",
+          "brand": "Tanushk",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/top/1/b/f/xxl-1-gr-womenstop06-tanushk-original-imahspzyagkgbejd.jpeg?q=90",
+          "price": 272,
+          "mrp": 1299,
+          "discount": 79,
+          "url": "https://www.flipkart.com/tanushk-casual-self-design-women-black-top/p/itm792c19d3977fa?pid=TOPHKQ4PCGSYYEZ2&affid=thisisnarenda",
+          "inStock": true,
+          "category": "women-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "TOPHFX9WTWP6NYKF",
+          "title": "sasafaras Party Solid Women Black Top",
+          "brand": "sasafaras",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/top/i/o/r/m-1-tf-hneck3-blk-sasafaras-resized-original-imahfx9vsuydtkvv.jpeg?q=90",
+          "price": 251,
+          "mrp": 1199,
+          "discount": 79,
+          "url": "https://www.flipkart.com/sasafaras-party-solid-women-black-top/p/itm590c5d1043838?pid=TOPHFX9WTWP6NYKF&affid=thisisnarenda",
+          "inStock": true,
+          "category": "women-clothing",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "TOPHJ8CRHGGCZZGS",
@@ -480,7 +493,7 @@
           "url": "https://www.flipkart.com/sasafaras-casual-solid-women-black-top/p/itmc356458cb7fe2?pid=TOPHJ8CRHGGCZZGS&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "DREH4ZZ2HUX8RN6E",
@@ -493,46 +506,33 @@
           "url": "https://www.flipkart.com/miss-chase-women-maxi-black-full-length-dress/p/itm5eb792a18cfcb?pid=DREH4ZZ2HUX8RN6E&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "KTAHJ862PTUTFEEZ",
+          "id": "KTAHJ862F244QUHC",
           "title": "Golden Wings Women Printed A-line Kurta(Maroon)",
           "brand": "Golden Wings",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/kurta/4/v/y/m-rainbow-maroon-01-golden-wings-original-imahkgzdrxn5ztu8.jpeg?q=90",
           "price": 280,
           "mrp": 1299,
           "discount": 78,
-          "url": "https://www.flipkart.com/golden-wings-women-printed-a-line-kurta/p/itmf676b9ecd2532?pid=KTAHJ862PTUTFEEZ&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/golden-wings-women-printed-a-line-kurta/p/itmf676b9ecd2532?pid=KTAHJ862F244QUHC&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "KTAHFJUHKFN76HUC",
           "title": "Fyunl Women Printed Straight Kurta(Red)",
           "brand": "Fyunl",
           "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/kurta/g/h/z/xl-long-kurtis-fyunl-original-imahhzkg2vrh8gff.jpeg?q=90",
-          "price": 283,
+          "price": 285,
           "mrp": 1299,
           "discount": 78,
           "url": "https://www.flipkart.com/fyunl-women-printed-straight-kurta/p/itm932b3430b4f85?pid=KTAHFJUHKFN76HUC&affid=thisisnarenda",
           "inStock": true,
           "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "DREGBSHD6MKZ8QKJ",
-          "title": "Janasya Women A-line Green Midi/Calf Length Dress",
-          "brand": "Janasya",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/dress/s/d/w/l-jne3800-kr-a-janasya-original-imahjnbzyfcfmfbx.jpeg?q=90",
-          "price": 588,
-          "mrp": 2599,
-          "discount": 77,
-          "url": "https://www.flipkart.com/janasya-women-a-line-green-midi-calf-length-dress/p/itm3dcf617a7966e?pid=DREGBSHD6MKZ8QKJ&affid=thisisnarenda",
-          "inStock": true,
-          "category": "women-clothing",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         }
       ]
     },
@@ -540,6 +540,19 @@
       "id": "laptops",
       "label": "Laptops",
       "items": [
+        {
+          "id": "COMHHT9GEJYTRY9N",
+          "title": "ASUS ExpertBook P5 with Full Metal OLED AI PC 1 Yr ADP Intel Core Ultra 5 225H - (16 GB/512 GB SSD/Windows 11 Home) P5406CCA-SF0162WS Thin and Light Laptop(14 inch, Misty Grey, 1.3",
+          "brand": "ASUS",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/d/5/y/-original-imahr5drjd9ytpgf.jpeg?q=90",
+          "price": 99990,
+          "mrp": 239990,
+          "discount": 58,
+          "url": "https://www.flipkart.com/asus-expertbook-p5-full-metal-oled-ai-pc-1-yr-adp-intel-core-ultra-5-225h-16-gb-512-gb-ssd-windows-11-home-p5406cca-sf0162ws-thin-light-laptop/p/itm0bac7126cc72b?pid=COMHHT9GEJYTRY9N&affid=thisisnarenda",
+          "inStock": true,
+          "category": "laptops",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
         {
           "id": "COMHS3RC3AHMVZZ4",
           "title": "Acer Aspire 15 (2026) AMD Ryzen 3 3200U - (8 GB/256 GB SSD/Windows 11 Home) AS15-39 Notebook(15.6 inch, Pure Silver)",
@@ -551,7 +564,7 @@
           "url": "https://www.flipkart.com/acer-aspire-15-2026-amd-ryzen-3-3200u-8-gb-256-gb-ssd-windows-11-home-as15-39-notebook/p/itm95461acc40f75?pid=COMHS3RC3AHMVZZ4&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMGT846VD2DQBG4",
@@ -564,7 +577,7 @@
           "url": "https://www.flipkart.com/primebook-wifi-2026-model-mediatek-mt8183-4-gb-64-gb-emmc-storage-prime-os-pb-thin-light-laptop/p/itmfd14d0fbf7736?pid=COMGT846VD2DQBG4&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHPDSBGS7VKNRM",
@@ -577,7 +590,20 @@
           "url": "https://www.flipkart.com/acer-swift-neo-ai-pc-oled-intel-core-ultra-5-125h-16-gb-512-gb-ssd-windows-11-home-sfn14-55-notebook/p/itm7ac101935b990?pid=COMHPDSBGS7VKNRM&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "COMHPQ7ZHJGYRJHH",
+          "title": "GIGABYTE A16 Intel Core i5 13th Gen 13420H - (16 GB/512 GB SSD/Windows 11 Home/6 GB Graphics/NVIDIA GeForce RTX 4050) GAMING A16 CMHH2IN893SH Gaming Laptop(16 inch, Black Steel, 2.",
+          "brand": "GIGABYTE",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/u/c/a/-original-imahr8vatsfguq7g.jpeg?q=90",
+          "price": 109990,
+          "mrp": 199300,
+          "discount": 45,
+          "url": "https://www.flipkart.com/gigabyte-a16-intel-core-i5-13th-gen-13420h-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-4050-gaming-cmhh2in893sh-laptop/p/itmc41c6d55b492f?pid=COMHPQ7ZHJGYRJHH&affid=thisisnarenda",
+          "inStock": true,
+          "category": "laptops",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHPKRBZT8NHPHY",
@@ -590,7 +616,20 @@
           "url": "https://www.flipkart.com/lenovo-amd-ryzen-3-quad-core-30-8-gb-512-gb-ssd-windows-11-home-ideapad-slim-15amn8-thin-light-laptop/p/itm136b8d3fe3ffc?pid=COMHPKRBZT8NHPHY&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "COMHM9URNKQZA3YY",
+          "title": "ASUS ExpertBook P3 with AI PC IR Cam 1 Yr ADP Intel Core Ultra 7 255H - (16 GB/512 GB SSD/Windows 11 Home) P3406CCAP-LY0127WS Thin and Light Laptop(14 inch, Misty Grey, 1.49 Kg, Wi",
+          "brand": "ASUS",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/0/5/j/-original-imahr5drfgrm4rp9.jpeg?q=90",
+          "price": 109990,
+          "mrp": 189990,
+          "discount": 42,
+          "url": "https://www.flipkart.com/asus-expertbook-p3-ai-pc-ir-cam-1-yr-adp-intel-core-ultra-7-255h-16-gb-512-gb-ssd-windows-11-home-p3406ccap-ly0127ws-thin-light-laptop/p/itmcb7fa44f486da?pid=COMHM9URNKQZA3YY&affid=thisisnarenda",
+          "inStock": true,
+          "category": "laptops",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHRMFHH2XQ2AXV",
@@ -603,20 +642,7 @@
           "url": "https://www.flipkart.com/dell-15-pro-2026-ddr5-5600mhz-i3-14th-gen-intel-core-3-gen-100u-8-gb-512-gb-ssd-windows-11-home-thin-light-laptop/p/itm04e68977737cc?pid=COMHRMFHH2XQ2AXV&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "COMHRMFYZUHHVYJE",
-          "title": "DELL 15 PRO Backlit (2026) LPDDR5 5500Mhz AMD Ryzen 5 Quad Core 7520U - (8 GB/512 GB SSD/Windows 11 Pro) 15 PRO Thin and Light Laptop(15.6 inch, Black, 1.5 kg, With MS Office)",
-          "brand": "DELL",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/p/k/r/15-pro-thin-and-light-laptop-dell-original-imahrmfy7vyxgszr.jpeg?q=90",
-          "price": 52490,
-          "mrp": 90990,
-          "discount": 42,
-          "url": "https://www.flipkart.com/dell-15-pro-backlit-2026-lpddr5-5500mhz-amd-ryzen-5-quad-core-7520u-8-gb-512-gb-ssd-windows-11-pro-thin-light-laptop/p/itma68f463ef74df?pid=COMHRMFYZUHHVYJE&affid=thisisnarenda",
-          "inStock": true,
-          "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHHAFFWUT4K2XJ",
@@ -629,7 +655,7 @@
           "url": "https://www.flipkart.com/asus-vivobook-15-2026-office-2024-m365-basic-i3-14th-gen-intel-core-3-gen-100u-8-gb-512-gb-ssd-windows-11-home-x1504vap-bq1321ws-thin-light-laptop/p/itmbbafb8a3c6fe8?pid=COMHHAFFWUT4K2XJ&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHPGEHCP3M2MHQ",
@@ -642,7 +668,7 @@
           "url": "https://www.flipkart.com/asus-tuf-gaming-a16-2026-amd-ryzen-7-260-16-gb-512-gb-ssd-windows-11-home-8-graphics-nvidia-geforce-rtx-5050-144-hz-fa608uhi-tu238ws-laptop/p/itm694a6ad23b5b9?pid=COMHPGEHCP3M2MHQ&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHM94A7PHVCQT7",
@@ -655,20 +681,7 @@
           "url": "https://www.flipkart.com/hp-15-i5-14th-gen-intel-core-5-120u-24-gb-512-gb-ssd-windows-11-home-15-fd0262tu-thin-light-laptop/p/itm027a3317f4ff9?pid=COMHM94A7PHVCQT7&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "COMHPPZ69EP7QNRK",
-          "title": "HP Victus Intel Core i5 13th Gen 13450HX - (16 GB/512 GB SSD/Windows 11 Home/6 GB Graphics/NVIDIA GeForce RTX 3050) 15-fa2652TX Gaming Laptop(15.6 inch, Mica Silver, Black Chrome L",
-          "brand": "HP",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/w/x/v/-original-imahpz8tvnnegvvh.jpeg?q=90",
-          "price": 108000,
-          "mrp": 164999,
-          "discount": 35,
-          "url": "https://www.flipkart.com/hp-victus-intel-core-i5-13th-gen-13450hx-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-3050-15-fa2652tx-gaming-laptop/p/itmc7dcdfd72442b?pid=COMHPPZ69EP7QNRK&affid=thisisnarenda",
-          "inStock": true,
-          "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHGWQESQN4BAHV",
@@ -681,7 +694,7 @@
           "url": "https://www.flipkart.com/hp-victus-intel-core-i5-13th-gen-13420-h-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-3050-15-fa2196tx-15-fa2197tx-gaming-laptop/p/itm8143e1b0af034?pid=COMHGWQESQN4BAHV&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHRFGSQPTHXEMY",
@@ -694,7 +707,7 @@
           "url": "https://www.flipkart.com/lenovo-intel-core-ultra-9-290hx-plus-24-gb-512-gb-ssd-windows-11-home-12-graphics-nvidia-geforce-rtx-5070-legion-pro-5-16iax10-gaming-laptop/p/itme60d42b2151d7?pid=COMHRFGSQPTHXEMY&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHJZJWYPFCTTMB",
@@ -707,20 +720,20 @@
           "url": "https://www.flipkart.com/hp-hyperx-omen-intel-core-i7-14th-gen-14650hx-24-gb-1-tb-ssd-windows-11-home-8-gb-graphics-nvidia-geforce-rtx-5050-15-ga0028tx-gaming-laptop/p/itme4efd91a109d9?pid=COMHJZJWYPFCTTMB&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "COMH7NCZY2QDJ5Z4",
-          "title": "Acer Aspire 3 Intel Celeron Dual Core - (8 GB/512 GB SSD/Windows 11 Home) A311-45 Thin and Light Laptop(11.6 Inch, Steel Grey, 1.0 kg)",
-          "brand": "Acer",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/d/s/x/-enriched-transparent-2-resized-original-imahg5ftu2dzvyu8.jpg?q=90",
-          "price": 32990,
-          "mrp": 46999,
-          "discount": 30,
-          "url": "https://www.flipkart.com/acer-aspire-3-intel-celeron-dual-core-8-gb-512-gb-ssd-windows-11-home-a311-45-thin-light-laptop/p/itmad38595c5a902?pid=COMH7NCZY2QDJ5Z4&affid=thisisnarenda",
+          "id": "COMHPPZ69EP7QNRK",
+          "title": "HP Victus Intel Core i5 13th Gen 13450HX - (16 GB/512 GB SSD/Windows 11 Home/6 GB Graphics/NVIDIA GeForce RTX 3050) 15-fa2652TX Gaming Laptop(15.6 inch, Mica Silver, Black Chrome L",
+          "brand": "HP",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/w/x/v/-original-imahpz8tvnnegvvh.jpeg?q=90",
+          "price": 109990,
+          "mrp": 159421,
+          "discount": 31,
+          "url": "https://www.flipkart.com/hp-victus-intel-core-i5-13th-gen-13450hx-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-3050-15-fa2652tx-gaming-laptop/p/itmc7dcdfd72442b?pid=COMHPPZ69EP7QNRK&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHPE4FG5QGHGZH",
@@ -733,20 +746,7 @@
           "url": "https://www.flipkart.com/acer-aspire-7-intel-core-5-210h-16-gb-512-gb-ssd-windows-11-home-4-graphics-nvidia-geforce-rtx-3050-a715-79g-gaming-laptop/p/itm16e348955bedb?pid=COMHPE4FG5QGHGZH&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "COMHKXYAB4KG9YRY",
-          "title": "HP 15 AMD Ryzen 7 Octa Core 7730U - (16 GB/512 GB SSD/Windows 11 Home) 15-fc0761AU Thin and Light Laptop(15.6 inch, Natural Silver, 1.59 kg, With MS Office)",
-          "brand": "HP",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/e/t/p/-original-imahhjyugkghz6yp.jpeg?q=90",
-          "price": 79990,
-          "mrp": 112351,
-          "discount": 29,
-          "url": "https://www.flipkart.com/hp-15-amd-ryzen-7-octa-core-7730u-16-gb-512-gb-ssd-windows-11-home-15-fc0761au-thin-light-laptop/p/itm61f1a7157aecd?pid=COMHKXYAB4KG9YRY&affid=thisisnarenda",
-          "inStock": true,
-          "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHZEEDEP4E92NJ",
@@ -759,20 +759,7 @@
           "url": "https://www.flipkart.com/asus-tuf-gaming-a15-2026-amd-ryzen-7-170-16-gb-512-gb-ssd-windows-11-home-4-graphics-nvidia-geforce-rtx-3050-144-hz-fa506ncq-in080w-laptop/p/itma115637c33b5e?pid=COMHZEEDEP4E92NJ&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "COMHMQGHHKWNM6AW",
-          "title": "Acer Aspire 7(i5 14th Gen) Intel Core 5 210H - (16 GB/512 GB SSD/Windows 11 Home/6 GB Graphics/NVIDIA GeForce RTX 4050) A715-79G Gaming Laptop(15.6 inch, Flame Black, 1.99 kg, With",
-          "brand": "Acer",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/2/o/f/-original-imahfjepscrwrnvv.jpeg?q=90",
-          "price": 97990,
-          "mrp": 129990,
-          "discount": 25,
-          "url": "https://www.flipkart.com/acer-aspire-7-i5-14th-gen-intel-core-5-210h-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-4050-a715-79g-gaming-laptop/p/itm96c08ed7d9792?pid=COMHMQGHHKWNM6AW&affid=thisisnarenda",
-          "inStock": true,
-          "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "COMHPPZSWVHRXXHF",
@@ -785,20 +772,33 @@
           "url": "https://www.flipkart.com/hp-victus-intel-core-i7-14th-gen-14650hx-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-4050-15-fa2621tx-gaming-laptop/p/itm2327855cff7e0?pid=COMHPPZSWVHRXXHF&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "COMHFSGXNDCHA5QN",
-          "title": "DELL 15 Inspiron Intel Core 3 100U - (8 GB/512 GB SSD/Windows 11 Home) DC15250 Thin and Light Laptop(15.6 inch, Carbon Black, 1.63 Kg, With MS Office)",
-          "brand": "DELL",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/z/k/t/-original-imahrux95udxvzf8.jpeg?q=90",
-          "price": 49990,
-          "mrp": 58500,
-          "discount": 15,
-          "url": "https://www.flipkart.com/dell-15-inspiron-intel-core-3-100u-8-gb-512-gb-ssd-windows-11-home-dc15250-thin-light-laptop/p/itm6301210b49374?pid=COMHFSGXNDCHA5QN&affid=thisisnarenda",
+          "id": "COMHE4ATPCZ9FXRP",
+          "title": "Samsung Galaxy Book5 AI Metal Intel Core Ultra 5 225U - (16 GB/512 GB SSD/Windows 11 Home) NP750XHD Thin and Light Laptop(15.6 Inch, Gray, 1.55 Kg, With MS Office)",
+          "brand": "Samsung",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/0/2/e/-resized-original-imahzcf3jkkjkhgc.jpg?q=90",
+          "price": 87990,
+          "mrp": 99990,
+          "discount": 12,
+          "url": "https://www.flipkart.com/samsung-galaxy-book5-ai-metal-intel-core-ultra-5-225u-16-gb-512-gb-ssd-windows-11-home-np750xhd-thin-light-laptop/p/itmc33d2563d0ffc?pid=COMHE4ATPCZ9FXRP&affid=thisisnarenda",
           "inStock": true,
           "category": "laptops",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "COMHGYAFCZG8YRYS",
+          "title": "ASUS ExpertBook P1 with 1 Yr ADP (i5 14th Gen) Intel Core 5 210H - (16 GB/512 GB SSD/Windows 11 Home) P1503CVA-S72222WS / P1503CVAYB-S73386WS Thin and Light Laptop(15.6 Inch, Misty",
+          "brand": "ASUS",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/computer/1/t/x/-original-imahs3newekbqnkp.jpeg?q=90",
+          "price": 78990,
+          "mrp": 89990,
+          "discount": 12,
+          "url": "https://www.flipkart.com/asus-expertbook-p1-1-yr-adp-i5-14th-gen-intel-core-5-210h-16-gb-512-gb-ssd-windows-11-home-p1503cva-s72222ws-p1503cvayb-s73386ws-thin-light-laptop/p/itmfe48dae26f674?pid=COMHGYAFCZG8YRYS&affid=thisisnarenda",
+          "inStock": true,
+          "category": "laptops",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         }
       ]
     },
@@ -817,7 +817,7 @@
           "url": "https://www.flipkart.com/techblaze-80-w-supervooc-7-3-wall-charger-mobile-detachable-cable/p/itm97791b43d2ce3?pid=ACCHBQSXTUFKZYHA&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHNNY9BERXHV2W",
@@ -830,7 +830,7 @@
           "url": "https://www.flipkart.com/shopbucket-80-w-supervooc-7-3-wall-charger-mobile-detachable-cable/p/itm21ba5c58faa04?pid=ACCHNNY9BERXHV2W&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHBQAYAKFJ59W6",
@@ -843,7 +843,7 @@
           "url": "https://www.flipkart.com/techblaze-80-w-supervooc-7-3-wall-charger-mobile-detachable-cable/p/itm030b5480ff521?pid=ACCHBQAYAKFJ59W6&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHG65UQHK3NDZR",
@@ -856,7 +856,7 @@
           "url": "https://www.flipkart.com/sb-80-w-supervooc-7-3-wall-charger-mobile-detachable-cable/p/itme83e763f970bb?pid=ACCHG65UQHK3NDZR&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCH6NNUD4K8WRKT",
@@ -869,7 +869,7 @@
           "url": "https://www.flipkart.com/doubledicestore-apple-iphone-13-back-cover/p/itm9781a46582d15?pid=ACCH6NNUD4K8WRKT&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCGDSSU8BNHKN8G",
@@ -882,7 +882,7 @@
           "url": "https://www.flipkart.com/aroma-nb119-titanium-48-hours-playtime-neckband-bluetooth/p/itmbc3742b6dd62c?pid=ACCGDSSU8BNHKN8G&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCH4PKH4SZN5HX3",
@@ -895,7 +895,7 @@
           "url": "https://www.flipkart.com/flipkart-smartbuy-apple-iphone-15-back-cover/p/itmac1f0f873ca04?pid=ACCH4PKH4SZN5HX3&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCH3PYAP5NT2BY7",
@@ -908,7 +908,7 @@
           "url": "https://www.flipkart.com/mak-25-w-supercharge-3-wall-charger-mobile-detachable-cable/p/itmb37bb7ba01a8c?pid=ACCH3PYAP5NT2BY7&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCH9QZZZJE8BBCQ",
@@ -921,7 +921,20 @@
           "url": "https://www.flipkart.com/flipkart-smartbuy-apple-iphone-15-back-cover/p/itmb6bef498b56d5?pid=ACCH9QZZZJE8BBCQ&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "ACCHG2QKRQE8FK3Z",
+          "title": "Pikkme Motorola Moto G67 Power 5G / G57 Power 5G Back Cover(Black, Grip Case, Silicon, Pack of: 1)",
+          "brand": "Pikkme",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/cases-covers/back-cover/n/s/i/ls-mag-motog67power5gblack-pikkme-original-imahr8rv6n8pyt4u.jpeg?q=90",
+          "price": 159,
+          "mrp": 999,
+          "discount": 84,
+          "url": "https://www.flipkart.com/pikkme-motorola-moto-g67-power-5g-g57-back-cover/p/itm20932ab14d39b?pid=ACCHG2QKRQE8FK3Z&affid=thisisnarenda",
+          "inStock": true,
+          "category": "mobile-accessories",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCGDQJ5DAGUWHPX",
@@ -934,20 +947,7 @@
           "url": "https://www.flipkart.com/covj-apple-iphone-17-back-cover/p/itm79344a4cc21ad?pid=ACCGDQJ5DAGUWHPX&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "ACCGWJDBWYKRWBZ5",
-          "title": "Socaso Apple iPhone 13 Back Cover(Transparent, Magsafe, Thermoplastic Polyurethane, Pack of: 1)",
-          "brand": "Socaso",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/cases-covers/back-cover/k/z/x/ip-13-infinite-case-original-imah2fd7zz8pb8up.jpeg?q=90",
-          "price": 145,
-          "mrp": 899,
-          "discount": 84,
-          "url": "https://www.flipkart.com/socaso-apple-iphone-13-back-cover/p/itm11c478542ce61?pid=ACCGWJDBWYKRWBZ5&affid=thisisnarenda",
-          "inStock": true,
-          "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHH2H7ZNYNSNXN",
@@ -960,7 +960,7 @@
           "url": "https://www.flipkart.com/lustree-motorola-edge-70-fusion-5g-moto-5g-back-cover/p/itmf5f01b0bd0f7e?pid=ACCHH2H7ZNYNSNXN&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHHWDJHSWPZQYH",
@@ -973,7 +973,7 @@
           "url": "https://www.flipkart.com/reyanshstore-apple-iphone-17-back-cover/p/itm548974ee34fd5?pid=ACCHHWDJHSWPZQYH&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHEME3TSUSNMTY",
@@ -986,7 +986,20 @@
           "url": "https://www.flipkart.com/doubledicestore-vivo-t4x-5g-back-cover/p/itmec04cea70d703?pid=ACCHEME3TSUSNMTY&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "ACCHRKP9REMZXFNQ",
+          "title": "OPPO 80 W SuperVOOC 7.3 A Wall Charger for Mobile with Detachable Cable(White)",
+          "brand": "OPPO",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/battery-charger/f/a/y/80w-supervooc-fast-charger-with-type-c-cable-vooc-dash-warp-original-imahrkp9n2nqkghc.jpeg?q=90",
+          "price": 799,
+          "mrp": 3999,
+          "discount": 80,
+          "url": "https://www.flipkart.com/oppo-80-w-supervooc-7-3-wall-charger-mobile-detachable-cable/p/itm48dfd8873c198?pid=ACCHRKP9REMZXFNQ&affid=thisisnarenda",
+          "inStock": true,
+          "category": "mobile-accessories",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHFZ37BGUXQNHX",
@@ -999,7 +1012,7 @@
           "url": "https://www.flipkart.com/enflamo-apple-iphone-17-back-cover/p/itmbf5e33f28f201?pid=ACCHFZ37BGUXQNHX&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "PWBHP5BSDTVRYRDG",
@@ -1012,7 +1025,7 @@
           "url": "https://www.flipkart.com/miox-200000-mah-22-5-w-compact-power-bank/p/itme384fcfb24a67?pid=PWBHP5BSDTVRYRDG&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "PWBHP65X6YNKZCAF",
@@ -1025,7 +1038,7 @@
           "url": "https://www.flipkart.com/wingfi-30000-mah-22-5-w-compact-power-bank/p/itm73d7c3a1c9837?pid=PWBHP65X6YNKZCAF&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHHSWEHDR4VB65",
@@ -1038,20 +1051,7 @@
           "url": "https://www.flipkart.com/kartv-infinix-note-30-5g-back-cover/p/itmc88aee0d7f32b?pid=ACCHHSWEHDR4VB65&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "ACCHJW2ZRMY4XN9D",
-          "title": "OnePlus 80 W SuperVOOC 9 A Wall Charger for Mobile(White, Cable Included)",
-          "brand": "OnePlus",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/battery-charger/a/o/l/80w-charger-set-018-charg-x-original-imahd2zscezxfgww.jpeg?q=90",
-          "price": 473,
-          "mrp": 1999,
-          "discount": 76,
-          "url": "https://www.flipkart.com/oneplus-80-w-supervooc-9-wall-charger-mobile/p/itm3917e151aa9f2?pid=ACCHJW2ZRMY4XN9D&affid=thisisnarenda",
-          "inStock": true,
-          "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHC9V3KGDUNMGT",
@@ -1064,7 +1064,7 @@
           "url": "https://www.flipkart.com/vivo-44-w-quick-charge-4-wall-charger-mobile-detachable-cable/p/itm734797bbb23ad?pid=ACCHC9V3KGDUNMGT&affid=thisisnarenda",
           "inStock": true,
           "category": "mobile-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         }
       ]
     },
@@ -1083,7 +1083,7 @@
           "url": "https://www.flipkart.com/flipkart-smartbuy-usb-type-c-cable-10-1-m-100w-80w-65w-45w-dart-vooc-superdart-supervooc-realme-oneplus-fast-charging/p/itm74bab5c12adc7?pid=ACCHNWZCSJ5TZARK&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHCJ8Q4YSUX8GC",
@@ -1096,7 +1096,7 @@
           "url": "https://www.flipkart.com/flipkart-smartbuy-usb-type-c-cable-10-1-m-100w-supervooc-80w/p/itmfe9ad34be54a1?pid=ACCHCJ8Q4YSUX8GC&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHCSF8HNXHQYC5",
@@ -1109,7 +1109,7 @@
           "url": "https://www.flipkart.com/roarx-usb-type-c-cable-8-1-m-tpe-80w-charging-warp-charger-supervooc-dash-super-charge-oneplus11-11r-10pro-10r-10t-9rt-9r-8r-8t-6-6t-7-7t-ce2-lite-5g-ce-3-5g-ce3/p/itm11b277382d171?pid=ACCHCSF8HNXHQYC5&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "BKPH5YYWSZTSRHYZ",
@@ -1122,7 +1122,7 @@
           "url": "https://www.flipkart.com/hinex-bags-35-l-school-men-bag-laptop-backpack/p/itm56ab0ed675ee1?pid=BKPH5YYWSZTSRHYZ&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "LTBFAAA6M8CPTVRG",
@@ -1135,7 +1135,7 @@
           "url": "https://www.flipkart.com/leather-world-16-inch-expandable-laptop-messenger-bag/p/itmaeee8c1ff4a95?pid=LTBFAAA6M8CPTVRG&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "BKPH43GWBH7JUSZG",
@@ -1148,7 +1148,7 @@
           "url": "https://www.flipkart.com/onego-multi-use-water-resistant-bag-daily-college-office-study-travel-30-l-laptop-backpack/p/itmab0222ff14031?pid=BKPH43GWBH7JUSZG&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCGC55D9GH2G4EG",
@@ -1161,7 +1161,7 @@
           "url": "https://www.flipkart.com/ultradart-usb-type-c-cable-8-0-99-m-oem-65w-10w-6-5a-vooc-war-supervooc-superdart-charger/p/itm634a3f509137b?pid=ACCGC55D9GH2G4EG&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCGC55D83BRF6W3",
@@ -1174,7 +1174,20 @@
           "url": "https://www.flipkart.com/ultradart-usb-type-c-cable-6-5-1-m-oem-65w-10w-warp-dash-supervooc-superdart-charger/p/itm634a3f509137b?pid=ACCGC55D83BRF6W3&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "BAGGAYHKH5RSQTK5",
+          "title": "Straplt Laptop Sleeve Case 15.6-16 Inch Waterproof Bag Tablet Handle Laptop Bag Black Waterproof Laptop Sleeve/Cover(Black, 16 inch)",
+          "brand": "Straplt",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/bag/e/u/h/12-laptop-sleeve-case-15-6-16-inch-waterproof-bag-tablet-handle-original-imahfhhnarpa2cbz.jpeg?q=90",
+          "price": 172,
+          "mrp": 899,
+          "discount": 81,
+          "url": "https://www.flipkart.com/straplt-laptop-sleeve-case-15-6-16-inch-waterproof-bag-tablet-handle-black-sleeve-cover/p/itmc07d426b749a0?pid=BAGGAYHKH5RSQTK5&affid=thisisnarenda",
+          "inStock": true,
+          "category": "electronics-accessories",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCHRYUG9R8H8JQY",
@@ -1187,7 +1200,7 @@
           "url": "https://www.flipkart.com/mcp-m256-2in1-256-gb-pen-drive-compatible-audio-player-desktop-computer-gaming-console-laptop-mobile-netbook-tablet-television-usb-2-0-3-0-metal-case/p/itm52c0b83ea1633?pid=ACCHRYUG9R8H8JQY&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "BAGHGS7YZWRZXGEX",
@@ -1200,7 +1213,20 @@
           "url": "https://www.flipkart.com/straplt-15-6-16-inch-180-degree-opening-handle-laptop-bag-pouch-waterproof-sleeve-cover/p/itm957251884e866?pid=BAGHGS7YZWRZXGEX&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "ACCGRGMV2BX932YK",
+          "title": "HP v236W 128 GB Pen Drive Compatible with Audio Player, Desktop Computer, Gaming Console, Laptop, Mobile, Netbook, Tablet, Television USB 2.0 Metal Case(Silver)",
+          "brand": "HP",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/pendrive/pendrive/m/j/z/v236w-hp-enriched-transparent-original-imahfcsghdrrf5he.png?q=90",
+          "price": 1291,
+          "mrp": 5999,
+          "discount": 78,
+          "url": "https://www.flipkart.com/hp-v236w-128-gb-pen-drive-compatible-audio-player-desktop-computer-gaming-console-laptop-mobile-netbook-tablet-television-usb-2-0-metal-case/p/itmcd00ee5b57ab1?pid=ACCGRGMV2BX932YK&affid=thisisnarenda",
+          "inStock": true,
+          "category": "electronics-accessories",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCDZ583WDDSDY3F",
@@ -1213,20 +1239,7 @@
           "url": "https://www.flipkart.com/sandisk-cruze-blade-sdcz50-64-gb-pen-drive-compatible-desktop-computer-laptop-television-usb-2-0-plastic-case/p/itm77a3e7c8c4f3a?pid=ACCDZ583WDDSDY3F&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "BAGHFXHARTHHQBGH",
-          "title": "Straplt Laptop Sleeve Case 15.6-16 Inch Waterproof Bag Tablet Handle Laptop Bag Waterproof Laptop Sleeve/Cover(Grey, 15.6 inch)",
-          "brand": "Straplt",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/bag/f/c/t/-original-imahjykfvg9qgdsq.jpeg?q=90",
-          "price": 172,
-          "mrp": 799,
-          "discount": 78,
-          "url": "https://www.flipkart.com/straplt-laptop-sleeve-case-15-6-16-inch-waterproof-bag-tablet-handle-sleeve-cover/p/itmb71be06be588d?pid=BAGHFXHARTHHQBGH&affid=thisisnarenda",
-          "inStock": true,
-          "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "BAGG98DPTETHAPXC",
@@ -1239,7 +1252,7 @@
           "url": "https://www.flipkart.com/straplt-laptop-sleeve-carrying-case-15-6-16-inch-compatible-16-macbook-pro-15-surface-book-3-laptop-4-hp-pavilion-asus-acer-samsung-chromebook-computer-cover-bag-handle-grey-waterproof-sleeve-cover/p/itm2300689a732d0?pid=BAGG98DPTETHAPXC&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "BAGG9G5Z8HGNDCHT",
@@ -1252,20 +1265,7 @@
           "url": "https://www.flipkart.com/straplt-13-5-14-inch-laptop-sleeve-bag-case-briefcase-notebook-computer-ultrabook-macbook-air-pro-waterproof-protective-tables-portable-handle-bag-dark-gray-sleeve-cover/p/itm7107568090d53?pid=BAGG9G5Z8HGNDCHT&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "ACCGRGMV2BX932YK",
-          "title": "HP v236W 128 GB Pen Drive Compatible with Audio Player, Desktop Computer, Gaming Console, Laptop, Mobile, Netbook, Tablet, Television USB 2.0 Metal Case(Silver)",
-          "brand": "HP",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/pendrive/pendrive/m/j/z/v236w-hp-enriched-transparent-original-imahfcsghdrrf5he.png?q=90",
-          "price": 1359,
-          "mrp": 5999,
-          "discount": 77,
-          "url": "https://www.flipkart.com/hp-v236w-128-gb-pen-drive-compatible-audio-player-desktop-computer-gaming-console-laptop-mobile-netbook-tablet-television-usb-2-0-metal-case/p/itmcd00ee5b57ab1?pid=ACCGRGMV2BX932YK&affid=thisisnarenda",
-          "inStock": true,
-          "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCDZ34F82FWXAGM",
@@ -1278,7 +1278,7 @@
           "url": "https://www.flipkart.com/sandisk-sdcz48-064g-i35-64-gb-pen-drive-compatible-desktop-computer-laptop-television-usb-3-0-plastic-case/p/itm392f90809169c?pid=ACCDZ34F82FWXAGM&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCG8RJYJRU9BETY",
@@ -1291,7 +1291,7 @@
           "url": "https://www.flipkart.com/bestor-3-in-1-cable-2-1-2-m-multi-charging-4ft-3-1-nylon-braided-multiple-fast-android-ios-devices-usb-port-connectors-tablets-more/p/itm5d81182ad474b?pid=ACCG8RJYJRU9BETY&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCEMA53DFSNZMHU",
@@ -1304,20 +1304,20 @@
           "url": "https://www.flipkart.com/hp-mm-usb064gb-36p-64-gb-pen-drive-compatible-audio-player-desktop-computer-gaming-console-laptop-mobile-netbook-tablet-television-usb-2-0-metal-case/p/itm5ebf1d4df62d8?pid=ACCEMA53DFSNZMHU&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "BAGHGMZBUQDFXDH7",
-          "title": "Straplt 15.6 Inch Fully Protective Laptop Sleeve Case Cover For All Laptop Waterproof Waterproof Laptop Sleeve/Cover(Blue, 15.6 inch)",
-          "brand": "Straplt",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/bag/w/m/j/27-5-15-6-inch-fully-protective-laptop-sleeve-case-cover-for-all-original-imahgmzbvhj6nrxn.jpeg?q=90",
-          "price": 167,
-          "mrp": 699,
+          "id": "ACCG5GW39BFZMHD6",
+          "title": "ZEBRONICS Jaguar Ambidextrous Optical Mouse with Upto 1600 DPI, 4 Buttons with DPI Switch, Auto Power Saving(2.4GHz Wireless, Black)",
+          "brand": "ZEBRONICS",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/mouse/n/d/j/zeb-jaguar-zebronics-enriched-transparent-original-imahmgt2ukwggz9x.png?q=90",
+          "price": 289,
+          "mrp": 1190,
           "discount": 76,
-          "url": "https://www.flipkart.com/straplt-15-6-inch-fully-protective-laptop-sleeve-case-cover-all-waterproof-sleeve-cover/p/itmeb1a9e7153ced?pid=BAGHGMZBUQDFXDH7&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/zebronics-jaguar-ambidextrous-optical-mouse-upto-1600-dpi-4-buttons-dpi-switch-auto-power-saving/p/itmcde0156fb6e24?pid=ACCG5GW39BFZMHD6&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ACCFUGAC4WYMSHYE",
@@ -1330,7 +1330,7 @@
           "url": "https://www.flipkart.com/boat-type-c-3-1-5-m-type-c-a320/p/itma010289de41cb?pid=ACCFUGAC4WYMSHYE&affid=thisisnarenda",
           "inStock": true,
           "category": "electronics-accessories",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         }
       ]
     },
@@ -1349,7 +1349,7 @@
           "url": "https://www.flipkart.com/muuchstac-ocean-men-anti-acne-pimple-skin-brightening-all-types-face-wash/p/itm465bda6157fa0?pid=FCWFQCDQMJDAJZPJ&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "MSCH3KBJZ75M93XF",
@@ -1362,7 +1362,7 @@
           "url": "https://www.flipkart.com/vaseline-deep-moisture-non-sticky-body-lotion-ceramide-hyaluron10x-more/p/itm36f9f93d28540?pid=MSCH3KBJZ75M93XF&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "FCWFMNZH4CCAZNHS",
@@ -1375,7 +1375,7 @@
           "url": "https://www.flipkart.com/muuchstac-ocean-men-fights-acne-pimple-brighten-skin-all-skin-types-face-wash/p/itm1b3dcca8a2456?pid=FCWFMNZH4CCAZNHS&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "FCWGF44MWWHFUWQM",
@@ -1388,7 +1388,7 @@
           "url": "https://www.flipkart.com/garnier-men-acno-fight-salicylic-acid-repairs-skin-balances-oils-anti-pimple-face-wash/p/itm1261305a19e17?pid=FCWGF44MWWHFUWQM&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "FCWG34QYGYYDGXKP",
@@ -1401,20 +1401,20 @@
           "url": "https://www.flipkart.com/garnier-bright-complete-vitamin-c-cleanser-brighter-glowing-skin-face-wash/p/itm4578478d4cc2b?pid=FCWG34QYGYYDGXKP&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "MSCHGESFKYZYFPYH",
-          "title": "NIVEA Cocoa Nourish, Moisturizer Body Lotion, Coconut Oil, Serum, Hyaluronic acid(600 ml)",
+          "id": "MSCEYAVKGFEPR3QD",
+          "title": "NIVEA Cocoa Nourish, Moisturizer Body Lotion, Coconut Oil, Serum, Hyaluronic acid(400 ml)",
           "brand": "NIVEA",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/w/o/w/-resized-original-imahjjvnyrghvayd.jpeg?q=90",
-          "price": 382,
-          "mrp": 849,
-          "discount": 55,
-          "url": "https://www.flipkart.com/nivea-cocoa-nourish-moisturizer-body-lotion-coconut-oil-serum-hyaluronic-acid/p/itmfdde9ea594a98?pid=MSCHGESFKYZYFPYH&affid=thisisnarenda",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/7/q/r/-original-imahhm7tvc5h5btc.jpeg?q=90",
+          "price": 282,
+          "mrp": 565,
+          "discount": 50,
+          "url": "https://www.flipkart.com/nivea-cocoa-nourish-moisturizer-body-lotion-coconut-oil-serum-hyaluronic-acid/p/itmfdde9ea594a98?pid=MSCEYAVKGFEPR3QD&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "FCWFXFBMZSCUFNHZ",
@@ -1427,33 +1427,7 @@
           "url": "https://www.flipkart.com/mamaearth-vitamin-c-skin-glow-illumination-turmeric-face-wash/p/itm6bd7b3215f1c9?pid=FCWFXFBMZSCUFNHZ&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "FCWF9RWJGXBYCP6T",
-          "title": "MUUCHSTAC Ocean for Men, Fights Acne & Pimple, Skin Brightening, All Skin Types Face Wash(100 ml)",
-          "brand": "MUUCHSTAC",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/face-wash/o/r/8/-original-imahrzcespxhdue2.jpeg?q=90",
-          "price": 165,
-          "mrp": 299,
-          "discount": 45,
-          "url": "https://www.flipkart.com/muuchstac-ocean-men-fights-acne-pimple-skin-brightening-all-types-face-wash/p/itmccf2fabba75fe?pid=FCWF9RWJGXBYCP6T&affid=thisisnarenda",
-          "inStock": true,
-          "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "MSCHJ7YJFATNHP8P",
-          "title": "orvel HERBALS MOISTURIZING PAPAYA WHITENING DAY CREAM , REDUCE PIGMENTATION & BLEMISHE(200 ml)",
-          "brand": "orvel",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/1/g/r/200-herbals-moisturizing-papaya-whitening-day-cream-reduce-resized-original-imahj7xug6h2rp6m.jpeg?q=90",
-          "price": 144,
-          "mrp": 250,
-          "discount": 42,
-          "url": "https://www.flipkart.com/orvel-herbals-moisturizing-papaya-whitening-day-cream-reduce-pigmentation-blemishe/p/itm04793cdc70f29?pid=MSCHJ7YJFATNHP8P&affid=thisisnarenda",
-          "inStock": true,
-          "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "FCWHE2B7WKYXYVBH",
@@ -1466,7 +1440,7 @@
           "url": "https://www.flipkart.com/simple-refreshing-facial-wash-100-soap-free-perfect-sensitive-skin-face/p/itmdbbf493274d10?pid=FCWHE2B7WKYXYVBH&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "SNRHQWGAW9UAZUXF",
@@ -1479,7 +1453,33 @@
           "url": "https://www.flipkart.com/plum-sunscreen-spf-50-pa-rice-water-niacinamide-2-hybrid-pack-of-2/p/itm6ae03a34c3a1d?pid=SNRHQWGAW9UAZUXF&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "MSCFH8CG7HWMN5VD",
+          "title": "Simple Kind To Skin Protecting Light Moisturiser(125 ml)",
+          "brand": "Simple",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/p/h/b/-resized-original-imahq5ynzfhz9aeg.jpeg?q=90",
+          "price": 319,
+          "mrp": 499,
+          "discount": 36,
+          "url": "https://www.flipkart.com/simple-kind-skin-protecting-light-moisturiser/p/itmfh8cgy28xyman?pid=MSCFH8CG7HWMN5VD&affid=thisisnarenda",
+          "inStock": true,
+          "category": "beauty",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "MSCFH8CGQZEWMHZS",
+          "title": "Simple Hydrating Light Moisturizer(125 ml)",
+          "brand": "Simple",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/r/c/n/-original-imahq5yn6sdqp5pa.jpeg?q=90",
+          "price": 327,
+          "mrp": 499,
+          "discount": 34,
+          "url": "https://www.flipkart.com/simple-hydrating-light-moisturizer/p/itmcca99a9962bda?pid=MSCFH8CGQZEWMHZS&affid=thisisnarenda",
+          "inStock": true,
+          "category": "beauty",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "SNRHF9GWCTGACAGX",
@@ -1492,7 +1492,33 @@
           "url": "https://www.flipkart.com/nuface-sunscreen-spf-60-pa-ultra-gel/p/itm7e3ca5496223f?pid=SNRHF9GWCTGACAGX&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "FCWGJAHHDNVGFCB8",
+          "title": "Dermatouch Bright & Even Tone  with Niacinamide, Vitamin E and Kojic Acid Face Wash(150 g)",
+          "brand": "Dermatouch",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/face-wash/i/m/a/150-bright-even-tone-face-wash-with-niacinamide-vitamin-e-and-original-imahm478an5vgt4k.jpeg?q=90",
+          "price": 359,
+          "mrp": 499,
+          "discount": 28,
+          "url": "https://www.flipkart.com/dermatouch-bright-even-tone-niacinamide-vitamin-e-kojic-acid-face-wash/p/itmb307868da4089?pid=FCWGJAHHDNVGFCB8&affid=thisisnarenda",
+          "inStock": true,
+          "category": "beauty",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
+        },
+        {
+          "id": "SNRHHENTNWFZYVJ5",
+          "title": "COSMO Sunscreen - SPF 30 PA+++ Q AC Gel(60 g)",
+          "brand": "COSMO",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/sunscreen/0/b/l/60-q-ac-gel-30-cosmo-original-imahhentt77z4gjm.jpeg?q=90",
+          "price": 454,
+          "mrp": 610,
+          "discount": 26,
+          "url": "https://www.flipkart.com/cosmo-sunscreen-spf-30-pa-q-ac-gel/p/itmde7bad46c5fbc?pid=SNRHHENTNWFZYVJ5&affid=thisisnarenda",
+          "inStock": true,
+          "category": "beauty",
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "ATAG75HYR5F3RVMM",
@@ -1505,7 +1531,7 @@
           "url": "https://www.flipkart.com/derma-co-2-kojic-acid-face-serum-1-alpha-arbutin-niacinamide-dark-spots-blemishes-pigmentation/p/itm434e0c7f703fa?pid=ATAG75HYR5F3RVMM&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "MSCGH64K7YKH24NU",
@@ -1518,20 +1544,7 @@
           "url": "https://www.flipkart.com/l-oral-paris-day-cream-spf-30-brightens-skin-reduces-dark-spots/p/itm566eedbd25236?pid=MSCGH64K7YKH24NU&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "SNRHMJPR3GEBYWYN",
-          "title": "S Blok Sunscreen - SPF 30 PA+++ Sunscreen , All Skin Types, 30SPF(50 g)",
-          "brand": "S Blok",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/sunscreen/e/d/q/50-sblok-silicone-sunscreen-gel-30-s-blok-original-imah7d6xhahgcy2c.jpeg?q=90",
-          "price": 612,
-          "mrp": 799,
-          "discount": 23,
-          "url": "https://www.flipkart.com/s-blok-sunscreen-spf-30-pa-all-skin-types-30spf/p/itm4cbd33f45ed0f?pid=SNRHMJPR3GEBYWYN&affid=thisisnarenda",
-          "inStock": true,
-          "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "SNRGYAZYBWG3ADXH",
@@ -1544,20 +1557,20 @@
           "url": "https://www.flipkart.com/wishcare-sunscreen-spf-50-pa-niacinamide-oil-balance-fluid-sunscreen-in-vivo-tested-for-men-women/p/itm02ac86d4d35f9?pid=SNRGYAZYBWG3ADXH&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "MSCHGAKNHXCPYWVX",
-          "title": "ARISH BIO-NATURAL Glutathione & Japanese Koji Rice Water Brightening Body Butter with SPF 30(100 g)",
-          "brand": "ARISH BIO-NATURAL",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/h/c/b/100-glutathione-japanese-koji-rice-water-brightening-body-butter-resized-original-imahj38sxywhdj7q.jpeg?q=90",
-          "price": 444,
-          "mrp": 549,
-          "discount": 19,
-          "url": "https://www.flipkart.com/arish-bio-natural-glutathione-japanese-koji-rice-water-brightening-body-butter-spf-30/p/itm0d8bed972275c?pid=MSCHGAKNHXCPYWVX&affid=thisisnarenda",
+          "id": "MSCFZZYF6KEJWQUQ",
+          "title": "POND's Bright Beauty with SPF 15 PA++(35 g)",
+          "brand": "POND's",
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/fairness/y/9/f/-enriched-transparent-original-imah2z8trxzkackf.png?q=90",
+          "price": 159,
+          "mrp": 199,
+          "discount": 20,
+          "url": "https://www.flipkart.com/pond-s-bright-beauty-spf-15-pa/p/itmdb92b52f70db3?pid=MSCFZZYF6KEJWQUQ&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
           "id": "SNRHAEFNH5D3ZTT8",
@@ -1570,33 +1583,20 @@
           "url": "https://www.flipkart.com/photostable-sunscreen-spf-55-pa-sunpharma-gold-sunscreen-pa-12-hour-uv-protection/p/itm391716086a1d8?pid=SNRHAEFNH5D3ZTT8&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         },
         {
-          "id": "KMTHBVCY7CDDBJN8",
-          "title": "Proven Honest Derma /PHD/ 10% Niacinamide Spot Correcting Serum with 2% NAG I Fades Acne Marks(30 g)",
+          "id": "KMTHBV8HYWQCRPNV",
+          "title": "Proven Honest Derma /PHD/ 2% Alpha Arbutin Depigmentation Serum with 2% Tyrobright(30 g)",
           "brand": "Proven Honest Derma",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/skin-treatment/y/5/p/-original-imahpgh3spnb4zsz.jpeg?q=90",
-          "price": 532,
-          "mrp": 649,
+          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/skin-treatment/q/0/c/-original-imahpgh3bzmnwagt.jpeg?q=90",
+          "price": 573,
+          "mrp": 699,
           "discount": 18,
-          "url": "https://www.flipkart.com/proven-honest-derma-phd-10-niacinamide-spot-correcting-serum-2-nag-fades-acne-marks/p/itmaa92c973ac9c0?pid=KMTHBVCY7CDDBJN8&affid=thisisnarenda",
+          "url": "https://www.flipkart.com/proven-honest-derma-phd-2-alpha-arbutin-depigmentation-serum-tyrobright/p/itmee2f142c52298?pid=KMTHBV8HYWQCRPNV&affid=thisisnarenda",
           "inStock": true,
           "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
-        },
-        {
-          "id": "MSCFJHC8H3HESPGZ",
-          "title": "JOVEES FOOT CREAM & SCRUB 100 gm(100 ml)",
-          "brand": "JOVEES",
-          "image": "https://rukminim1.flixcart.com/image/400/400/xif0q/moisturizer-cream/0/i/s/100-foot-cream-scrub-100-gm-jovees-cream-original-imahhqz3rfhzqwfg.jpeg?q=90",
-          "price": 199,
-          "mrp": 240,
-          "discount": 17,
-          "url": "https://www.flipkart.com/jovees-foot-cream-scrub-100-gm/p/itmb254946f1343a?pid=MSCFJHC8H3HESPGZ&affid=thisisnarenda",
-          "inStock": true,
-          "category": "beauty",
-          "fetchedAt": "2026-11-25T04:08:54.775+05:30"
+          "fetchedAt": "2026-11-25T14:26:35.574+05:30"
         }
       ]
     }
