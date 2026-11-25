@@ -14,10 +14,10 @@
 */
 window.GN_CONFIG = {
   SITE_URL: 'https://gncare.xyz',
-  ADSENSE_CLIENT: '',
+  ADSENSE_CLIENT: 'ca-pub-6915700686027349',
   SLOTS: { app: '', guide: '' },
   AFFILIATE_TAG: 'gncare-21', /* Amazon Associates India tracking ID */
-  FLIPKART_AFFID: 'thisisnarenda', /* Flipkart affiliate id, added as affid= on Flipkart search links */
+  FLIPKART_AFFILID: 'thisisnarenda', /* Flipkart affiliate id, added as affid= on Flipkart search links */
   AUTO_ADS: false,            /* true = Google places ads automatically and SLOTS are ignored */
   OWN_CONSENT_BANNER: true,   /* set false if you use Google's own Privacy & messaging banner */
   TELEGRAM_URL: 'https://t.me/Gncarestore'  /* public channel; Shop shows Join our Telegram deals */
