@@ -1007,5 +1007,30 @@ assert.ok(index.indexOf('styles.css?v=33') > -1 && index.indexOf('app.js?v=32') 
     assert.ok(/NETWORK_FIRST[\s\S]*\/deals\.json/.test(sw));
   });
 
+  await t('SEO routes use extensionless canonical URLs and sitemap entries', async () => {
+    const fs = require('fs');
+    const root = path.join(__dirname, '..');
+    const config = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
+    const sitemap = fs.readFileSync(path.join(root, 'public/sitemap.xml'), 'utf8');
+    const pages = [
+      ['public/index.html', 'https://gncare.xyz/'],
+      ['public/guides/index.html', 'https://gncare.xyz/guides'],
+      ['public/guides/simple-am-pm-skin-care-routine.html', 'https://gncare.xyz/guides/simple-am-pm-skin-care-routine'],
+      ['public/guides/skin-care-ingredients-not-to-mix.html', 'https://gncare.xyz/guides/skin-care-ingredients-not-to-mix'],
+      ['public/guides/sunscreen-amount-and-reapplying.html', 'https://gncare.xyz/guides/sunscreen-amount-and-reapplying'],
+      ['public/about.html', 'https://gncare.xyz/about'],
+      ['public/privacy.html', 'https://gncare.xyz/privacy'],
+      ['public/terms.html', 'https://gncare.xyz/terms']
+    ];
+    assert.strictEqual(config.cleanUrls, true);
+    pages.forEach(([file, canonical]) => {
+      const html = fs.readFileSync(path.join(root, file), 'utf8');
+      assert.ok(html.includes(`<link rel="canonical" href="${canonical}">`), file + ' canonical');
+      assert.ok(sitemap.includes(`<loc>${canonical}</loc>`), file + ' sitemap URL');
+    });
+    assert.ok(!/href="[^"]*\.html(?:[?#][^"]*)?"/.test(pages.map(([file]) => fs.readFileSync(path.join(root, file), 'utf8')).join('\n')));
+    assert.ok(!sitemap.includes('.html') && !sitemap.includes('https://gncare.xyz/guides/</loc>'));
+  });
+
   console.log('\n' + passed + ' checks passed' + (process.exitCode ? ', some FAILED' : ''));
 })();
